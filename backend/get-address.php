@@ -38,6 +38,24 @@ if(isset($_POST['get_all_city'])) {
     }
 }
 
+if(isset($_POST['get_all_brgy'])) {
+    $city_db = $_POST['city_db'];
+    $get_all_brgy = mysqli_query($conn, "SELECT * FROM refbrgy WHERE citymunCode = '$city_db' ORDER BY brgyDesc");
+
+    if (mysqli_num_rows($get_all_brgy) != 0) {
+        ?>
+        <option value="">Select Barangay</option>
+        <?php
+        foreach($get_all_brgy as $all_brgy) {
+            ?>
+            <option value="<?php echo $all_brgy['brgyCode'] ?>"><?php echo $all_brgy['brgyDesc']; ?></option>
+            <?php
+        }
+        ?>
+        <?php
+    }
+}
+
 // ON CHANGE
 if (isset($_POST['get_city'])) {
     $province_id = $_POST['province_id'];

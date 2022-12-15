@@ -4,7 +4,12 @@ include './components/navbar.php';
 
 if(!isset($_SESSION['margaux_user_id'])) {
     $_SESSION["margaux_link_user"] = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on" ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    header('location: login.php');
 } else {
+    unset($_SESSION['update_profile_array']);
+    unset($_SESSION['update_email']);
+    unset($_SESSION['otp']);
+    unset($_SESSION['time']);
     $user_id = $_SESSION['margaux_user_id'];
 }
 ?>
@@ -13,7 +18,30 @@ if(!isset($_SESSION['margaux_user_id'])) {
 .custom_cont {
     max-width: 90%;
 }
+
+.password-container {
+    position: relative;
+}
+
+.password-container input[type="password"],
+.password-container input[type="text"] {
+    width: 100%;
+    padding: 12px 40px 12px 12px;
+    box-sizing: border-box;
+}
+
+.fa-eye,
+.fa-eye-slash {
+    position: absolute;
+    top: 30%;
+    right: 4%;
+    cursor: pointer;
+    color: gray;
+    font-size: 18px;
+}
 </style>
+
+<input type="hidden" name="user_id" id="user_id" value="<?= $_SESSION['margaux_user_id'] ?>">
 
 <!-- Start Contact Form -->
 <div class="untree_co-section pt-5"
@@ -33,7 +61,7 @@ if(!isset($_SESSION['margaux_user_id'])) {
                     foreach($get_user_info as $row) {
                     $gender = $row['gender'];
                     ?>
-                    <form action="">
+                    <form id="profile_update">
                         <div class="row">
                             <div class="col-lg-3 border-right">
                                 <div class="d-flex flex-column align-items-center text-center mb-3"><img
@@ -49,13 +77,19 @@ if(!isset($_SESSION['margaux_user_id'])) {
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-md-12"><label class="labels">Name</label><input type="text"
-                                                class="form-control" placeholder="Name" value="<?= $row['name'] ?>">
+                                                class="form-control" placeholder="Name" value="<?= $row['name'] ?>"
+                                                id="name" name="name" required>
+                                            <span class="error error_name"
+                                                style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
                                         </div>
                                     </div>
-                                    <div class="row mt-3">
+                                    <div class="row">
                                         <div class="col-md-12">
                                             <label class="labels">Birthday</label>
-                                            <input type="date" class="form-control" value="<?= $row['birthday'] ?>">
+                                            <input type="date" class="form-control" value="<?= $row['birthday'] ?>"
+                                                id="birthday" name="birthday" required>
+                                            <span class="error error_birthday"
+                                                style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
                                         </div>
                                         <div class="col-md-12"><label class="labels">Gender</label>
                                             <select class="form-select form-control" id="gender" name="gender">
@@ -84,7 +118,8 @@ if(!isset($_SESSION['margaux_user_id'])) {
                                                 id="barangayValue" value="<?php echo $row['barangay']; ?>">
                                         </div>
                                         <div class="col-md-12"><label class="labels">Block</label><input type="text"
-                                                class="form-control" placeholder="Enter block address" value=""></div>
+                                                class="form-control" placeholder="Enter block address" value="<?php echo $row['block']; ?>"
+                                                id="block" name="block"></div>
                                     </div>
 
                                 </div>
@@ -94,9 +129,13 @@ if(!isset($_SESSION['margaux_user_id'])) {
                                     <div class="d-none d-lg-flex justify-content-between align-items-center mb-3">
                                         <h4 class="text-right invisible">Profile Settings</h4>
                                     </div>
-                                    <div class="col-md-12"><label class="labels">Email</label><input type="email"
-                                            class="form-control" placeholder="Enter email address"
-                                            value="<?= $row['email'] ?>"></div>
+                                    <div class="col-md-12">
+                                        <label class="labels">Email</label>
+                                        <input type="email" class="form-control" placeholder="Enter email address"
+                                            value="<?= $row['email'] ?>" id="email" name="email" required>
+                                        <span class="error error_email"
+                                            style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
+                                    </div>
                                     <div class="col-md-12">
                                         <label class="form-label mb-0" for="username">Mobile No</label>
                                         <div class="input-group input-group-merge">
@@ -104,16 +143,35 @@ if(!isset($_SESSION['margaux_user_id'])) {
                                             <input type="tel" id="phoneNumber" name="phoneNumber" class="form-control"
                                                 value="<?= $row['mobile_no'] ?>" placeholder="9992736514" required />
                                         </div>
+                                        <span class="error error_phoneNumber"
+                                            style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
                                     </div>
-                                    <div class="col-md-12 "><label class="labels">Old Password</label><input type="text"
-                                            class="form-control" placeholder="Old Password" value=""></div>
-                                    <div class="col-md-12"><label class="labels">New Password</label><input type="text"
-                                            class="form-control" placeholder="New Password" value=""></div>
-                                    <div class="col-md-12"><label class="labels">Repeat New Password</label><input
-                                            type="text" class="form-control" placeholder="Repeat New Password" value="">
+                                    <!-- <div class="col-md-12 "><label class="labels">Old Password</label><input type="text"
+                                            class="form-control" placeholder="Old Password" value=""></div> -->
+                                    <div class="col-md-12">
+                                        <label class="labels">New Password</label>
+                                        <div class="password-container">
+                                            <input type="password" class="form-control" placeholder="New Password"
+                                                value="" id="new_pass" name="new_pass">
+                                            <i class="fa-solid fa-eye" id="eye"></i>
+                                        </div>
+                                        <span class="error error_new_pass"
+                                            style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
                                     </div>
-                                    <div class="mt-5 text-center"><button class="btn text-dark profile-button"
-                                            type="button" style="background-color: #fe827a;">Save Profile</button></div>
+                                    <div class="col-md-12"><label class="labels">Repeat New Password</label>
+                                        <div class="password-container">
+                                            <input type="password" class="form-control"
+                                                placeholder="Repeat New Password" id="c_pass" name="c_pass" value="">
+                                            <i class="fa-solid fa-eye" id="confirmEye"></i>
+                                        </div>
+                                        <span class="error error_c_pass"
+                                            style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
+                                    </div>
+                                    <div class="mt-5 text-center">
+                                        <button class="btn text-dark profile-button" type="submit"
+                                            id="profile_update_btn" style="background-color: #fe827a;">Save
+                                            Profile</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -132,6 +190,22 @@ if(!isset($_SESSION['margaux_user_id'])) {
 
 <script>
 $(window).on('load', function() {
+    // ALERTS
+    if(localStorage.getItem('status') == 'profile_updated') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Profile updated successfully!',
+            iconColor: '#000',
+            confirmButtonColor: '#000',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            color: '#000',
+            background: '#fe827a',
+        })
+        localStorage.removeItem('status');
+    }
     // GET ADDRESS
     var province_value = $('#provinceValue').val();
     var city_value = $('#cityValue').val();
@@ -209,6 +283,25 @@ $(window).on('load', function() {
 })
 
 $(document).ready(function() {
+    // SHOW PASSWORD
+    const passwordInput = document.querySelector("#new_pass")
+    const eye = document.querySelector("#eye")
+    const passwordInputConfirm = document.querySelector("#c_pass")
+    const eyeConfirm = document.querySelector("#confirmEye")
+
+    eye.addEventListener("click", function() {
+        eye.classList.toggle("fa-eye-slash");
+        const type = passwordInput.getAttribute("type") === "password" ? "text" : "password"
+        passwordInput.setAttribute("type", type);
+    })
+
+    eyeConfirm.addEventListener("click", function() {
+        eyeConfirm.classList.toggle("fa-eye-slash");
+        const confirmType = passwordInputConfirm.getAttribute("type") === "password" ? "text" :
+            "password"
+        passwordInputConfirm.setAttribute("type", confirmType);
+    })
+
     // GET GENDER
     $("#gender").val("<?= $gender ?>").attr("selected", "selected");
 
@@ -290,6 +383,176 @@ $(document).ready(function() {
         } else {
             $('#barangayValue').val($(this).val());
             $('#block').attr("disabled", false);
+        }
+    })
+
+    // VALIDATIONS
+    var $regexName = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
+    var $regexUsername = /^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
+
+    var $regexPhoneNumber = /^9\d{9}$/;
+
+    var $regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+
+    $('#name').on('keypress keydown keyup', function() {
+        if (!$.trim($(this).val()).match($regexName)) {
+            $('.error_name').html(
+                '<i class="bi bi-exclamation-circle-fill"></i> Invalid format! No number should be included.'
+            );
+            $('#name').addClass('border-danger');
+        } else {
+            $('.error_name').text('');
+            $('#name').removeClass('border-danger');
+        }
+    })
+
+    $('#phoneNumber').on('keypress keydown keyup', function() {
+        if (!$.trim($(this).val()).match($regexPhoneNumber)) {
+            $('.error_phoneNumber').html(
+                '<i class="bi bi-exclamation-circle-fill"></i> Invalid format! Must start with 9 and has 10 numbers.'
+            );
+            $('#phoneNumber').addClass('border-danger');
+        } else {
+            $('.error_phoneNumber').text('');
+            $('#phoneNumber').removeClass('border-danger');
+        }
+    })
+
+    $('#new_pass').on('keypress keydown keyup', function() {
+        if (!$.trim($(this).val()).match($regexPassword)) {
+            $('.error_new_pass').html(
+                '<i class="bi bi-exclamation-circle-fill"></i> Invalid format! Minimum eight characters, at least one uppercase letter, one lowercase letter and one number.'
+            );
+            $('#new_pass').addClass('border-danger');
+        } else {
+            $('.error_new_pass').text('');
+            $('#new_pass').removeClass('border-danger');
+        }
+    })
+
+    $('#c_pass').on('keypress keydown keyup', function() {
+        if (!$.trim($(this).val()).match($regexPassword)) {
+            $('.error_c_pass').html(
+                '<i class="bi bi-exclamation-circle-fill"></i> Invalid format! No number should be included.'
+            );
+            $('#c_pass').addClass('border-danger');
+        } else {
+            $('.error_c_pass').text('');
+            $('#c_pass').removeClass('border-danger');
+        }
+    })
+
+    // UPDATE PROFILE
+    $('#profile_update').on('submit', function(e) {
+        e.preventDefault();
+
+        var get_form = $('#profile_update')[0];
+
+        if ($('#new_pass').val().length != 0) {
+            if ($('#c_pass').val().length == 0) {
+                $('#c_pass').prop('required', true);
+            } else {
+                if ($('#new_pass').val() != $('#c_pass').val()) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed',
+                        text: 'Password confirmation does not match!',
+                    });
+                } else {
+                    var user_id = $('#user_id').val();
+                    var form = new FormData(get_form);
+                    form.append('update_profile_details', true);
+                    form.append('user_id', user_id);
+
+                    $.ajax({
+                        url: "./backend/profile.php",
+                        type: "POST",
+                        data: form,
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        beforeSend: function() {
+                            $('#profile_update_btn').prop('disabled', true);
+                            $('#profile_update_btn').text('Processing...');
+                        },
+                        complete: function() {
+                            $('#profile_update_btn').prop('disabled', false);
+                            $('#profile_update_btn').text('Save Profile');
+                        },
+                        success: function(response) {
+                            if (response.includes('wrong password')) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Failed',
+                                    text: 'Incorrect password!',
+                                });
+                            } else if (response.includes('email already used')) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Failed',
+                                    text: 'Email already used!',
+                                });
+                            } else if (response.includes('success')) {
+                                location.href = 'profile-verification.php';
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Failed',
+                                    text: 'Something went wrong!',
+                                });
+                            }
+                            console.log(response);
+                        }
+                    })
+                }
+            }
+        } else {
+            $('#c_pass').prop('required', false);
+            var user_id = $('#user_id').val();
+            var form = new FormData(get_form);
+            form.append('update_profile_details', true);
+            form.append('user_id', user_id);
+
+            $.ajax({
+                url: "./backend/profile.php",
+                type: "POST",
+                data: form,
+                contentType: false,
+                cache: false,
+                processData: false,
+                beforeSend: function() {
+                    $('#profile_update_btn').prop('disabled', true);
+                    $('#profile_update_btn').text('Processing...');
+                },
+                complete: function() {
+                    $('#profile_update_btn').prop('disabled', false);
+                    $('#profile_update_btn').text('Save Profile');
+                },
+                success: function(response) {
+                    if (response.includes('wrong password')) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Failed',
+                            text: 'Incorrect password!',
+                        });
+                    } else if (response.includes('email already used')) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Failed',
+                            text: 'Email already used!',
+                        });
+                    } else if (response.includes('success')) {
+                        location.href = 'profile-verification.php';
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Failed',
+                            text: 'Something went wrong!',
+                        });
+                    }
+                    console.log(response);
+                }
+            })
         }
     })
 })

@@ -46,7 +46,7 @@ body {
 
         <h1 class="text-center p-3 mb-3 rounded" style="color: #fe827a; font-weight: bold;">SIGN UP</h1>
         <form class="p-3" id="register_form">
-            <div class="row form-group mb-3">
+            <div class="row form-group">
                 <div class="col-md-6">
                     <!-- Email input -->
                     <div class="form-outline mb-2">
@@ -57,7 +57,6 @@ body {
                 </div>
 
                 <div class="col-md-6">
-                    <!-- Password input -->
                     <div class="form-outline mb-2">
                         <label class="form-label" for="username">Username</label>
                         <input type="text" name="username" id="username" class="form-control" required />
@@ -67,7 +66,7 @@ body {
                 </div>
             </div>
 
-            <div class="row form-group mb-3">
+            <div class="row form-group">
                 <div class="col-md-6">
                     <!-- Email input -->
                     <div class="form-outline mb-2">
@@ -78,7 +77,6 @@ body {
                 </div>
 
                 <div class="col-md-6">
-                    <!-- Password input -->
                     <div class="form-outline mb-2">
                         <label class="form-label" for="username">Mobile No</label>
                         <div class="input-group input-group-merge">
@@ -92,7 +90,7 @@ body {
                 </div>
             </div>
 
-            <div class="row form-group mb-3">
+            <div class="row form-group">
                 <div class="col-md-6">
                     <!-- Email input -->
                     <div class="form-outline mb-2">
@@ -115,7 +113,7 @@ body {
                 </div>
             </div>
 
-            <div class="row form-group mb-3">
+            <div class="row form-group">
                 <div class="col-md-6">
                     <!-- Email input -->
                     <div class="form-outline mb-2">
