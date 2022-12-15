@@ -777,6 +777,7 @@ a.more {
 	height: 50px;
 	/* border-radius: 10px; */
 	font-family: 'Poppins', sans-serif;
+	font-size: 14px;
 }
 .form-control:active,
 .form-control:focus {

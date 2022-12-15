@@ -147,6 +147,7 @@ $(document).ready(function() {
                     <?php
                     } else {
                     ?>
+                    localStorage.setItem('status', 'welcome');
                     location.href = 'index.php';
                     <?php
                     }

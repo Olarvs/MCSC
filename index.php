@@ -8,6 +8,12 @@ if(isset($_SESSION['margaux_user_id'])) {
 }
 ?>
 
+<style>
+    .position {
+        margin-top: 84px !important;
+    }
+</style>
+
 <input type="hidden" name="" id="logged_in" value="<?= $logged_in ?>">
 
 <!-- Start Hero Section -->
@@ -273,19 +279,23 @@ if(isset($_SESSION['margaux_user_id'])) {
 
 <script>
 $(window).on('load', function() {
-    if($('#logged_in').val() != '') {
+    if(localStorage.getItem('status') == 'welcome') {
         Swal.fire({
             title: 'Welcome, <?= $_SESSION['margaux_name'] ?>!',
             toast: true,
             position: 'top-right',
-            iconColor: '#000',
-            confirmButtonColor: '#000',
+            iconColor: '#fe827a',
+            confirmButtonColor: '#fe827a',
             showConfirmButton: false,
-            color: '#000',
-            background: '#fe827a',
+            color: '#fe827a',
+            background: '#212529',
             timer: 5000,
             timerProgressBar: true,
+            customClass: {
+                container: 'position'
+            },
         })
+        localStorage.removeItem('status');
     }
 })
 
