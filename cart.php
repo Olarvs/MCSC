@@ -2,8 +2,9 @@
 include './components/head_css.php';
 include './components/navbar.php';
 
-if(!isset($_POST['margaux_user_id'])) {
+if(!isset($_SESSION['margaux_user_id'])) {
     $_SESSION["margaux_link_user"] = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on" ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    header('location: login.php');
 }
 ?>
 

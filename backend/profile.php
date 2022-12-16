@@ -92,3 +92,41 @@ if (isset($_POST['update_profile_details'])) {
     }
 
 }
+
+if (isset($_POST['delete_image'])) {
+    $user_id = $_POST['user_id'];
+    $old_image = $_POST['old_profile'];
+
+    $update_image = mysqli_query($conn, "UPDATE tbl_user SET profile_image = 'profile.png' WHERE user_id = $user_id");
+
+    if ($update_image) {
+        if (file_exists('../assets/img/profile_image/' . $old_image)) {
+            unlink('../assets/img/profile_image/' . $old_image);
+        }
+        echo 'success';
+    }
+}
+
+if (isset($_POST['update_profile_picture'])) {
+    $image = $_FILES['profile_image']['name'];
+    $image_tmp = $_FILES['profile_image']['tmp_name'];
+    $old_image = $_POST['old_profile_pic'] ?? null;
+    $user_id = $_POST['user_id'];
+
+    $image_ext = explode('.', $image);
+    $image_ext = strtolower(end($image_ext));
+
+    $new_image_name = uniqid() . '.' . $image_ext;
+    move_uploaded_file($image_tmp, '../assets/images/profile_image/' . $new_image_name);
+
+    $update_profile = mysqli_query($conn, "UPDATE tbl_user SET profile_image = '$new_image_name' WHERE user_id = $user_id");
+
+    if ($update_profile) {
+        if ($old_image != 'profile.png') {
+            if (file_exists('../assets/images/profile_image/' . $old_image)) {
+                unlink('../assets/images/profile_image/' . $old_image);
+            }
+        }
+        echo 'success';
+    }
+}

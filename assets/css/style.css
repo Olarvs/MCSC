@@ -197,15 +197,15 @@ a.more {
 	font-weight: 600;
 	padding: 12px 30px;
 	/* border-radius: 30px; */
-	color: #ffffff;
-	background: #2f2f2f;
-	border-color: #2f2f2f;
+	/* color: #ffffff;
+	background: #fe827a;
+	border-color: #fe827a; */
 }
-.btn:hover {
+/* .btn:hover {
 	color: #ffffff;
 	background: #222222;
 	border-color: #222222;
-}
+} */
 .btn:active,
 .btn:focus {
 	outline: none !important;
@@ -213,12 +213,12 @@ a.more {
 	box-shadow: none;
 }
 .btn.btn-primary {
-	background: #3b5d50;
-	border-color: #3b5d50;
+	background: #fe827a;
+	border-color: #fe827a;
 }
 .btn.btn-primary:hover {
-	background: #314d43;
-	border-color: #314d43;
+	background: #cf6159;
+	border-color: #cf6159;
 }
 .btn.btn-secondary {
 	color: white;

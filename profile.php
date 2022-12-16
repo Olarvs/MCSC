@@ -15,6 +15,14 @@ if(!isset($_SESSION['margaux_user_id'])) {
 ?>
 
 <style>
+body {
+    background-color: #EBDCD5;
+    background: url(./assets/images/bgpink.png) no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100vh;
+}
 .custom_cont {
     max-width: 90%;
 }
@@ -44,8 +52,7 @@ if(!isset($_SESSION['margaux_user_id'])) {
 <input type="hidden" name="user_id" id="user_id" value="<?= $_SESSION['margaux_user_id'] ?>">
 
 <!-- Start Contact Form -->
-<div class="untree_co-section pt-5"
-    style="background-image: url('./assets/images/bannercactus.png'); background-size: cover; ">
+<div class="pt-4 pt-lg-5 pb-4 pb-lg-5">
     <div class="container">
 
         <div class="block">
@@ -61,14 +68,33 @@ if(!isset($_SESSION['margaux_user_id'])) {
                     foreach($get_user_info as $row) {
                     $gender = $row['gender'];
                     ?>
+                    <input class="form-control mb-2" style="height: unset;" type="hidden" id="old_profile_pic"
+                        name="old_profile_pic" value="<?= $row['profile_image'] ?>">
                     <form id="profile_update">
                         <div class="row">
                             <div class="col-lg-3 border-right">
-                                <div class="d-flex flex-column align-items-center text-center mb-3"><img
-                                        class="rounded-circle mt-5" width="150px"
-                                        src="./assets/images/profile_image/profile.png"><span
-                                        class="font-weight-bold"><?= $row['name'] ?></span><span
-                                        class="text-white-50"><?= $row['email'] ?></span><span> </span></div>
+                                <div class="d-flex flex-column align-items-center text-center mb-3 ">
+                                    <img style="object-fit: cover;" class="rounded-circle mt-2 mt-lg-5" width="150px" height="150px"
+                                        src="./assets/images/profile_image/<?= $row['profile_image'] ?>">
+                                    <span class="font-weight-bold"><?= $row['name'] ?></span>
+                                    <span class="text-white-50"><?= $row['email'] ?></span>
+                                    <?php
+                                    if($row['profile_image'] != 'profile.png') {
+                                    ?>
+                                    <button type="button" class="btn btn-danger mb-2"
+                                        style="padding: 3px 8px; font-size: 13px;"
+                                        id="remove_profile_image">Remove</button>
+                                    <?php
+                                    }
+                                    ?>
+                                    <input class="form-control mb-2" style="height: unset;" type="file"
+                                        id="profile_image">
+                                    <span class="error error_image"
+                                        style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
+                                    <button type="button" class="btn btn-primary mb-2"
+                                        style="padding: 3px 8px; font-size: 13px; color: #000;"
+                                        id="update_image">Update</button>
+                                </div>
                             </div>
                             <div class="col-lg-5 border-right">
                                 <div class="px-3">
@@ -118,8 +144,8 @@ if(!isset($_SESSION['margaux_user_id'])) {
                                                 id="barangayValue" value="<?php echo $row['barangay']; ?>">
                                         </div>
                                         <div class="col-md-12"><label class="labels">Block</label><input type="text"
-                                                class="form-control" placeholder="Enter block address" value="<?php echo $row['block']; ?>"
-                                                id="block" name="block"></div>
+                                                class="form-control" placeholder="Enter block address"
+                                                value="<?php echo $row['block']; ?>" id="block" name="block"></div>
                                     </div>
 
                                 </div>
@@ -168,8 +194,8 @@ if(!isset($_SESSION['margaux_user_id'])) {
                                             style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
                                     </div>
                                     <div class="mt-5 text-center">
-                                        <button class="btn text-dark profile-button" type="submit"
-                                            id="profile_update_btn" style="background-color: #fe827a;">Save
+                                        <button class="btn btn-primary text-dark profile-button" type="submit"
+                                            id="profile_update_btn">Save
                                             Profile</button>
                                     </div>
                                 </div>
@@ -191,11 +217,25 @@ if(!isset($_SESSION['margaux_user_id'])) {
 <script>
 $(window).on('load', function() {
     // ALERTS
-    if(localStorage.getItem('status') == 'profile_updated') {
+    if (localStorage.getItem('status') == 'profile_updated') {
         Swal.fire({
             icon: 'success',
             title: 'Success',
             text: 'Profile updated successfully!',
+            iconColor: '#000',
+            confirmButtonColor: '#000',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            color: '#000',
+            background: '#fe827a',
+        })
+        localStorage.removeItem('status');
+    } else if(localStorage.getItem('status') == 'image_updated') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Profile image updated successfully!',
             iconColor: '#000',
             confirmButtonColor: '#000',
             showConfirmButton: false,
@@ -553,6 +593,113 @@ $(document).ready(function() {
                     console.log(response);
                 }
             })
+        }
+    })
+
+    // REMOVE PROFILE
+    $('#remove_profile_image').on('click', function(e) {
+        e.preventDefault();
+
+        Swal.fire({
+            title: 'Are you sure you want to remove your profile image?',
+            iconColor: '#000',
+            confirmButtonColor: '#000',
+            cancelButtonColor: '#d9534f',
+            showConfirmButton: true,
+            color: '#000',
+            background: '#fe827a',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var old_image = $('#old_profile_pic').val();
+                var user_id = $('#user_id').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "./backend/profile.php",
+                    data: {
+                        'delete_image': true,
+                        'user_id': user_id,
+                        'old_profile': old_image,
+                    },
+                    success: function(response) {
+                        if (response.includes('success')) {
+                            localStorage.setItem('status', 'delete_image');
+                            location.reload();
+                        }
+                        console.log(response);
+                    }
+                })
+            }
+        })
+    })
+
+    // Update Image
+    $('#update_image').on('click', function(e) {
+        e.preventDefault();
+
+        if ($('#profile_image').val() == '') {
+            $('.error_image').html(
+                '<i class="bi bi-exclamation-circle-fill"></i> Upload image first!'
+            );
+        } else {
+            var user_id = $('#user_id').val();
+            var profile_image = $('#profile_image').val();
+            var image_ext = $('#profile_image').val().split('.').pop().toLowerCase();
+
+            if ($.inArray(image_ext, ['png', 'jpg', 'jpeg']) == -1) {
+                $('.error_image').html(
+                    '<i class="bi bi-exclamation-circle-fill"></i> File not supported!'
+                );
+            } else {
+                var imageSize = $('#profile_image')[0].files[0].size;
+
+                if (imageSize > 10485760) {
+                    $('.error_image').html(
+                        '<i class="bi bi-exclamation-circle-fill"></i> File too large!'
+                    );
+                } else {
+                    var old_profile_pic = $('#old_profile_pic').val();
+                    var profile_image = $('#profile_image').prop("files")[0];
+                    var user_id = $('#user_id').val();
+
+                    var form = new FormData();
+                    form.append('update_profile_picture', true);
+                    form.append('old_profile_pic', old_profile_pic);
+                    form.append('profile_image', profile_image);
+                    form.append('user_id', user_id);
+                    $.ajax({
+                        url: "./backend/profile.php",
+                        type: "POST",
+                        data: form,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function(response) {
+                            if (response.includes('success')) {
+                                localStorage.setItem('status', 'image_updated');
+                                location.reload();
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Failed',
+                                    text: 'Something went wrong!',
+                                    iconColor: '#000',
+                                    confirmButtonColor: '#000',
+                                    showConfirmButton: false,
+                                    color: '#000',
+                                    background: '#fe827a',
+                                    timer: 5000,
+                                    timerProgressBar: true,
+                                });
+                            }
+                            console.log(response);
+                        }
+                    })
+                }
+            }
         }
     })
 })

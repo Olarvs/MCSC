@@ -15,6 +15,11 @@ if(isset($_SESSION['margaux_user_id'])) {
 <style>
 body {
     background-color: #EBDCD5;
+    background: url(./assets/images/bgpink.png) no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100vh;
 }
 
 .login {
@@ -48,8 +53,7 @@ body {
 </style>
 
 <!-- Start Contact Form -->
-<div class="untree_co-section"
-    style="background-image: url('./assets/images/bgpink.png'); background-size: cover; background-attachment: fixed;">
+<div class="pt-4 pt-lg-5 pb-4 pb-lg-5">
 
     <div class="container  bg-dark login pt-1 mb-5">
 
