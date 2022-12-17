@@ -6,8 +6,8 @@
                 <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
                     <a class="navbar-brand brand-logo" style="font-weight: 700; color: #fe827a;"
                         href="index.html">Margaux Corner</a>
-                    <a class="navbar-brand brand-logo-mini" href="index.html"><img src="./assets/images/logo-mini.svg"
-                            alt="logo" /></a>
+                    <a class="navbar-brand brand-logo-mini" href="index.php"><img src="./assets/images/logo.png"
+                            alt="logo" style="object-fit: cover;" /></a>
                     <button class="navbar-toggler navbar-toggler align-self-center" type="button"
                         data-toggle="minimize">
                         <span class="mdi mdi-sort-variant"></span>
@@ -159,16 +159,38 @@
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false"
                             aria-controls="ui-basic">
-                            <i class="mdi mdi-circle-outline menu-icon"></i>
-                            <span class="menu-title">UI Elements</span>
+                            <i class="fa-solid fa-seedling menu-icon"></i>
+                            <span class="menu-title">Products</span>
                             <i class="menu-arrow"></i>
                         </a>
                         <div class="collapse" id="ui-basic">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item"> <a class="nav-link"
-                                        href="pages/ui-features/buttons.html">Buttons</a></li>
+                                        href="category.php">Category</a></li>
                                 <li class="nav-item"> <a class="nav-link"
-                                        href="pages/ui-features/typography.html">Typography</a></li>
+                                        href="product.php">Product</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false"
+                            aria-controls="auth">
+                            <i class="mdi mdi-account menu-icon"></i>
+                            <span class="menu-title">Orders</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="auth">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a>
+                                </li>
+                                <li class="nav-item"> <a class="nav-link" href="pages/samples/login-2.html"> Login 2
+                                    </a></li>
+                                <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register
+                                    </a></li>
+                                <li class="nav-item"> <a class="nav-link" href="pages/samples/register-2.html"> Register
+                                        2 </a></li>
+                                <li class="nav-item"> <a class="nav-link" href="pages/samples/lock-screen.html">
+                                        Lockscreen </a></li>
                             </ul>
                         </div>
                     </li>
@@ -197,32 +219,42 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false"
-                            aria-controls="auth">
-                            <i class="mdi mdi-account menu-icon"></i>
-                            <span class="menu-title">User Pages</span>
-                            <i class="menu-arrow"></i>
-                        </a>
-                        <div class="collapse" id="auth">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a>
-                                </li>
-                                <li class="nav-item"> <a class="nav-link" href="pages/samples/login-2.html"> Login 2
-                                    </a></li>
-                                <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register
-                                    </a></li>
-                                <li class="nav-item"> <a class="nav-link" href="pages/samples/register-2.html"> Register
-                                        2 </a></li>
-                                <li class="nav-item"> <a class="nav-link" href="pages/samples/lock-screen.html">
-                                        Lockscreen </a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="documentation/documentation.html">
                             <i class="mdi mdi-file-document-box-outline menu-icon"></i>
                             <span class="menu-title">Documentation</span>
                         </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#accounts" aria-expanded="false"
+                            aria-controls="accounts">
+                            <i class="mdi mdi-account menu-icon"></i>
+                            <span class="menu-title">Accounts</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="accounts">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Users </a>
+                                </li>
+                                <li class="nav-item"> <a class="nav-link" href="pages/samples/login-2.html"> Admin
+                                    </a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#homepage" aria-expanded="false"
+                            aria-controls="homepage">
+                            <i class="mdi mdi-account menu-icon"></i>
+                            <span class="menu-title">Manage Homepage</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="homepage">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Background </a>
+                                </li>
+                                <li class="nav-item"> <a class="nav-link" href="pages/samples/login-2.html"> Display Image
+                                    </a></li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
             </nav>

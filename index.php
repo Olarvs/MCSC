@@ -9,9 +9,14 @@ if(isset($_SESSION['margaux_user_id'])) {
 ?>
 
 <style>
-    .position {
-        margin-top: 84px !important;
-    }
+.position {
+    margin-top: 84px !important;
+}
+
+.swiper {
+    width: 100%;
+    height: 500px;
+}
 </style>
 
 <input type="hidden" name="" id="logged_in" value="<?= $logged_in ?>">
@@ -39,6 +44,63 @@ if(isset($_SESSION['margaux_user_id'])) {
     </div>
 </section>
 <!-- End Hero Section -->
+
+<!-- SWIPER JS -->
+<div class="container mb-5" style="height: 100%;">
+    <h1 class="text-center mb-4 mt-5" style="color: #000;">Categories</h1>
+    <div class="row d-flex justify-content-center align-items-stretch" style="height: 100%">
+        <a class="col-sm-6 col-md-4 col-xxl-3 mb-4" style="height: 100%; text-decoration: none;">
+            <div class="card px-2 pt-2" style="height: 100%;">
+                <div class="image-cont" style="height: 200px; width: 100%;">
+                    <img src="./assets/images/1.jpg" class="w-100 h-100" style="object-fit: cover;" alt="">
+                </div>
+                <div class="category-content mt-1 text-center">
+                    <h5 style="text-transform: uppercase; font-weight: 700;">Cactus</h5>
+                </div>
+            </div>
+        </a>
+        <a class="col-sm-6 col-md-4 col-xxl-3 mb-4" style="height: 100%; text-decoration: none;">
+            <div class="card px-2 pt-2" style="height: 100%;">
+                <div class="image-cont" style="height: 200px; width: 100%;">
+                    <img src="./assets/images/1.jpg" class="w-100 h-100" style="object-fit: cover;" alt="">
+                </div>
+                <div class="category-content mt-1 text-center">
+                    <h5 style="text-transform: uppercase; font-weight: 700;">Cactus</h5>
+                </div>
+            </div>
+        </a>
+        <a class="col-sm-6 col-md-4 col-xxl-3 mb-4" style="height: 100%; text-decoration: none;">
+            <div class="card px-2 pt-2" style="height: 100%;">
+                <div class="image-cont" style="height: 200px; width: 100%;">
+                    <img src="./assets/images/1.jpg" class="w-100 h-100" style="object-fit: cover;" alt="">
+                </div>
+                <div class="category-content mt-1 text-center">
+                    <h5 style="text-transform: uppercase; font-weight: 700;">Cactus</h5>
+                </div>
+            </div>
+        </a>
+        <a class="col-sm-6 col-md-4 col-xxl-3 mb-4" style="height: 100%; text-decoration: none;">
+            <div class="card px-2 pt-2" style="height: 100%;">
+                <div class="image-cont" style="height: 200px; width: 100%;">
+                    <img src="./assets/images/1.jpg" class="w-100 h-100" style="object-fit: cover;" alt="">
+                </div>
+                <div class="category-content mt-1 text-center">
+                    <h5 style="text-transform: uppercase; font-weight: 700;">Cactus</h5>
+                </div>
+            </div>
+        </a>
+        <a class="col-sm-6 col-md-4 col-xxl-3 mb-4" style="height: 100%; text-decoration: none;">
+            <div class="card px-2 pt-2" style="height: 100%;">
+                <div class="image-cont" style="height: 200px; width: 100%;">
+                    <img src="./assets/images/1.jpg" class="w-100 h-100" style="object-fit: cover;" alt="">
+                </div>
+                <div class="category-content mt-1 text-center">
+                    <h5 style="text-transform: uppercase; font-weight: 700;">Cactus</h5>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
 
 <!-- Start Product Section -->
 <section id="products" class="product-section">
@@ -279,7 +341,7 @@ if(isset($_SESSION['margaux_user_id'])) {
 
 <script>
 $(window).on('load', function() {
-    if(localStorage.getItem('status') == 'welcome') {
+    if (localStorage.getItem('status') == 'welcome') {
         Swal.fire({
             title: 'Welcome, <?= $_SESSION['margaux_name'] ?>!',
             toast: true,
@@ -323,3 +385,24 @@ $(document).ready(function() {
 include './components/footer.php';
 include './components/bottom-script.php';
 ?>
+
+<script>
+const swiper = new Swiper('.swiper', {
+    slidesPerView: 'auto',
+    spaceBetween: 15,
+    centeredSlides: true,
+    loop: true,
+    autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+    },
+    pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+    },
+    navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+    },
+});
+</script>
