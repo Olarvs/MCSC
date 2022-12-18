@@ -157,20 +157,10 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false"
-                            aria-controls="ui-basic">
-                            <i class="fa-solid fa-seedling menu-icon"></i>
+                        <a class="nav-link" href="category.php">
+                        <i class="fa-solid fa-seedling menu-icon"></i>
                             <span class="menu-title">Products</span>
-                            <i class="menu-arrow"></i>
                         </a>
-                        <div class="collapse" id="ui-basic">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="category.php">Category</a></li>
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="product.php">Product</a></li>
-                            </ul>
-                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false"
@@ -195,36 +185,6 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pages/forms/basic_elements.html">
-                            <i class="mdi mdi-view-headline menu-icon"></i>
-                            <span class="menu-title">Form elements</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="pages/charts/chartjs.html">
-                            <i class="mdi mdi-chart-pie menu-icon"></i>
-                            <span class="menu-title">Charts</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="pages/tables/basic-table.html">
-                            <i class="mdi mdi-grid-large menu-icon"></i>
-                            <span class="menu-title">Tables</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="pages/icons/mdi.html">
-                            <i class="mdi mdi-emoticon menu-icon"></i>
-                            <span class="menu-title">Icons</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="documentation/documentation.html">
-                            <i class="mdi mdi-file-document-box-outline menu-icon"></i>
-                            <span class="menu-title">Documentation</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#accounts" aria-expanded="false"
                             aria-controls="accounts">
                             <i class="mdi mdi-account menu-icon"></i>
@@ -236,6 +196,22 @@
                                 <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Users </a>
                                 </li>
                                 <li class="nav-item"> <a class="nav-link" href="pages/samples/login-2.html"> Admin
+                                    </a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#homepage" aria-expanded="false"
+                            aria-controls="homepage">
+                            <i class="mdi mdi-account menu-icon"></i>
+                            <span class="menu-title">Manage Homepage</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="homepage">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Background </a>
+                                </li>
+                                <li class="nav-item"> <a class="nav-link" href="pages/samples/login-2.html"> Display Image
                                     </a></li>
                             </ul>
                         </div>

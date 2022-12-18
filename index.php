@@ -46,61 +46,35 @@ if(isset($_SESSION['margaux_user_id'])) {
 <!-- End Hero Section -->
 
 <!-- SWIPER JS -->
+<?php
+$getCategory = mysqli_query($conn, "SELECT * FROM tbl_category");
+
+if(mysqli_num_rows($getCategory) > 0) {
+?>
 <div class="container mb-5" style="height: 100%;">
     <h1 class="text-center mb-4 mt-5" style="color: #000;">Categories</h1>
-    <div class="row d-flex justify-content-center align-items-stretch" style="height: 100%">
+    <div class="row d-flex justify-content-center align-items-stretch" style="height: 100%;">
+        <?php
+        foreach($getCategory as $category) {
+        ?>
         <a class="col-sm-6 col-md-4 col-xxl-3 mb-4" style="height: 100%; text-decoration: none;">
             <div class="card px-2 pt-2" style="height: 100%;">
                 <div class="image-cont" style="height: 200px; width: 100%;">
-                    <img src="./assets/images/1.jpg" class="w-100 h-100" style="object-fit: cover;" alt="">
+                    <img src="./admin/assets/images/categoryImages/<?= $category['categoryThumbnail']; ?>" class="w-100 h-100" style="object-fit: cover;" alt="">
                 </div>
                 <div class="category-content mt-1 text-center">
-                    <h5 style="text-transform: uppercase; font-weight: 700;">Cactus</h5>
+                    <h5 style="text-transform: uppercase; font-weight: 700;"><?= $category['categoryName']; ?></h5>
                 </div>
             </div>
         </a>
-        <a class="col-sm-6 col-md-4 col-xxl-3 mb-4" style="height: 100%; text-decoration: none;">
-            <div class="card px-2 pt-2" style="height: 100%;">
-                <div class="image-cont" style="height: 200px; width: 100%;">
-                    <img src="./assets/images/1.jpg" class="w-100 h-100" style="object-fit: cover;" alt="">
-                </div>
-                <div class="category-content mt-1 text-center">
-                    <h5 style="text-transform: uppercase; font-weight: 700;">Cactus</h5>
-                </div>
-            </div>
-        </a>
-        <a class="col-sm-6 col-md-4 col-xxl-3 mb-4" style="height: 100%; text-decoration: none;">
-            <div class="card px-2 pt-2" style="height: 100%;">
-                <div class="image-cont" style="height: 200px; width: 100%;">
-                    <img src="./assets/images/1.jpg" class="w-100 h-100" style="object-fit: cover;" alt="">
-                </div>
-                <div class="category-content mt-1 text-center">
-                    <h5 style="text-transform: uppercase; font-weight: 700;">Cactus</h5>
-                </div>
-            </div>
-        </a>
-        <a class="col-sm-6 col-md-4 col-xxl-3 mb-4" style="height: 100%; text-decoration: none;">
-            <div class="card px-2 pt-2" style="height: 100%;">
-                <div class="image-cont" style="height: 200px; width: 100%;">
-                    <img src="./assets/images/1.jpg" class="w-100 h-100" style="object-fit: cover;" alt="">
-                </div>
-                <div class="category-content mt-1 text-center">
-                    <h5 style="text-transform: uppercase; font-weight: 700;">Cactus</h5>
-                </div>
-            </div>
-        </a>
-        <a class="col-sm-6 col-md-4 col-xxl-3 mb-4" style="height: 100%; text-decoration: none;">
-            <div class="card px-2 pt-2" style="height: 100%;">
-                <div class="image-cont" style="height: 200px; width: 100%;">
-                    <img src="./assets/images/1.jpg" class="w-100 h-100" style="object-fit: cover;" alt="">
-                </div>
-                <div class="category-content mt-1 text-center">
-                    <h5 style="text-transform: uppercase; font-weight: 700;">Cactus</h5>
-                </div>
-            </div>
-        </a>
+        <?php
+        }
+        ?>
     </div>
 </div>
+<?php
+}
+?>
 
 <!-- Start Product Section -->
 <section id="products" class="product-section">

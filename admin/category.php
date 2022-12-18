@@ -89,14 +89,14 @@ include './components/navbar_sidebar.php';
     <div class="content-wrapper">
         <div class="row">
             <div class="col-md-12 grid-margin">
-                <div class="d-flex justify-content-between flex-wrap">
-                    <div class="d-flex align-items-end flex-wrap">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="d-flex align-items-center flex-wrap">
                         <div class="mr-md-3 mr-xl-5 p-0">
                             <h2>Category</h2>
                         </div>
-                        <div class="d-flex">
-                            <i class="mdi mdi-home text-muted hover-cursor"></i>
-                            <p class="text-primary mb-0 hover-cursor">&nbsp;/&nbsp;Dashboard&nbsp;/&nbsp;</p>
+                        <div class="d-flex align-items-center gap-1">
+                            <i onclick="location.href='index.php'" class="mdi mdi-home text-muted hover-cursor"></i>
+                            <p class="text-muted mb-0 hover-cursor">/</p>
                             <p class="text-primary mb-0 hover-cursor">Category</p>
                         </div>
                     </div>
@@ -127,13 +127,21 @@ include './components/navbar_sidebar.php';
                         <img src="./assets/images/categoryImages/<?= $category['categoryThumbnail']; ?>"
                             style="width: 100%; height: 100%; object-fit: cover;" alt="">
                     </div>
-                    <div>
+                    <div class="d-flex flex-column flex-wrap">
                         <h5 style="font-weight: 700;"><?= $category['categoryName']; ?></h5>
-                        <div class="d-flex gap-1">
-                            <button data-id="<?= $category['categoryId'] ?>"
-                                class="btn btn-outline-primary btn-sm">Menu</button>
-                            <button type="button" data-id="<?= $category['categoryId'] ?>"
-                                class="btn btn-outline-info btn-sm editBtn">Edit</button>
+                        <div class="d-flex flex-row justify-content-between">
+                            <div class="d-flex gap-1 w-100">
+                                <div class="dropdown">
+                                    <button data-id="<?= $category['categoryId'] ?>"
+                                        class="btn btn-outline-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown"
+                                        aria-expanded="false">Action</button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#" data-id="<?= $category['categoryId'] ?>" onclick="location.href='product.php?categoryId=<?= $category['categoryId'] ?>'">Menu</a></li>
+                                        <li><a class="dropdown-item editBtn" href="#" data-id="<?= $category['categoryId'] ?>">Edit</a></li>
+                                        <li><a class="dropdown-item" href="#" data-id="<?= $category['categoryId'] ?>">Archive</a></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

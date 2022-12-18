@@ -1,31 +1,125 @@
 <?php 
 include './components/head_css.php'; 
 include './components/navbar_sidebar.php'; 
+
+if(!isset($_GET['categoryId'])) {
+    ?>
+<script>
+location.href = 'category.php';
+</script>
+<?php
+} else {
+    $categoryId = $_GET['categoryId'];
+}
 ?>
 
-<!-- MODAL -->
-<div class="modal fade" id="addCategory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- INSERT MODAL -->
+<div class="modal fade addProductModal" id="addProductModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <p class="modal-title fs-5 h2" id="exampleModalLabel">Product</p>
+                <p class="modal-title fs-5 h2" id="exampleModalLabel">Add Product</p>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="exampleInputUsername1">Category Name</label>
-                        <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Category Name">
+                <form id="addProductForm" enctype="multipart/form-data">
+                    <div class="form-group d-none">
+                        <label for="exampleInputUsername1">Category ID</label>
+                        <input type="text" class="form-control" id="addCategoryId" name="addCategoryId"
+                            placeholder="Category Name" value="<?= $categoryId ?>" required>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Category Image</label>
-                        <input class="form-control" type="file" id="formFile">
+                        <label for="exampleInputUsername1">Product Name</label>
+                        <input type="text" class="form-control" id="addProductName" name="addProductName"
+                            placeholder="Product Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Product Image</label>
+                        <input class="form-control" accept=".jpg, .jpeg, .png, .jfif" type="file" id="addProductThumbnail"
+                            name="addProductThumbnail">
+                        <span class="error errorAddProductThumbnail"
+                            style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <label for="addProductDescription" name="">Product Description</label>
+                            <textarea class="form-control" placeholder="Product description" id="addProductDescription"
+                                name="addProductDescription" style="height: 100px"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Product Price</label>
+                        <input type="number" class="form-control" id="addProductPrice" name="addProductPrice"
+                            placeholder="Product Price" onkeydown="return event.keyCode !== 69" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Product Stock</label>
+                        <input type="number" class="form-control" id="addProductStock" name="addProductStock"
+                            placeholder="Product Stock" onkeydown="return event.keyCode !== 69" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addProductStatus">Product Status</label>
+                        <select class="form-select" aria-label="Default select example" id="addProductStatus"
+                            name="addProductStatus" style="color: #495057;">
+                            <option value="Available">Available</option>
+                            <option value="Unavailable">Unavailable</option>
+                        </select>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="submit" form="addProductForm" class="btn btn-primary" id="addProductBtn">Add
+                    product</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal fade updateCategoryModal" id="updateCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title fs-5 h2" id="exampleModalLabel">Update Category</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editCategoryForm" enctype="multipart/form-data">
+                    <div class="form-group d-none">
+                        <label for="exampleInputUsername1">Category ID</label>
+                        <input type="text" class="form-control" id="editCategoryId" name="editCategoryId"
+                            placeholder="Category Id" required>
+                    </div>
+                    <div class="form-group d-none">
+                        <label for="exampleInputUsername1">Old Thumbnail</label>
+                        <input type="text" class="form-control" id="editOldImage" name="editOldImage"
+                            placeholder="Category Id" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Category Name</label>
+                        <input type="text" class="form-control" id="editCategoryName" name="editCategoryName"
+                            placeholder="Category Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Category Image</label>
+                        <input class="form-control" accept=".jpg, .jpeg, .png" type="file" id="editCategoryThumbnail"
+                            name="editCategoryThumbnail">
+                        <span class="error errorEditCategoryThumbnail"
+                            style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
+                    </div>
+                    <div class="form-group d-flex flex-column gap-2">
+                        <label for="exampleInputEmail1">Image preview</label>
+                        <img id="file" style="width: 100px;" src="">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="editCategoryForm" class="btn btn-primary" id="editCategoryBtn">Update
+                    category</button>
             </div>
         </div>
     </div>
@@ -35,10 +129,17 @@ include './components/navbar_sidebar.php';
     <div class="content-wrapper">
         <div class="row">
             <div class="col-md-12 grid-margin">
-                <div class="d-flex justify-content-between flex-wrap">
-                    <div class="d-flex align-items-end flex-wrap">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="d-flex align-items-center flex-wrap">
                         <div class="mr-md-3 mr-xl-5 p-0">
                             <h2>Product</h2>
+                        </div>
+                        <div class="d-flex align-items-center gap-1">
+                            <i onclick="location.href='index.php'" class="mdi mdi-home text-muted hover-cursor"></i>
+                            <p class="text-muted mb-0 hover-cursor">/</p>
+                            <p onclick="location.href='category.php'" class="text-muted mb-0 hover-cursor">Category</p>
+                            <p class="text-muted mb-0 hover-cursor">/</p>
+                            <p class="text-primary mb-0 hover-cursor">Product</p>
                         </div>
                     </div>
                 </div>
@@ -46,81 +147,52 @@ include './components/navbar_sidebar.php';
         </div>
         <div class="row">
             <div class="col-md-12 grid-margin stretch-card">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategory">Add
-                    Category</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target=".addProductModal">Add
+                    Product</button>
             </div>
         </div>
         <div class="row">
+            <?php
+            $getProduct = mysqli_query($conn, "SELECT * FROM tbl_product WHERE categoryId = $categoryId");
+
+            if(mysqli_num_rows($getProduct) == 0) {
+            ?>
+            <h5>No product found.</h5>
+            <?php
+            } else {
+            foreach($getProduct as $product) {
+            ?>
             <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
                 <div class="card p-3">
                     <div class="image-cont mb-3" style="height: 200px">
-                        <img src="./assets/images/logo.png" style="width: 100%; height: 100%; object-fit: cover;" alt="">
+                        <img src="./assets/images/productImages/<?= $product['productThumbnail']; ?>"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="">
                     </div>
-                    <div>
-                        <h5 style="font-weight: 700;">Cacti</h5>
-                        <div class="d-flex gap-1">
-                            <button class="btn btn-outline-primary btn-sm">Menu</button>
-                            <button class="btn btn-outline-info btn-sm">Edit</button>
+                    <div class="d-flex flex-column flex-wrap">
+                        <h5 style="font-weight: 700;"><?= $product['productName']; ?></h5>
+                        <div class="d-flex flex-row justify-content-between">
+                            <div class="d-flex gap-1 w-100">
+                                <div class="dropdown">
+                                    <button data-id="<?= $product['productId'] ?>"
+                                        class="btn btn-outline-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown"
+                                        aria-expanded="false">Action</button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item editBtn" href="#"
+                                                data-id="<?= $product['productId'] ?>">Edit</a></li>
+                                        <li><a class="dropdown-item" href="#"
+                                                data-id="<?= $product['productId'] ?>">Archive</a></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <div class="card p-3">
-                    <div class="image-cont mb-3" style="height: 200px">
-                        <img src="./assets/images/logo.png" style="width: 100%; height: 100%; object-fit: cover;" alt="">
-                    </div>
-                    <div>
-                        <h5 style="font-weight: 700;">Cacti</h5>
-                        <div class="d-flex gap-1">
-                            <button class="btn btn-outline-primary btn-sm">Menu</button>
-                            <button class="btn btn-outline-info btn-sm">Edit</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <div class="card p-3">
-                    <div class="image-cont mb-3" style="height: 200px">
-                        <img src="./assets/images/logo.png" style="width: 100%; height: 100%; object-fit: cover;" alt="">
-                    </div>
-                    <div>
-                        <h5 style="font-weight: 700;">Cacti</h5>
-                        <div class="d-flex gap-1">
-                            <button class="btn btn-outline-primary btn-sm">Menu</button>
-                            <button class="btn btn-outline-info btn-sm">Edit</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <div class="card p-3">
-                    <div class="image-cont mb-3" style="height: 200px">
-                        <img src="./assets/images/logo.png" style="width: 100%; height: 100%; object-fit: cover;" alt="">
-                    </div>
-                    <div>
-                        <h5 style="font-weight: 700;">Cacti</h5>
-                        <div class="d-flex gap-1">
-                            <button class="btn btn-outline-primary btn-sm">Menu</button>
-                            <button class="btn btn-outline-info btn-sm">Edit</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <div class="card p-3">
-                    <div class="image-cont mb-3" style="height: 200px">
-                        <img src="./assets/images/logo.png" style="width: 100%; height: 100%; object-fit: cover;" alt="">
-                    </div>
-                    <div>
-                        <h5 style="font-weight: 700;">Cacti</h5>
-                        <div class="d-flex gap-1">
-                            <button class="btn btn-outline-primary btn-sm">Menu</button>
-                            <button class="btn btn-outline-info btn-sm">Edit</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php
+            }
+            }
+            ?>
         </div>
     </div>
     <!-- content-wrapper ends -->
@@ -128,7 +200,353 @@ include './components/navbar_sidebar.php';
 <!-- main-panel ends -->
 
 <script>
+$(window).on('load', function() {
+    if (localStorage.getItem('status') == 'insert') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Product added successfully!',
+            iconColor: '#000',
+            confirmButtonColor: '#000',
+            showConfirmButton: false,
+            color: '#000',
+            background: '#fe827a',
+            timer: 5000,
+            timerProgressBar: true,
+        });
+        localStorage.removeItem('status');
+    } else if (localStorage.getItem('status') == 'update') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Category updated successfully!',
+            iconColor: '#000',
+            confirmButtonColor: '#000',
+            showConfirmButton: false,
+            color: '#000',
+            background: '#fe827a',
+            timer: 5000,
+            timerProgressBar: true,
+        });
+        localStorage.removeItem('status');
+    }
+})
 
+$(document).ready(function() {
+    // Image preview
+    $('#editCategoryThumbnail').on('change', function() {
+        var file = this.files[0];
+
+        if (file) {
+            var reader = new FileReader();
+
+            reader.addEventListener('load', function() {
+                $('#file').attr("src", this.result);
+            })
+
+            reader.readAsDataURL(file);
+        }
+    })
+
+    // Get Category
+    $('.editBtn').on('click', function(e) {
+        e.preventDefault();
+
+        var editCategoryId = $(this).data('id');
+
+        $.ajax({
+            url: './backend/category.php',
+            type: 'POST',
+            data: {
+                'getCategory': true,
+                'getCategoryId': editCategoryId,
+            },
+            success: function(response) {
+                var obj = JSON.parse(response);
+                $(".updateCategoryModal").modal("show");
+                $("#editCategoryId").val(obj.categoryId);
+                $("#editCategoryName").val(obj.categoryName);
+                $("#editOldImage").val(obj.categoryThumbnail);
+                $("#file").attr("src", "./assets/images/categoryImages/" + obj
+                    .categoryThumbnail);
+                // console.log(response);
+            }
+        })
+    })
+
+    // Insert Category
+    $('#addProductForm').on('submit', function(e) {
+        e.preventDefault();
+
+        if ($('#addProductThumbnail').val().length != 0) {
+            var addProductThumbnail = $('#addProductThumbnail').val();
+            var image_ext = $('#addProductThumbnail').val().split('.').pop().toLowerCase();
+
+            if ($.inArray(image_ext, ['png', 'jpg', 'jpeg', 'jfif']) == -1) {
+                $('.errorAddProductThumbnail').html(
+                    '<i class="bi bi-exclamation-circle-fill"></i> File not supported!'
+                );
+            } else {
+                var imageSize = $('#addProductThumbnail')[0].files[0].size;
+
+                if (imageSize > 10485760) {
+                    $('.errorAddProductThumbnail').html(
+                        '<i class="bi bi-exclamation-circle-fill"></i> File too large!'
+                    );
+                } else {
+                    var form = new FormData(this);
+                    form.append('addProduct', true);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "./backend/product.php",
+                        data: form,
+                        dataType: 'text',
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        beforeSend: function() {
+                            $('#addProductBtn').attr('disabled', true);
+                            $('#addProductBtn').text('Processing');
+                        },
+                        complete: function() {
+                            $('#addProductBtn').attr('disabled', false);
+                            $('#addProductBtn').text('Add product');
+                        },
+                        success: function(response) {
+                            if (response.includes('success')) {
+                                localStorage.setItem('status', 'insert');
+                                location.reload();
+                            } else if (response.includes('exist')) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Failed',
+                                    text: 'Product already exist!',
+                                    iconColor: '#000',
+                                    confirmButtonColor: '#000',
+                                    showConfirmButton: false,
+                                    color: '#000',
+                                    background: '#fe827a',
+                                    timer: 5000,
+                                    timerProgressBar: true,
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Failed',
+                                    text: 'Something went wrong!',
+                                    iconColor: '#000',
+                                    confirmButtonColor: '#000',
+                                    showConfirmButton: false,
+                                    color: '#000',
+                                    background: '#fe827a',
+                                    timer: 5000,
+                                    timerProgressBar: true,
+                                });
+                            }
+                            // console.log(response);
+                        }
+                    })
+                }
+            }
+        } else {
+            var form = new FormData(this);
+            form.append('addProduct', true);
+
+            $.ajax({
+                type: "POST",
+                url: "./backend/product.php",
+                data: form,
+                dataType: 'text',
+                contentType: false,
+                cache: false,
+                processData: false,
+                beforeSend: function() {
+                    $('#addProductBtn').attr('disabled', true);
+                    $('#addProductBtn').text('Processing');
+                },
+                complete: function() {
+                    $('#addProductBtn').attr('disabled', false);
+                    $('#addProductBtn').text('Add product');
+                },
+                success: function(response) {
+                    if (response.includes('success')) {
+                        localStorage.setItem('status', 'insert');
+                        location.reload();
+                    } else if (response.includes('exist')) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Failed',
+                            text: 'Product already exist!',
+                            iconColor: '#000',
+                            confirmButtonColor: '#000',
+                            showConfirmButton: false,
+                            color: '#000',
+                            background: '#fe827a',
+                            timer: 5000,
+                            timerProgressBar: true,
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Failed',
+                            text: 'Something went wrong!',
+                            iconColor: '#000',
+                            confirmButtonColor: '#000',
+                            showConfirmButton: false,
+                            color: '#000',
+                            background: '#fe827a',
+                            timer: 5000,
+                            timerProgressBar: true,
+                        });
+                    }
+                    console.log(response);
+                }
+            })
+        }
+    })
+
+    // Update Category
+    $('#editCategoryForm').on('submit', function(e) {
+        e.preventDefault();
+
+        if ($('#editCategoryThumbnail').val().length != 0) {
+            var editCategoryThumbnail = $('#editCategoryThumbnail').val();
+            var image_ext = $('#editCategoryThumbnail').val().split('.').pop().toLowerCase();
+
+            if ($.inArray(image_ext, ['png', 'jpg', 'jpeg']) == -1) {
+                $('.errorEditCategoryThumbnail').html(
+                    '<i class="bi bi-exclamation-circle-fill"></i> File not supported!'
+                );
+            } else {
+                var imageSize = $('#editCategoryThumbnail')[0].files[0].size;
+
+                if (imageSize > 10485760) {
+                    $('.errorEditCategoryThumbnail').html(
+                        '<i class="bi bi-exclamation-circle-fill"></i> File too large!'
+                    );
+                } else {
+                    var form = new FormData(this);
+                    form.append('editCategory', true);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "./backend/category.php",
+                        data: form,
+                        dataType: 'text',
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        beforeSend: function() {
+                            $('#editCategoryBtn').attr('disabled', true);
+                            $('#editCategoryBtn').text('Processing');
+                        },
+                        complete: function() {
+                            $('#editCategoryBtn').attr('disabled', false);
+                            $('#editCategoryBtn').text('Update category');
+                        },
+                        success: function(response) {
+                            if (response.includes('success')) {
+                                localStorage.setItem('status', 'update');
+                                location.reload();
+                            } else if (response.includes('exist')) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Failed',
+                                    text: 'Category already exist!',
+                                    iconColor: '#000',
+                                    confirmButtonColor: '#000',
+                                    showConfirmButton: false,
+                                    color: '#000',
+                                    background: '#fe827a',
+                                    timer: 5000,
+                                    timerProgressBar: true,
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Failed',
+                                    text: 'Something went wrong!',
+                                    iconColor: '#000',
+                                    confirmButtonColor: '#000',
+                                    showConfirmButton: false,
+                                    color: '#000',
+                                    background: '#fe827a',
+                                    timer: 5000,
+                                    timerProgressBar: true,
+                                });
+                            }
+                            console.log(response);
+                        }
+                    })
+                }
+            }
+        } else {
+            var form = new FormData(this);
+            form.append('editCategory', true);
+
+            $.ajax({
+                type: "POST",
+                url: "./backend/category.php",
+                data: form,
+                dataType: 'text',
+                contentType: false,
+                cache: false,
+                processData: false,
+                beforeSend: function() {
+                    $('#editCategoryBtn').attr('disabled', true);
+                    $('#editCategoryBtn').text('Processing');
+                },
+                complete: function() {
+                    $('#editCategoryBtn').attr('disabled', false);
+                    $('#editCategoryBtn').text('Update category');
+                },
+                success: function(response) {
+                    if (response.includes('success')) {
+                        localStorage.setItem('status', 'update');
+                        location.reload();
+                    } else if (response.includes('exist')) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Failed',
+                            text: 'Category already exist!',
+                            iconColor: '#000',
+                            confirmButtonColor: '#000',
+                            showConfirmButton: false,
+                            color: '#000',
+                            background: '#fe827a',
+                            timer: 5000,
+                            timerProgressBar: true,
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Failed',
+                            text: 'Something went wrong!',
+                            iconColor: '#000',
+                            confirmButtonColor: '#000',
+                            showConfirmButton: false,
+                            color: '#000',
+                            background: '#fe827a',
+                            timer: 5000,
+                            timerProgressBar: true,
+                        });
+                    }
+                    console.log(response);
+                }
+            })
+        }
+    })
+
+    // RESET MODAL
+    $('.addProductModal').on('hidden.bs.modal', function() {
+        $('#addProductForm')[0].reset();
+    });
+
+    $('.updateCategoryModal').on('hidden.bs.modal', function() {
+        $('#editCategoryForm')[0].reset();
+    });
+})
 </script>
 
 <?php
