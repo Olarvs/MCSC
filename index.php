@@ -31,7 +31,7 @@ if(isset($_SESSION['margaux_user_id'])) {
                     <p class="mb-7">Open for selling Cactus and succulents, and other different plants</p>
                     <p>
                         <a href="shop.php" class="btn btn-secondary me-2">Shop Now</a>
-                        <button id="explore" class="btn btn-white-outline">Explore</button>
+                        <!-- <button id="explore" class="btn btn-white-outline">Explore</button> -->
                     </p>
                 </div>
             </div>
@@ -47,7 +47,7 @@ if(isset($_SESSION['margaux_user_id'])) {
 
 <!-- SWIPER JS -->
 <?php
-$getCategory = mysqli_query($conn, "SELECT * FROM tbl_category");
+$getCategory = mysqli_query($conn, "SELECT * FROM tbl_category WHERE isDeleted = 0");
 
 if(mysqli_num_rows($getCategory) > 0) {
 ?>
@@ -57,7 +57,7 @@ if(mysqli_num_rows($getCategory) > 0) {
         <?php
         foreach($getCategory as $category) {
         ?>
-        <a class="col-sm-6 col-md-4 col-xxl-3 mb-4" style="height: 100%; text-decoration: none;">
+        <a href="product.php?categoryId=<?= $category['categoryId']; ?>" class="col-sm-6 col-md-4 col-xxl-3 mb-4" style="height: 100%; text-decoration: none;">
             <div class="card px-2 pt-2" style="height: 100%;">
                 <div class="image-cont" style="height: 200px; width: 100%;">
                     <img src="./admin/assets/images/categoryImages/<?= $category['categoryThumbnail']; ?>" class="w-100 h-100" style="object-fit: cover;" alt="">
@@ -76,68 +76,40 @@ if(mysqli_num_rows($getCategory) > 0) {
 }
 ?>
 
-<!-- Start Product Section -->
 <section id="products" class="product-section">
     <div class="container">
         <div class="row">
-
-            <!-- Start Column 1 -->
             <div class="col-md-12 col-lg-3 mb-5 mb-lg-0 text-center text-lg-start">
                 <h2 class="mb-4 section-title">Crafted with excellent material.</h2>
                 <p class="mb-4">Unique and affordable plant Souvenirs/giveaways for all occasions.</p>
                 <p><a href="shop.php" class="btn">Go to Shop</a></p>
             </div>
-            <!-- End Column 1 -->
+            <?php
+            $getProduct = mysqli_query($conn, "SELECT * FROM tbl_product ORDER BY productId ASC LIMIT 3");
 
-            <!-- Start Column 2 -->
+            foreach($getProduct as $product) {
+            ?>
             <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
                 <a class="product-item" href="cart.php">
-                    <img src="./assets/images/cactus1.jpg" class="img-fluid product-thumbnail">
-                    <h3 class="product-title">Nordic Chair</h3>
-                    <strong class="product-price">$50.00</strong>
+                    <img src="./admin/assets/images/productImages/<?= $product['productThumbnail'] ?>" class="img-fluid product-thumbnail">
+                    <h3 class="product-title"><?= $product['productName'] ?></h3>
+                    <strong class="product-price">P<?= $product['productPrice'] ?></strong>
 
                     <span class="icon-cross">
                         <img src="./assets/images/cross.svg" class="img-fluidd">
                     </span>
                 </a>
             </div>
-            <!-- End Column 2 -->
-
-            <!-- Start Column 3 -->
-            <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-                <a class="product-item" href="cart.php">
-                    <img src="./assets/images/cactus2.jpg" class="img-fluid product-thumbnail">
-                    <h3 class="product-title">Kruzo Aero Chair</h3>
-                    <strong class="product-price">$78.00</strong>
-
-                    <span class="icon-cross">
-                        <img src="./assets/images/cross.svg" class="img-fluidd">
-                    </span>
-                </a>
-            </div>
-            <!-- End Column 3 -->
-
-            <!-- Start Column 4 -->
-            <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-                <a class="product-item" href="cart.php">
-                    <img src="./assets/images/cactus3.jpg" class="img-fluid product-thumbnail">
-                    <h3 class="product-title">Ergonomic Chair</h3>
-                    <strong class="product-price">$43.00</strong>
-
-                    <span class="icon-cross">
-                        <img src="./assets/images/cross.svg" class="img-fluid">
-                    </span>
-                </a>
-            </div>
-            <!-- End Column 4 -->
-
+            <?php
+            }
+            ?>
         </div>
     </div>
-</section>
-<!-- End Product Section -->
+</section> -->
+<!-- End Product Section
 
 <!-- Start Why Choose Us Section -->
-<div class="about bg-dark p-2 w-100 text-white text-center bi">
+<!-- <div class="about bg-dark p-2 w-100 text-white text-center bi">
     <h1>WHY CHOOSE US?</h1>
 </div>
 <div class="why-choose-section text-white" style="background-color: #fe827a;">
@@ -190,13 +162,13 @@ if(mysqli_num_rows($getCategory) > 0) {
         </div>
 
     </div>
-</div>
+</div> -->
 <!-- End Why Choose Us Section -->
 
 
 
 <!-- Start Blog Section -->
-<div id="comments" class="blog-section">
+<!-- <div id="comments" class="blog-section">
     <div class="container">
         <h1>COMMENTS</h1><br>
         <div class="row">
@@ -310,7 +282,7 @@ if(mysqli_num_rows($getCategory) > 0) {
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!-- End Blog Section -->
 
 <script>

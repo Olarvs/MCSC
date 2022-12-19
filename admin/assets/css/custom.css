@@ -19,3 +19,7 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
 	-moz-appearance: textfield;
 }
+
+/* .navbar .navbar-menu-wrapper {
+	background: #fe827a !important;
+} */

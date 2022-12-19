@@ -1,4 +1,7 @@
-<?php 
+<?php
+
+use function PHPSTORM_META\map;
+
 include './components/head_css.php'; 
 include './components/navbar_sidebar.php'; 
 
@@ -10,6 +13,12 @@ location.href = 'category.php';
 <?php
 } else {
     $categoryId = $_GET['categoryId'];
+
+    $getCategoryName = mysqli_query($conn, "SELECT * FROM tbl_category WHERE categoryId = $categoryId");
+
+    $fetchCategoryName = mysqli_fetch_array($getCategoryName);
+
+    $categoryName = $fetchCategoryName['categoryName'];
 }
 ?>
 
@@ -36,8 +45,8 @@ location.href = 'category.php';
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Product Image</label>
-                        <input class="form-control" accept=".jpg, .jpeg, .png, .jfif" type="file" id="addProductThumbnail"
-                            name="addProductThumbnail">
+                        <input class="form-control" accept=".jpg, .jpeg, .png, .jfif" type="file"
+                            id="addProductThumbnail" name="addProductThumbnail">
                         <span class="error errorAddProductThumbnail"
                             style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
                     </div>
@@ -78,48 +87,102 @@ location.href = 'category.php';
 </div>
 
 <!-- EDIT MODAL -->
-<div class="modal fade updateCategoryModal" id="updateCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal fade editProductModal" id="editProductModal" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <p class="modal-title fs-5 h2" id="exampleModalLabel">Update Category</p>
+                <p class="modal-title fs-5 h2" id="exampleModalLabel">Add Product</p>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="editCategoryForm" enctype="multipart/form-data">
+                <form id="editProductForm" enctype="multipart/form-data">
+                    <div class="form-group d-none">
+                        <label for="exampleInputUsername1">Product ID</label>
+                        <input type="text" class="form-control" id="editProductId" name="editProductId"
+                            placeholder="Category Name" value="" required>
+                    </div>
                     <div class="form-group d-none">
                         <label for="exampleInputUsername1">Category ID</label>
                         <input type="text" class="form-control" id="editCategoryId" name="editCategoryId"
-                            placeholder="Category Id" required>
+                            placeholder="Category Name" value="" required>
                     </div>
                     <div class="form-group d-none">
-                        <label for="exampleInputUsername1">Old Thumbnail</label>
-                        <input type="text" class="form-control" id="editOldImage" name="editOldImage"
-                            placeholder="Category Id" required>
+                        <label for="exampleInputUsername1">Old Product Thumbnail</label>
+                        <input type="text" class="form-control" id="editOldProductThumbnail" name="editOldProductThumbnail"
+                            placeholder="Category Name" value="" required>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputUsername1">Category Name</label>
-                        <input type="text" class="form-control" id="editCategoryName" name="editCategoryName"
-                            placeholder="Category Name" required>
+                        <label for="exampleInputUsername1">Product Name</label>
+                        <input type="text" class="form-control" id="editProductName" name="editProductName"
+                            placeholder="Product Name" required>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Category Image</label>
-                        <input class="form-control" accept=".jpg, .jpeg, .png" type="file" id="editCategoryThumbnail"
-                            name="editCategoryThumbnail">
-                        <span class="error errorEditCategoryThumbnail"
+                        <label for="exampleInputEmail1">Product Image</label>
+                        <input class="form-control" accept=".jpg, .jpeg, .png, .jfif" type="file"
+                            id="editProductThumbnail" name="editProductThumbnail">
+                        <span class="error errorEditProductThumbnail"
                             style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
                     </div>
-                    <div class="form-group d-flex flex-column gap-2">
-                        <label for="exampleInputEmail1">Image preview</label>
-                        <img id="file" style="width: 100px;" src="">
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <label for="editProductDescription" name="">Product Description</label>
+                            <textarea class="form-control" placeholder="Product description" id="editProductDescription"
+                                name="editProductDescription" style="height: 100px"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Product Price</label>
+                        <input type="number" class="form-control" id="editProductPrice" name="editProductPrice"
+                            placeholder="Product Price" onkeydown="return event.keyCode !== 69" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Product Stock</label>
+                        <input type="number" class="form-control" id="editProductStock" name="editProductStock"
+                            placeholder="Product Stock" onkeydown="return event.keyCode !== 69" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editProductStatus">Product Status</label>
+                        <select class="form-select" aria-label="Default select example" id="editProductStatus"
+                            name="editProductStatus" style="color: #495057;">
+                            <option value="Available">Available</option>
+                            <option value="Unavailable">Unavailable</option>
+                        </select>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" form="editCategoryForm" class="btn btn-primary" id="editCategoryBtn">Update
-                    category</button>
+                <button type="submit" form="editProductForm" class="btn btn-primary" id="editProductBtn">Edit
+                    product</button>
+            </div>
+        </div>
+    </div>
+</div> <!-- END EDIT MODAL -->
+
+<!-- DELETE MODAL -->
+<div class="modal fade deleteProductModal" id="deleteProductModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title fs-5 h2" id="exampleModalLabel">Product</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="deleteProductForm" enctype="multipart/form-data">
+                    <div class="form-group d-none">
+                        <label for="exampleInputUsername1">Product ID</label>
+                        <input type="text" class="form-control" id="deleteProductId" name="deleteProductId"
+                            placeholder="Product ID" required>
+                    </div>
+                    Are you sure, you want this to move in archive?
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="deleteProductForm" class="btn btn-primary"
+                    id="deleteProductBtn">Yes</button>
             </div>
         </div>
     </div>
@@ -132,14 +195,14 @@ location.href = 'category.php';
                 <div class="d-flex justify-content-between align-items-center flex-wrap">
                     <div class="d-flex align-items-center flex-wrap">
                         <div class="mr-md-3 mr-xl-5 p-0">
-                            <h2>Product</h2>
+                            <h2><?= $categoryName ?></h2>
                         </div>
                         <div class="d-flex align-items-center gap-1">
                             <i onclick="location.href='index.php'" class="mdi mdi-home text-muted hover-cursor"></i>
                             <p class="text-muted mb-0 hover-cursor">/</p>
                             <p onclick="location.href='category.php'" class="text-muted mb-0 hover-cursor">Category</p>
                             <p class="text-muted mb-0 hover-cursor">/</p>
-                            <p class="text-primary mb-0 hover-cursor">Product</p>
+                            <p class="text-primary mb-0 hover-cursor"><?= $categoryName ?></p>
                         </div>
                     </div>
                 </div>
@@ -154,7 +217,7 @@ location.href = 'category.php';
         </div>
         <div class="row">
             <?php
-            $getProduct = mysqli_query($conn, "SELECT * FROM tbl_product WHERE categoryId = $categoryId");
+            $getProduct = mysqli_query($conn, "SELECT * FROM tbl_product WHERE categoryId = $categoryId AND isDeleted = 0");
 
             if(mysqli_num_rows($getProduct) == 0) {
             ?>
@@ -164,12 +227,12 @@ location.href = 'category.php';
             foreach($getProduct as $product) {
             ?>
             <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <div class="card p-3">
+                <div class="card p-3 h-100">
                     <div class="image-cont mb-3" style="height: 200px">
                         <img src="./assets/images/productImages/<?= $product['productThumbnail']; ?>"
                             style="width: 100%; height: 100%; object-fit: cover;" alt="">
                     </div>
-                    <div class="d-flex flex-column flex-wrap">
+                    <div class="d-flex flex-column">
                         <h5 style="font-weight: 700;"><?= $product['productName']; ?></h5>
                         <div class="d-flex flex-row justify-content-between">
                             <div class="d-flex gap-1 w-100">
@@ -180,12 +243,27 @@ location.href = 'category.php';
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item editBtn" href="#"
                                                 data-id="<?= $product['productId'] ?>">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#"
+                                        <li><a class="dropdown-item archiveProduct" href="#"
                                                 data-id="<?= $product['productId'] ?>">Archive</a></li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
+                        <?php
+                        if($product['productStock'] == 0) {
+                        ?>
+                        <h6 class="text-danger mt-2">Out of Stock</h6>
+                        <?php
+                        } else if($product['productStock'] < 5) {
+                        ?>
+                        <h6 class="text-warning mt-2">Critical Stock</h6>
+                        <?php
+                        } else {
+                        ?>
+                        <h6 class="text-success mt-2">In Stock</h6>
+                        <?php
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
@@ -219,7 +297,21 @@ $(window).on('load', function() {
         Swal.fire({
             icon: 'success',
             title: 'Success!',
-            text: 'Category updated successfully!',
+            text: 'Product updated successfully!',
+            iconColor: '#000',
+            confirmButtonColor: '#000',
+            showConfirmButton: false,
+            color: '#000',
+            background: '#fe827a',
+            timer: 5000,
+            timerProgressBar: true,
+        });
+        localStorage.removeItem('status');
+    } else if (localStorage.getItem('status') == 'archived') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Product moved to archived successfully!',
             iconColor: '#000',
             confirmButtonColor: '#000',
             showConfirmButton: false,
@@ -252,23 +344,28 @@ $(document).ready(function() {
     $('.editBtn').on('click', function(e) {
         e.preventDefault();
 
-        var editCategoryId = $(this).data('id');
+        var editProductId = $(this).data('id');
 
         $.ajax({
-            url: './backend/category.php',
+            url: './backend/product.php',
             type: 'POST',
             data: {
-                'getCategory': true,
-                'getCategoryId': editCategoryId,
+                'getProduct': true,
+                'getProductId': editProductId,
             },
             success: function(response) {
                 var obj = JSON.parse(response);
-                $(".updateCategoryModal").modal("show");
+                $(".editProductModal").modal("show");
+                $("#editProductId").val(obj.productId);
                 $("#editCategoryId").val(obj.categoryId);
-                $("#editCategoryName").val(obj.categoryName);
-                $("#editOldImage").val(obj.categoryThumbnail);
+                $("#editProductName").val(obj.productName);
+                $("#editProductDescription").val(obj.productDesc);
+                $("#editProductPrice").val(obj.productPrice);
+                $("#editProductStock").val(obj.productStock);
+                $("#editProductStatus").val(obj.productStatus);
+                $("#editOldProductThumbnail").val(obj.productThumbnail);
                 $("#file").attr("src", "./assets/images/categoryImages/" + obj
-                    .categoryThumbnail);
+                    .productThumbnail);
                 // console.log(response);
             }
         })
@@ -295,7 +392,7 @@ $(document).ready(function() {
                     );
                 } else {
                     var form = new FormData(this);
-                    form.append('addProduct', true);
+                    form.append('editProduct', true);
 
                     $.ajax({
                         type: "POST",
@@ -351,7 +448,7 @@ $(document).ready(function() {
             }
         } else {
             var form = new FormData(this);
-            form.append('addProduct', true);
+            form.append('editProduct', true);
 
             $.ajax({
                 type: "POST",
@@ -407,43 +504,43 @@ $(document).ready(function() {
     })
 
     // Update Category
-    $('#editCategoryForm').on('submit', function(e) {
+    $('#editProductForm').on('submit', function(e) {
         e.preventDefault();
 
-        if ($('#editCategoryThumbnail').val().length != 0) {
-            var editCategoryThumbnail = $('#editCategoryThumbnail').val();
-            var image_ext = $('#editCategoryThumbnail').val().split('.').pop().toLowerCase();
+        if ($('#editProductThumbnail').val().length != 0) {
+            var editProductThumbnail = $('#editProductThumbnail').val();
+            var image_ext = $('#editProductThumbnail').val().split('.').pop().toLowerCase();
 
-            if ($.inArray(image_ext, ['png', 'jpg', 'jpeg']) == -1) {
-                $('.errorEditCategoryThumbnail').html(
+            if ($.inArray(image_ext, ['png', 'jpg', 'jpeg', 'jfif']) == -1) {
+                $('.errorEditProductThumbnail').html(
                     '<i class="bi bi-exclamation-circle-fill"></i> File not supported!'
                 );
             } else {
-                var imageSize = $('#editCategoryThumbnail')[0].files[0].size;
+                var imageSize = $('#editProductThumbnail')[0].files[0].size;
 
                 if (imageSize > 10485760) {
-                    $('.errorEditCategoryThumbnail').html(
+                    $('.errorEditProductThumbnail').html(
                         '<i class="bi bi-exclamation-circle-fill"></i> File too large!'
                     );
                 } else {
                     var form = new FormData(this);
-                    form.append('editCategory', true);
+                    form.append('editProduct', true);
 
                     $.ajax({
                         type: "POST",
-                        url: "./backend/category.php",
+                        url: "./backend/product.php",
                         data: form,
                         dataType: 'text',
                         contentType: false,
                         cache: false,
                         processData: false,
                         beforeSend: function() {
-                            $('#editCategoryBtn').attr('disabled', true);
-                            $('#editCategoryBtn').text('Processing');
+                            $('#editProductBtn').attr('disabled', true);
+                            $('#editProductBtn').text('Processing');
                         },
                         complete: function() {
-                            $('#editCategoryBtn').attr('disabled', false);
-                            $('#editCategoryBtn').text('Update category');
+                            $('#editProductBtn').attr('disabled', false);
+                            $('#editProductBtn').text('Update category');
                         },
                         success: function(response) {
                             if (response.includes('success')) {
@@ -453,7 +550,7 @@ $(document).ready(function() {
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Failed',
-                                    text: 'Category already exist!',
+                                    text: 'Product already exist!',
                                     iconColor: '#000',
                                     confirmButtonColor: '#000',
                                     showConfirmButton: false,
@@ -483,23 +580,23 @@ $(document).ready(function() {
             }
         } else {
             var form = new FormData(this);
-            form.append('editCategory', true);
+            form.append('editProduct', true);
 
             $.ajax({
                 type: "POST",
-                url: "./backend/category.php",
+                url: "./backend/product.php",
                 data: form,
                 dataType: 'text',
                 contentType: false,
                 cache: false,
                 processData: false,
                 beforeSend: function() {
-                    $('#editCategoryBtn').attr('disabled', true);
-                    $('#editCategoryBtn').text('Processing');
+                    $('#editProductBtn').attr('disabled', true);
+                    $('#editProductBtn').text('Processing');
                 },
                 complete: function() {
-                    $('#editCategoryBtn').attr('disabled', false);
-                    $('#editCategoryBtn').text('Update category');
+                    $('#editProductBtn').attr('disabled', false);
+                    $('#editProductBtn').text('Update product');
                 },
                 success: function(response) {
                     if (response.includes('success')) {
@@ -536,6 +633,75 @@ $(document).ready(function() {
                 }
             })
         }
+    })
+
+    // ARCHIVE CATEGORY
+    $('.archiveProduct').on('click', function(e) {
+        e.preventDefault();
+
+        var archiveProductId = $(this).data('id');
+
+        $('#deleteProductId').val(archiveProductId);
+        $('#deleteProductModal').modal('show');
+
+    })
+
+    $('#deleteProductForm').on('submit', function(e) {
+        e.preventDefault();
+
+        var form = new FormData(this);
+        form.append('deleteProduct', true);
+
+        $.ajax({
+            type: "POST",
+            url: "./backend/product.php",
+            data: form,
+            dataType: 'text',
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function() {
+                $('#deleteProductBtn').attr('disabled', true);
+                $('#deleteProductBtn').text('Processing');
+            },
+            complete: function() {
+                $('#deleteProductBtn').attr('disabled', false);
+                $('#deleteProductBtn').text('Yes');
+            },
+            success: function(response) {
+                if (response.includes('success')) {
+                    localStorage.setItem('status', 'archived');
+                    location.reload();
+                } else if (response.includes('invalid')) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed',
+                        text: 'Invalid product!',
+                        iconColor: '#000',
+                        confirmButtonColor: '#000',
+                        showConfirmButton: false,
+                        color: '#000',
+                        background: '#fe827a',
+                        timer: 5000,
+                        timerProgressBar: true,
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed',
+                        text: 'Something went wrong!',
+                        iconColor: '#000',
+                        confirmButtonColor: '#000',
+                        showConfirmButton: false,
+                        color: '#000',
+                        background: '#fe827a',
+                        timer: 5000,
+                        timerProgressBar: true,
+                    });
+                }
+                console.log(response);
+            }
+        })
     })
 
     // RESET MODAL

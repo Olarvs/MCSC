@@ -85,6 +85,34 @@ include './components/navbar_sidebar.php';
     </div>
 </div>
 
+<!-- DELETE MODAL -->
+<div class="modal fade deleteCategoryModal" id="deleteCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title fs-5 h2" id="exampleModalLabel">Category</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="deleteCategoryForm" enctype="multipart/form-data">
+                    <div class="form-group d-none">
+                        <label for="exampleInputUsername1">Category ID</label>
+                        <input type="text" class="form-control" id="deleteCategoryId" name="deleteCategoryId"
+                            placeholder="Category ID" required>
+                    </div>
+                    Are you sure, you want this to move in archive?
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="deleteCategoryForm" class="btn btn-primary"
+                    id="deleteCategoryBtn">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="main-panel">
     <div class="content-wrapper">
         <div class="row">
@@ -112,7 +140,7 @@ include './components/navbar_sidebar.php';
         </div>
         <div class="row">
             <?php
-            $getCategory = mysqli_query($conn, 'SELECT * FROM tbl_category');
+            $getCategory = mysqli_query($conn, 'SELECT * FROM tbl_category WHERE isDeleted = 0');
 
             if(mysqli_num_rows($getCategory) == 0) {
             ?>
@@ -136,9 +164,13 @@ include './components/navbar_sidebar.php';
                                         class="btn btn-outline-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false">Action</button>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#" data-id="<?= $category['categoryId'] ?>" onclick="location.href='product.php?categoryId=<?= $category['categoryId'] ?>'">Menu</a></li>
-                                        <li><a class="dropdown-item editBtn" href="#" data-id="<?= $category['categoryId'] ?>">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#" data-id="<?= $category['categoryId'] ?>">Archive</a></li>
+                                        <li><a class="dropdown-item" href="#" data-id="<?= $category['categoryId'] ?>"
+                                                onclick="location.href='product.php?categoryId=<?= $category['categoryId'] ?>'">Menu</a>
+                                        </li>
+                                        <li><a class="dropdown-item editBtn" href="#"
+                                                data-id="<?= $category['categoryId'] ?>">Edit</a></li>
+                                        <li><a class="dropdown-item archiveCategory" href="javascript:void(0)"
+                                                data-id="<?= $category['categoryId'] ?>">Archive</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -177,6 +209,20 @@ $(window).on('load', function() {
             icon: 'success',
             title: 'Success!',
             text: 'Category updated successfully!',
+            iconColor: '#000',
+            confirmButtonColor: '#000',
+            showConfirmButton: false,
+            color: '#000',
+            background: '#fe827a',
+            timer: 5000,
+            timerProgressBar: true,
+        });
+        localStorage.removeItem('status');
+    } else if (localStorage.getItem('status') == 'archived') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Category moved to archived successfully!',
             iconColor: '#000',
             confirmButtonColor: '#000',
             showConfirmButton: false,
@@ -437,6 +483,75 @@ $(document).ready(function() {
                 }
             })
         }
+    })
+
+    // ARCHIVE CATEGORY
+    $('.archiveCategory').on('click', function(e) {
+        e.preventDefault();
+
+        var archiveCategoryId = $(this).data('id');
+
+        $('#deleteCategoryId').val(archiveCategoryId);
+        $('#deleteCategoryModal').modal('show');
+
+    })
+
+    $('#deleteCategoryForm').on('submit', function(e) {
+        e.preventDefault();
+
+        var form = new FormData(this);
+        form.append('deleteCategory', true);
+
+        $.ajax({
+            type: "POST",
+            url: "./backend/category.php",
+            data: form,
+            dataType: 'text',
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function() {
+                $('#deleteCategoryBtn').attr('disabled', true);
+                $('#deleteCategoryBtn').text('Processing');
+            },
+            complete: function() {
+                $('#deleteCategoryBtn').attr('disabled', false);
+                $('#deleteCategoryBtn').text('Yes');
+            },
+            success: function(response) {
+                if (response.includes('success')) {
+                    localStorage.setItem('status', 'archived');
+                    location.reload();
+                } else if (response.includes('invalid')) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed',
+                        text: 'Invalid category!',
+                        iconColor: '#000',
+                        confirmButtonColor: '#000',
+                        showConfirmButton: false,
+                        color: '#000',
+                        background: '#fe827a',
+                        timer: 5000,
+                        timerProgressBar: true,
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed',
+                        text: 'Something went wrong!',
+                        iconColor: '#000',
+                        confirmButtonColor: '#000',
+                        showConfirmButton: false,
+                        color: '#000',
+                        background: '#fe827a',
+                        timer: 5000,
+                        timerProgressBar: true,
+                    });
+                }
+                console.log(response);
+            }
+        })
     })
 
     // RESET MODAL

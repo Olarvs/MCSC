@@ -280,7 +280,7 @@ a.more {
 	width: 35px;
 	height: 35px;
 	display: inline-block;
-	background: #2f2f2f;
+	background: #fe827a;
 	bottom: 15px;
 	left: 50%;
 	-webkit-transform: translateX(-50%);
@@ -308,7 +308,7 @@ a.more {
 	right: 0;
 	position: absolute;
 	content: "";
-	background: #dce5e4;
+	background: #fe837a2e;
 	height: 0%;
 	z-index: -1;
 	border-radius: 10px;
