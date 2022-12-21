@@ -51,16 +51,18 @@ $getCategory = mysqli_query($conn, "SELECT * FROM tbl_category WHERE isDeleted =
 
 if(mysqli_num_rows($getCategory) > 0) {
 ?>
-<div class="container mb-5" style="height: 100%;">
+<div class="container mb-5" id="categorySection" style="height: 100%;">
     <h1 class="text-center mb-4 mt-5" style="color: #000;">Categories</h1>
     <div class="row d-flex justify-content-center align-items-stretch" style="height: 100%;">
         <?php
         foreach($getCategory as $category) {
         ?>
-        <a href="product.php?categoryId=<?= $category['categoryId']; ?>" class="col-sm-6 col-md-4 col-xxl-3 mb-4" style="height: 100%; text-decoration: none;">
+        <a href="product.php?categoryId=<?= $category['categoryId']; ?>" class="col-sm-6 col-md-4 col-xxl-3 mb-4"
+            style="height: 100%; text-decoration: none;">
             <div class="card px-2 pt-2" style="height: 100%;">
                 <div class="image-cont" style="height: 200px; width: 100%;">
-                    <img src="./admin/assets/images/categoryImages/<?= $category['categoryThumbnail']; ?>" class="w-100 h-100" style="object-fit: cover;" alt="">
+                    <img src="./admin/assets/images/categoryImages/<?= $category['categoryThumbnail']; ?>"
+                        class="w-100 h-100" style="object-fit: cover;" alt="">
                 </div>
                 <div class="category-content mt-1 text-center">
                     <h5 style="text-transform: uppercase; font-weight: 700;"><?= $category['categoryName']; ?></h5>
@@ -91,7 +93,8 @@ if(mysqli_num_rows($getCategory) > 0) {
             ?>
             <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
                 <a class="product-item" href="cart.php">
-                    <img src="./admin/assets/images/productImages/<?= $product['productThumbnail'] ?>" class="img-fluid product-thumbnail">
+                    <img src="./admin/assets/images/productImages/<?= $product['productThumbnail'] ?>"
+                        class="img-fluid product-thumbnail">
                     <h3 class="product-title"><?= $product['productName'] ?></h3>
                     <strong class="product-price">P<?= $product['productPrice'] ?></strong>
 
@@ -302,6 +305,20 @@ $(window).on('load', function() {
             customClass: {
                 container: 'position'
             },
+        })
+        localStorage.removeItem('status');
+    } else if (localStorage.getItem('status') == 'ordered') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Thank you!',
+            text: 'Your order was successfully submitted! Please wait for the order confirmation we\'re about to send you via email.',
+            iconColor: '#000',
+            confirmButtonColor: '#000',
+            showConfirmButton: false,
+            timer: 10000,
+            timerProgressBar: true,
+            color: '#000',
+            background: '#fe827a',
         })
         localStorage.removeItem('status');
     }

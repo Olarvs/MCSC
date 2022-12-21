@@ -39,7 +39,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="index.php">Home</a>
                 </li>
-                <li><a class="nav-link" href="shop.php">Shop</a></li>
+                <li><a class="nav-link" href="index.php#categorySection">Shop</a></li>
                 <li><a class="nav-link" href="about.php">About us</a></li>
                 <li><a class="nav-link" href="index.php#comments">Comments</a></li>
                 <li><a class="nav-link" href="contact.php">Contact us</a></li>

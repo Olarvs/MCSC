@@ -3,7 +3,7 @@ include './components/head_css.php';
 include './components/navbar.php';
 
 if(!isset($_GET['categoryId'])) {
-    ?>
+?>
 <script>
 location.href = 'index.php';
 </script>
@@ -18,6 +18,18 @@ location.href = 'index.php';
     $categoryName = $row['categoryName'];
 }
 ?>
+
+<style>
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+</style>
+
 
 <!-- Start Hero Section -->
 <div class="hero p-2">
@@ -45,7 +57,8 @@ location.href = 'index.php';
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="addToCartForm">
+                    <input type="hidden" name="userId" id="userId" class="form-control mb-3" value="<?= $userId ?>">
                     <input type="hidden" name="productId" id="productId" class="form-control mb-3">
                     <div class="row">
                         <div class="col-md-12 text-center">
@@ -81,7 +94,7 @@ location.href = 'index.php';
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Add to Cart</button>
+                <button type="submit" form="addToCartForm" class="btn btn-primary">Add to Cart</button>
             </div>
         </div>
     </div>
@@ -99,11 +112,12 @@ location.href = 'index.php';
             if($product['productStock'] > 0) {
             ?>
             <div class="col-12 col-md-4 col-lg-3 mb-5 plant" data-id="<?= $product['productId'] ?>">
-                <a class="product-item h-100" href="#">
+                <a class="product-item h-100" href="view-product.php?productId=<?= $product['productId'] ?>">
                     <img src="./admin/assets/images/productImages/<?= $product['productThumbnail'] ?>"
                         class="img-fluid product-thumbnail">
                     <h3 class="product-title"><?= $product['productName'] ?></h3>
                     <strong class="product-price">P<?= $product['productPrice'] ?></strong>
+                    <p style="font-weight: 600; font-size: 15px;">Stock: <?= $product['productStock']; ?></p>
 
                     <span class="icon-cross">
                         <img src="./assets/images/cross.svg" class="img-fluid">
@@ -114,12 +128,13 @@ location.href = 'index.php';
             } else {
             ?>
             <div class="col-12 col-md-4 col-lg-3 mb-5">
-                <a class="product-item h-100" href="#">
+                <a class="product-item h-100" href="javascript:void(0)">
                     <img src="./admin/assets/images/productImages/<?= $product['productThumbnail'] ?>"
                         class="img-fluid product-thumbnail">
                     <h3 class="text-danger fw-bold">NOT AVAILABLE</h3>
                     <h3 class="product-title"><?= $product['productName'] ?></h3>
                     <strong class="product-price">P<?= $product['productPrice'] ?></strong>
+                    <h4><strong>Stock: </strong><?= $product['productStock']; ?></h4>
 
                     <span class="icon-cross">
                         <img src="./assets/images/cross.svg" class="img-fluid">
@@ -131,7 +146,7 @@ location.href = 'index.php';
             } else {
             ?>
             <div class="col-12 col-md-4 col-lg-3 mb-5">
-                <a class="product-item h-100" href="#">
+                <a class="product-item h-100" href="javascript:void(0)">
                     <img src="./admin/assets/images/productImages/<?= $product['productThumbnail'] ?>"
                         class="img-fluid product-thumbnail">
                     <h3 class="text-danger fw-bold">NOT AVAILABLE</h3>
@@ -158,55 +173,7 @@ location.href = 'index.php';
 
 <script>
 $(document).ready(function() {
-    $(document).on('click', '.plant', function(e) {
-        e.preventDefault();
-
-        var editProductId = $(this).data('id');
-
-        $.ajax({
-            url: './backend/product.php',
-            type: 'POST',
-            data: {
-                'getProduct': true,
-                'getProductId': editProductId,
-            },
-            success: function(response) {
-                var obj = JSON.parse(response);
-                $("#staticBackdrop").modal("show");
-                $(".productName").text(obj.productName);
-                $("#productId").val(obj.productId);
-                $(".productDesc").text(obj.productDesc);
-                $(".productPrice").text(obj.productPrice);
-                $(".productThumbnail").attr("src", "./admin/assets/images/productImages/" + obj
-                    .productThumbnail);
-                // console.log(response);
-            }
-        })
-    })
 })
-
-$('.prev').on('click', function() {
-    var prev = $(this).closest('.qty-container').find('input').val();
-
-    if (prev == 1) {
-        var a = 1;
-        $(this).closest('.qty-container').find('input').val(a);
-    } else {
-        var prevVal = prev - 1;
-        $(this).closest('.qty-container').find('input').val(prevVal);
-    }
-});
-
-$('.next').on('click', function() {
-    var next = $(this).closest('.qty-container').find('input').val();
-
-    if (next == 100) {
-        $(this).closest('.qty-container').find('input').val('100');
-    } else {
-        var nextVal = ++next;
-        $(this).closest('.qty-container').find('input').val(nextVal);
-    }
-});
 </script>
 
 <?php

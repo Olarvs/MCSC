@@ -1,6 +1,14 @@
 <?php
 include './components/head_css.php';
 include './components/navbar.php';
+
+if(isset($_SESSION['margaux_user_id'])) {
+    ?>
+    <script>
+        location.href = 'index.php';
+    </script>
+    <?php
+}
 ?>
 
 <style>

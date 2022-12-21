@@ -145,9 +145,9 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.includes('success')) {
                     <?php
-                    if(isset($_SESSION['link_user'])) {
+                    if(isset($_SESSION['margaux_link_user'])) {
                     ?>
-                    location.href = '<?= $_SESSION['link_user'] ?>';
+                    location.href = '<?= $_SESSION['margaux_link_user'] ?>';
                     <?php
                     } else {
                     ?>

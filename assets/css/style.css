@@ -18,6 +18,15 @@ html::-webkit-scrollbar-thumb {
 	background-color: #070506;
 }
 
+html {
+	scroll-padding-top: 90px;
+	scroll-behavior: smooth;
+  }
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
 body {
 	overflow-x: hidden;
 	position: relative;
