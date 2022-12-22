@@ -59,22 +59,13 @@ body {
         <h1 class="text-center p-3 mb-3 rounded" style="color: #fe827a; font-weight: bold;">SIGN UP</h1>
         <form class="p-3" id="register_form">
             <div class="row form-group">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <!-- Email input -->
                     <div class="form-outline mb-2">
                         <label class="form-label" for="name">Name</label>
                         <input type="text" id="name" name="name" class="form-control" required />
                     </div>
                     <span class="error error_name" style="font-size: 14px; font-weight: 500; color: #fe827a;"></span>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-outline mb-2">
-                        <label class="form-label" for="username">Username</label>
-                        <input type="text" name="username" id="username" class="form-control" required />
-                    </div>
-                    <span class="error error_username"
-                        style="font-size: 14px; font-weight: 500; color: #fe827a;"></span>
                 </div>
             </div>
 
@@ -92,7 +83,7 @@ body {
                     <div class="form-outline mb-2">
                         <label class="form-label" for="username">Mobile No</label>
                         <div class="input-group input-group-merge">
-                            <span class="input-group-text">+63</span>
+                            <span style="font-size: 14px;" class="input-group-text">+63</span>
                             <input type="tel" id="phoneNumber" name="phoneNumber" class="form-control"
                                 placeholder="9992736514" required />
                         </div>
@@ -125,7 +116,7 @@ body {
                 </div>
             </div>
 
-            <div class="row form-group">
+            <div class="row form-group mb-3">
                 <div class="col-md-6">
                     <!-- Email input -->
                     <div class="form-outline mb-2">
@@ -150,22 +141,6 @@ body {
                     </div>
                     <span class="error error_confirmPassword"
                         style="font-size: 14px; font-weight: 500; color: #fe827a;"></span>
-                </div>
-            </div>
-
-            <!-- 2 column grid layout for inline styling -->
-            <div class="row mb-4">
-                <div class="col d-flex justify-content-between">
-                    <!-- Checkbox -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
-                        <label class="form-check-label" for="form2Example31"> Remember me </label>
-                    </div>
-                </div>
-
-                <div class="col text-end">
-                    <!-- Simple link -->
-                    <a style="color: #fe827a;" href="forgot-password.html">Forgot password?</a>
                 </div>
             </div>
 

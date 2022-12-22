@@ -8,7 +8,7 @@ if(isset($_POST['verify'])) {
     $timestamp = $_SERVER['REQUEST_TIME'];
     $datas = json_decode($_SESSION['update_profile_array'], true);
 
-    if(($timestamp - $_SESSION['time']) > 60) {
+    if(($timestamp - $_SESSION['time']) > 180) {
         unset($_SESSION['otp']);
         echo 'expired';
     } else {

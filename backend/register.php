@@ -9,7 +9,6 @@ require '../vendor/autoload.php';
 if (isset($_POST['register'])) {
     $mail = new PHPMAILER(true);
     $name = $_POST['name'];
-    $username = $_POST['username'];
     $email = $_POST['email'];
     $phoneNumber = $_POST['phoneNumber'];
     $gender = $_POST['gender'];
@@ -67,7 +66,7 @@ if (isset($_POST['register'])) {
                         $mail->send();
 
                         // insert in users table
-                        $insert = mysqli_query($conn, "INSERT INTO tbl_user (name, username, email, mobile_no, gender, birthday, password, profile_image) VALUES ('$name', '$username', '$email', '$phoneNumber', '$gender', '$birthday', '$password', '$profile_image')");
+                        $insert = mysqli_query($conn, "INSERT INTO tbl_user (name, email, mobile_no, gender, birthday, password, profile_image) VALUES ('$name', '$email', '$phoneNumber', '$gender', '$birthday', '$password', '$profile_image')");
 
                         if ($insert) {
                             $_SESSION['verify_email'] = $email;
@@ -127,7 +126,7 @@ if (isset($_POST['register'])) {
             $mail->send();
 
             // insert in users table
-            $insert = mysqli_query($conn, "INSERT INTO tbl_user (name, username, email, mobile_no, gender, birthday, password, profile_image) VALUES ('$name', '$username', '$email', '$phoneNumber', '$gender', '$birthday', '$password', '$profile_image')");
+            $insert = mysqli_query($conn, "INSERT INTO tbl_user (name, email, mobile_no, gender, birthday, password, profile_image) VALUES ('$name', '$email', '$phoneNumber', '$gender', '$birthday', '$password', '$profile_image')");
 
             if ($insert) {
                 $_SESSION['verify_email'] = $email;

@@ -171,16 +171,10 @@
                         </a>
                         <div class="collapse" id="auth">
                             <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a>
+                                <li class="nav-item"> <a class="nav-link" href="pickup.php"> Pick Up </a>
                                 </li>
-                                <li class="nav-item"> <a class="nav-link" href="pages/samples/login-2.html"> Login 2
+                                <li class="nav-item"> <a class="nav-link" href="delivery.php"> Delivery
                                     </a></li>
-                                <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register
-                                    </a></li>
-                                <li class="nav-item"> <a class="nav-link" href="pages/samples/register-2.html"> Register
-                                        2 </a></li>
-                                <li class="nav-item"> <a class="nav-link" href="pages/samples/lock-screen.html">
-                                        Lockscreen </a></li>
                             </ul>
                         </div>
                     </li>
@@ -193,9 +187,9 @@
                         </a>
                         <div class="collapse" id="accounts">
                             <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Users </a>
+                                <li class="nav-item"> <a class="nav-link" href="user-accounts.php"> Users </a>
                                 </li>
-                                <li class="nav-item"> <a class="nav-link" href="pages/samples/login-2.html"> Admin
+                                <li class="nav-item"> <a class="nav-link" href="admin-accounts.php"> Admin
                                     </a></li>
                             </ul>
                         </div>
