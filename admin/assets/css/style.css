@@ -9993,6 +9993,7 @@ pre code {
   width: 100%;
   margin-bottom: 1rem;
   color: #212529;
+  word-wrap: break-word;
 }
 
 .table th,
@@ -10000,6 +10001,7 @@ pre code {
   padding: 1.25rem 0.9375rem;
   vertical-align: top;
   border-top: 1px solid #f3f3f3;
+  word-wrap: break-word;
 }
 
 .table thead th {
@@ -10023,6 +10025,7 @@ pre code {
 .table-bordered th,
 .table-bordered td {
   border: 1px solid #f3f3f3;
+  word-wrap: break-word;
 }
 
 .table-bordered thead th,
@@ -10353,6 +10356,7 @@ pre code {
   width: 100% !important;
   height: 2.875rem !important;
   padding: 0.875rem 1.375rem !important;
+  padding-right: 2.9rem !important;
   font-size: 0.875rem !important;
   font-weight: 400 !important;
   line-height: 1 !important;
@@ -20935,8 +20939,8 @@ dl li {
 .table thead th {
   border-top: 0;
   border-bottom-width: 1px;
-  font-weight: 500;
-  font-size: 1rem;
+  font-weight: 700;
+  font-size: 15px !important;
 }
 
 .table thead th i {
@@ -20951,6 +20955,7 @@ dl li {
 
 .table td {
   font-size: 0.875rem;
+  font-weight: 400 !important;
 }
 
 .table td img {

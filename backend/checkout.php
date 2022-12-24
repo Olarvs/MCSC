@@ -13,7 +13,7 @@ if (isset($_POST['checkout'])) {
             $contactNumber = $_POST['contactNumber'];
             $deliveryMethod = $_POST['deliveryMethod'];
             $pickUpDateTime = date('Y-m-d h:i:s', strtotime($_POST['pickUpDate'] . ' ' . $_POST['pickUpTime']));
-            $orderDateTime = date('Y-m-d h:i:s');
+            $orderDateTime = date('Y-m-d H:i:s');
             $orderTotal = $_POST['orderTotal'];
 
             $insertOrder = mysqli_query($conn, "INSERT INTO tbl_order (userId, deliveryMethod, pickupDateTime, paymentMethod, orderTotal, orderDateTime, orderStatus) VALUES ('$userId', '$deliveryMethod', '$pickUpDateTime', '$paymentMethod', '$orderTotal', '$orderDateTime', 'PENDING')");
@@ -59,7 +59,7 @@ if (isset($_POST['checkout'])) {
             $proofOfPaymentTmp = $_FILES['proofOfPayment']['tmp_name'];
             $referenceNum = $_POST['referenceNum'];
             $gcashNumber = $_POST['gcashNumber'];
-            $orderDateTime = date('Y-m-d h:i:s');
+            $orderDateTime = date('Y-m-d H:i:s');
             $orderTotal = $_POST['orderTotal'];
 
             $image_ext = explode('.', $proofOfPayment);
@@ -118,7 +118,7 @@ if (isset($_POST['checkout'])) {
             $gcashNumber = $_POST['gcashNumber'];
             $proofOfPayment = $_FILES['proofOfPayment']['name'];
             $proofOfPaymentTmp = $_FILES['proofOfPayment']['tmp_name'];
-            $orderDateTime = date('Y-m-d h:i:s');
+            $orderDateTime = date('Y-m-d H:i:s');
             $orderTotal = $_POST['orderTotal'];
 
             $image_ext = explode('.', $proofOfPayment);
@@ -178,7 +178,7 @@ if (isset($_POST['checkout'])) {
                 $gcashNumber = $_POST['gcashNumber'];
                 $proofOfPayment = $_FILES['proofOfPayment']['name'];
                 $proofOfPaymentTmp = $_FILES['proofOfPayment']['tmp_name'];
-                $orderDateTime = date('Y-m-d h:i:s');
+                $orderDateTime = date('Y-m-d H:i:s');
                 $orderTotal = $_POST['orderTotal'];
 
                 $image_ext = explode('.', $proofOfPayment);
@@ -220,7 +220,8 @@ if (isset($_POST['checkout'])) {
                 }
                 // LBC MODE DOOR-TO-DOOR
             } else {
-                $deliveryMethod = $_POST['delive$deliveryMethod'];
+                $deliveryMethod = $_POST['deliveryMethod'];
+                $preferredCourier = $_POST['preferredCourier'];
                 $lbcMode = $_POST['lbcMode'];
                 $userId = $_SESSION['margaux_user_id'];
                 $fullName = $_POST['fullName'];
@@ -234,7 +235,7 @@ if (isset($_POST['checkout'])) {
                 $gcashNumber = $_POST['gcashNumber'];
                 $proofOfPayment = $_FILES['proofOfPayment']['name'];
                 $proofOfPaymentTmp = $_FILES['proofOfPayment']['tmp_name'];
-                $orderDateTime = date('Y-m-d h:i:s');
+                $orderDateTime = date('Y-m-d H:i:s');
                 $orderTotal = $_POST['orderTotal'];
 
                 $image_ext = explode('.', $proofOfPayment);

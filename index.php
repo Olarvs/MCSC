@@ -7,6 +7,7 @@ if(isset($_SESSION['margaux_user_id'])) {
     $logged_in = 'yes';
 }
 ?>
+<head>
 
 <style>
 .position {
@@ -17,8 +18,9 @@ if(isset($_SESSION['margaux_user_id'])) {
     width: 100%;
     height: 500px;
 }
-</style>
 
+</style>
+</head>
 <input type="hidden" name="" id="logged_in" value="<?= $logged_in ?>">
 
 <!-- Start Hero Section -->
@@ -53,13 +55,12 @@ if(mysqli_num_rows($getCategory) > 0) {
 ?>
 <div class="container mb-5" id="categorySection" style="height: 100%;">
     <h1 class="text-center mb-4 mt-5" style="color: #000;">Categories</h1>
-    <div class="row d-flex justify-content-center align-items-stretch" style="height: 100%;">
-        <?php
+                <div class="row d-flex justify-content-center align-items-stretch" style="height: 100%;">
+  <?php
         foreach($getCategory as $category) {
-        ?>
-        <a href="product.php?categoryId=<?= $category['categoryId']; ?>" class="col-sm-6 col-md-4 col-xxl-3 mb-4"
+        ?> <a href="product.php?categoryId=<?= $category['categoryId']; ?>" class="col-sm-6 col-md-4 col-xxl-3 mb-4"
             style="height: 100%; text-decoration: none;">
-            <div class="card px-2 pt-2" style="height: 100%;">
+           <div class="card px-2 pt-2" style="height: 100%;">
                 <div class="image-cont" style="height: 200px; width: 100%;">
                     <img src="./admin/assets/images/categoryImages/<?= $category['categoryThumbnail']; ?>"
                         class="w-100 h-100" style="object-fit: cover;" alt="">
@@ -69,14 +70,45 @@ if(mysqli_num_rows($getCategory) > 0) {
                 </div>
             </div>
         </a>
-        <?php
+       
+<?php
         }
-        ?>
+        ?>  
+             
+   
+     <!--      <a href="product.php?categoryId=<?= $category['categoryId']; ?>" class="col-sm-6 col-md-4 col-xxl-3 mb-4"
+            style="height: 100%; text-decoration: none;">
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+          
+                <div class="carousel-inner">
+                    <div class="carousel-item active">  
+                    <div class="image-cont" style="height: 200px; width: 100%;">
+                                    <img src="./admin/assets/images/categoryImages/<?= $category['categoryThumbnail']; ?>"
+                                        class="w-100 h-100" style="object-fit: cover;" alt="">
+                                </div>
+                                <div class="category-content mt-1 text-center">
+                                    <h5 style="text-transform: uppercase; font-weight: 700;"><?= $category['categoryName']; ?></h5>
+                                </div>
+                    </div>  
+     </div>
+                         
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+     </button>
+                </div>
+        </a>-->
+     
     </div>
-</div>
+</div>   
 <?php
 }
 ?>
+
 
 <section id="products" class="product-section">
     <div class="container">
@@ -108,8 +140,8 @@ if(mysqli_num_rows($getCategory) > 0) {
             ?>
         </div>
     </div>
-</section> -->
-<!-- End Product Section
+</section> 
+<!-- End Product Section-->
 
 <!-- Start Why Choose Us Section -->
 <!-- <div class="about bg-dark p-2 w-100 text-white text-center bi">
@@ -369,3 +401,4 @@ const swiper = new Swiper('.swiper', {
     },
 });
 </script>
+

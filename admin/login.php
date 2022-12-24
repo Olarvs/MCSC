@@ -202,7 +202,7 @@ body {
                         Swal.fire({
                             icon: 'error',
                             title: 'Ooops...',
-                            text: 'Your account is still not activated. Please wait for admin to activate it!',
+                            text: 'Your account is still disabled. Please wait for admin to enable it!',
                             iconColor: '#000',
                             confirmButtonColor: '#000',
                             showConfirmButton: false,

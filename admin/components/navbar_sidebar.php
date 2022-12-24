@@ -121,10 +121,16 @@
               </a>
             </div>
           </li> -->
+                    <?php
+                    $adminId = $_SESSION['margaux_admin_id'];
+                    $getAccount = mysqli_query($conn, "SELECT * FROM tbl_admin WHERE adminId = $adminId");
+
+                    foreach($getAccount as $row) {
+                    ?>
                     <li class="nav-item nav-profile dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                            <img src="./assets/images/faces/face5.jpg" alt="profile" />
-                            <span class="nav-profile-name">Louis Barnett</span>
+                        <a class="nav-link dropdown-toggle d-flex flex-row align-items-center" href="#" data-toggle="dropdown" id="profileDropdown">
+                            <img src="./assets/images/profileImage/<?= $row['profile_image'] ?>" alt="profile" />
+                            <span class="nav-profile-name"><?= $row['name'] ?></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
                             aria-labelledby="profileDropdown">
@@ -132,12 +138,15 @@
                                 <i class="mdi mdi-settings text-primary"></i>
                                 Settings
                             </a>
-                            <a class="dropdown-item">
+                            <a class="dropdown-item" href="logout.php">
                                 <i class="mdi mdi-logout text-primary"></i>
                                 Logout
                             </a>
                         </div>
                     </li>
+                    <?php
+                    }
+                    ?>
                 </ul>
                 <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
                     data-toggle="offcanvas">
@@ -152,7 +161,7 @@
                 <ul class="nav">
                     <li class="nav-item">
                         <a class="nav-link" href="index.html">
-                            <i class="mdi mdi-home menu-icon"></i>
+                        <i class="fa-solid fa-house menu-icon"></i>
                             <span class="menu-title">Dashboard</span>
                         </a>
                     </li>
@@ -163,9 +172,15 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="inventory.php">
+                        <i class="fa-solid fa-boxes-stacked menu-icon"></i>
+                            <span class="menu-title">Inventory</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false"
                             aria-controls="auth">
-                            <i class="mdi mdi-account menu-icon"></i>
+                            <i class="fa-solid fa-clipboard-list menu-icon"></i>
                             <span class="menu-title">Orders</span>
                             <i class="menu-arrow"></i>
                         </a>
@@ -179,9 +194,15 @@
                         </div>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="completed-orders.php">
+                        <i class="fa-solid fa-check-to-slot menu-icon"></i>
+                            <span class="menu-title">Completed Orders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#accounts" aria-expanded="false"
                             aria-controls="accounts">
-                            <i class="mdi mdi-account menu-icon"></i>
+                            <i class="fa-solid fa-address-card menu-icon"></i>
                             <span class="menu-title">Accounts</span>
                             <i class="menu-arrow"></i>
                         </a>
@@ -197,23 +218,7 @@
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#homepage" aria-expanded="false"
                             aria-controls="homepage">
-                            <i class="mdi mdi-account menu-icon"></i>
-                            <span class="menu-title">Manage Homepage</span>
-                            <i class="menu-arrow"></i>
-                        </a>
-                        <div class="collapse" id="homepage">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Background </a>
-                                </li>
-                                <li class="nav-item"> <a class="nav-link" href="pages/samples/login-2.html"> Display Image
-                                    </a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#homepage" aria-expanded="false"
-                            aria-controls="homepage">
-                            <i class="mdi mdi-account menu-icon"></i>
+                            <i class="fa-solid fa-palette menu-icon"></i>
                             <span class="menu-title">Manage Homepage</span>
                             <i class="menu-arrow"></i>
                         </a>
