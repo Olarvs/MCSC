@@ -181,7 +181,7 @@
                         <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false"
                             aria-controls="auth">
                             <i class="fa-solid fa-clipboard-list menu-icon"></i>
-                            <span class="menu-title">Orders</span>
+                            <span class="menu-title" style="padding-left: 5px;">Orders</span>
                             <i class="menu-arrow"></i>
                         </a>
                         <div class="collapse" id="auth">

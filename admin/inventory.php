@@ -3,6 +3,16 @@ include './components/head_css.php';
 include './components/navbar_sidebar.php'; 
 ?>
 
+<style>
+table .btn {
+    padding: 5px 10px !important;
+}
+
+.selectCustom {
+    width: unset !important;
+}
+</style>
+
 <!-- INSERT MODAL -->
 <div class="modal fade stockSettingsModal" id="stockSettingsModal" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -15,7 +25,7 @@ include './components/navbar_sidebar.php';
             <div class="modal-body">
                 <form id="stockSettingsForm" enctype="multipart/form-data">
                     <?php
-                    $getStockSett = mysqli_query($conn, "SELECT * FROM stock_settings");
+                    $getStockSett = mysqli_query($conn, "SELECT * FROM tbl_stock_settings");
 
                     foreach($getStockSett as $row) {
                     ?>
@@ -28,6 +38,8 @@ include './components/navbar_sidebar.php';
                         <label for="exampleInputUsername1">Low Stock Qty</label>
                         <input type="tel" class="form-control" id="lowStockQty" name="lowStockQty"
                             placeholder="Low Stock Quantity" value="<?= $row['lowStock'] ?>" required>
+                        <span class="error error_lowStockQty"
+                            style="font-size: 14px; font-weight: 500; color: #fe827a;"></span>
                     </div>
                     <?php
                     }
@@ -36,55 +48,46 @@ include './components/navbar_sidebar.php';
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" form="stockSettingsForm" class="btn btn-primary" id="stockSettingsBtn">Save changes</button>
+                <button type="submit" form="stockSettingsForm" class="btn btn-primary" id="stockSettingsBtn">Save
+                    changes</button>
             </div>
         </div>
     </div>
 </div>
 
 <!-- EDIT MODAL -->
-<div class="modal fade updateCategoryModal" id="updateCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal fade addStockModal" id="addStockModal" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <p class="modal-title fs-5 h2" id="exampleModalLabel">Update Category</p>
+                <p class="modal-title fs-5 h2" id="exampleModalLabel">Add Stock</p>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="editCategoryForm" enctype="multipart/form-data">
+                <form id="addStockForm" enctype="multipart/form-data">
                     <div class="form-group d-none">
-                        <label for="exampleInputUsername1">Category ID</label>
-                        <input type="text" class="form-control" id="editCategoryId" name="editCategoryId"
-                            placeholder="Category Id" required>
-                    </div>
-                    <div class="form-group d-none">
-                        <label for="exampleInputUsername1">Old Thumbnail</label>
-                        <input type="text" class="form-control" id="editOldImage" name="editOldImage"
+                        <label for="exampleInputUsername1">Product ID</label>
+                        <input type="text" class="form-control" id="productId" name="productId"
                             placeholder="Category Id" required>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputUsername1">Category Name</label>
-                        <input type="text" class="form-control" id="editCategoryName" name="editCategoryName"
-                            placeholder="Category Name" required>
+                        <label for="exampleInputUsername1">Product Name</label>
+                        <input type="text" class="form-control" id="productName" name="productName"
+                            placeholder="Product name" readonly required>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Category Image</label>
-                        <input class="form-control" accept=".jpg, .jpeg, .png" type="file" id="editCategoryThumbnail"
-                            name="editCategoryThumbnail">
-                        <span class="error errorEditCategoryThumbnail"
+                        <label for="exampleInputUsername1">Stock</label>
+                        <input type="text" class="form-control" id="productStock" name="productStock"
+                            placeholder="Product stock" required>
+                        <span class="error errorProductStock"
                             style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
-                    </div>
-                    <div class="form-group d-flex flex-column gap-2">
-                        <label for="exampleInputEmail1">Image preview</label>
-                        <img id="file" style="width: 100px;" src="">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" form="editCategoryForm" class="btn btn-primary" id="editCategoryBtn">Update
-                    category</button>
+                <button type="submit" form="addStockForm" class="btn btn-primary" id="addStockBtn">Add stock</button>
             </div>
         </div>
     </div>
@@ -138,11 +141,38 @@ include './components/navbar_sidebar.php';
         </div>
         <div class="row">
             <div class="col-md-12 grid-margin stretch-card">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#stockSettingsModal">Stock Settings</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#stockSettingsModal">Stock Settings</button>
             </div>
         </div>
         <div class="row">
-
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body" style="width: 100%;">
+                        <h4 class="card-title">Stocks</h4>
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="stocks" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Product
+                                        </th>
+                                        <th>
+                                            Stock
+                                        </th>
+                                        <th>
+                                            Status
+                                        </th>
+                                        <th>
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <!-- content-wrapper ends -->
@@ -151,11 +181,13 @@ include './components/navbar_sidebar.php';
 
 <script>
 $(window).on('load', function() {
-    if (localStorage.getItem('status') == 'insert') {
+    $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
+
+    if (localStorage.getItem('status') == 'updateStockSettings') {
         Swal.fire({
             icon: 'success',
             title: 'Success!',
-            text: 'Category added successfully!',
+            text: 'Stock settings updated successfully!',
             iconColor: '#000',
             confirmButtonColor: '#000',
             showConfirmButton: false,
@@ -169,7 +201,7 @@ $(window).on('load', function() {
         Swal.fire({
             icon: 'success',
             title: 'Success!',
-            text: 'Category updated successfully!',
+            text: 'Stock added successfully!',
             iconColor: '#000',
             confirmButtonColor: '#000',
             showConfirmButton: false,
@@ -212,162 +244,171 @@ $(document).ready(function() {
         }
     })
 
-    // Get Category
-    $('.editBtn').on('click', function(e) {
+    // VALIDATIONS
+    var $regexNumber = /^\d+$/;
+
+    $('#lowStockQty').on('keypress keydown keyup', function() {
+        if (!$.trim($(this).val()).match($regexNumber)) {
+            $('.error_lowStockQty').html(
+                '<i class="bi bi-exclamation-circle-fill"></i> Invalid format! No letter/symbol should be included.'
+            );
+            $('#lowStockQty').addClass('border-danger');
+        } else {
+            $('.error_lowStockQty').text('');
+            $('#lowStockQty').removeClass('border-danger');
+        }
+    })
+
+    // DATATABLES
+    var datatable = $('#stocks').DataTable({
+        // "processing": true,
+        "serverSide": true,
+        "paging": true,
+        "pagingType": "simple",
+        "scrollX": true,
+        "sScrollXInner": "100%",
+        "ajax": {
+            url: "./tables/inventory.php",
+            type: "post",
+            error: function(xhr, error, code) {
+                console.log(xhr, code);
+            }
+        },
+        "order": [
+            [1, 'asc']
+        ],
+        "aaSorting": [
+            [1, "asc"]
+        ],
+        "lengthMenu": [
+            [5, 10, 25, 50, -1],
+            [5, 10, 25, 50, "All"]
+        ],
+        columnDefs: [{
+            type: 'numeric-comma',
+            targets: 1
+        }]
+    });
+
+    $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
+
+    $('#filterStatus').on('change', function() {
+        datatable.draw();
+    });
+
+    $('#filterStatus').on('change', function() {
+        datatable.search(this.value).draw();
+    });
+
+    setInterval(function() {
+        datatable.ajax.reload(null, false);
+    }, 10000); // END DATATABLES
+
+    // UPDATE STOCK SETTINGS
+    $('#stockSettingsForm').on('submit', function(e) {
         e.preventDefault();
 
-        var editCategoryId = $(this).data('id');
+        var form = new FormData(this);
+        form.append('updateStockSett', true);
 
         $.ajax({
-            url: './backend/category.php',
+            type: "POST",
+            url: "./backend/inventory.php",
+            data: form,
+            dataType: "text",
+            contentType: false,
+            processData: false,
+            cache: false,
+            success: function(response) {
+                if (response.includes('success')) {
+                    localStorage.setItem('status', 'updateStockSettings');
+                    location.reload();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed',
+                        text: 'Something went wrong!',
+                        iconColor: '#000',
+                        confirmButtonColor: '#000',
+                        showConfirmButton: false,
+                        color: '#000',
+                        background: '#fe827a',
+                        timer: 5000,
+                        timerProgressBar: true,
+                    });
+                }
+                console.log(response);
+            }
+        })
+    })
+
+    // Get Stock
+    $(document).on('click', '#addStock', function(e) {
+        e.preventDefault();
+
+        var productId = $(this).data('id');
+
+        $.ajax({
+            url: './backend/inventory.php',
             type: 'POST',
             data: {
-                'getCategory': true,
-                'getCategoryId': editCategoryId,
+                'getProductStock': true,
+                'productId': productId,
             },
             success: function(response) {
                 var obj = JSON.parse(response);
-                $(".updateCategoryModal").modal("show");
-                $("#editCategoryId").val(obj.categoryId);
-                $("#editCategoryName").val(obj.categoryName);
-                $("#editOldImage").val(obj.categoryThumbnail);
-                $("#file").attr("src", "./assets/images/categoryImages/" + obj
-                    .categoryThumbnail);
-                // console.log(response);
+                $(".addStockModal").modal("show");
+                $("#productId").val(obj.productId);
+                $("#productName").val(obj.productName);
+                console.log(response);
             }
         })
     })
 
     // Update Category
-    $('#editCategoryForm').on('submit', function(e) {
+    $('#addStockForm').on('submit', function(e) {
         e.preventDefault();
 
-        if ($('#editCategoryThumbnail').val().length != 0) {
-            var editCategoryThumbnail = $('#editCategoryThumbnail').val();
-            var image_ext = $('#editCategoryThumbnail').val().split('.').pop().toLowerCase();
+        var form = new FormData(this);
+        form.append('addStock', true);
 
-            if ($.inArray(image_ext, ['png', 'jpg', 'jpeg']) == -1) {
-                $('.errorEditCategoryThumbnail').html(
-                    '<i class="bi bi-exclamation-circle-fill"></i> File not supported!'
-                );
-            } else {
-                var imageSize = $('#editCategoryThumbnail')[0].files[0].size;
-
-                if (imageSize > 10485760) {
-                    $('.errorEditCategoryThumbnail').html(
-                        '<i class="bi bi-exclamation-circle-fill"></i> File too large!'
-                    );
+        $.ajax({
+            type: "POST",
+            url: "./backend/inventory.php",
+            data: form,
+            dataType: 'text',
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function() {
+                $('#addStockBtn').attr('disabled', true);
+                $('#addStockBtn').text('Processing');
+            },
+            complete: function() {
+                $('#addStockBtn').attr('disabled', false);
+                $('#addStockBtn').text('Add stock');
+            },
+            success: function(response) {
+                if (response.includes('success')) {
+                    localStorage.setItem('status', 'update');
+                    location.reload();
                 } else {
-                    var form = new FormData(this);
-                    form.append('editCategory', true);
-
-                    $.ajax({
-                        type: "POST",
-                        url: "./backend/category.php",
-                        data: form,
-                        dataType: 'text',
-                        contentType: false,
-                        cache: false,
-                        processData: false,
-                        beforeSend: function() {
-                            $('#editCategoryBtn').attr('disabled', true);
-                            $('#editCategoryBtn').text('Processing');
-                        },
-                        complete: function() {
-                            $('#editCategoryBtn').attr('disabled', false);
-                            $('#editCategoryBtn').text('Update category');
-                        },
-                        success: function(response) {
-                            if (response.includes('success')) {
-                                localStorage.setItem('status', 'update');
-                                location.reload();
-                            } else if (response.includes('exist')) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Failed',
-                                    text: 'Category already exist!',
-                                    iconColor: '#000',
-                                    confirmButtonColor: '#000',
-                                    showConfirmButton: false,
-                                    color: '#000',
-                                    background: '#fe827a',
-                                    timer: 5000,
-                                    timerProgressBar: true,
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Failed',
-                                    text: 'Something went wrong!',
-                                    iconColor: '#000',
-                                    confirmButtonColor: '#000',
-                                    showConfirmButton: false,
-                                    color: '#000',
-                                    background: '#fe827a',
-                                    timer: 5000,
-                                    timerProgressBar: true,
-                                });
-                            }
-                            console.log(response);
-                        }
-                    })
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed',
+                        text: 'Something went wrong!',
+                        iconColor: '#000',
+                        confirmButtonColor: '#000',
+                        showConfirmButton: false,
+                        color: '#000',
+                        background: '#fe827a',
+                        timer: 5000,
+                        timerProgressBar: true,
+                    });
                 }
+                console.log(response);
             }
-        } else {
-            var form = new FormData(this);
-            form.append('editCategory', true);
-
-            $.ajax({
-                type: "POST",
-                url: "./backend/category.php",
-                data: form,
-                dataType: 'text',
-                contentType: false,
-                cache: false,
-                processData: false,
-                beforeSend: function() {
-                    $('#editCategoryBtn').attr('disabled', true);
-                    $('#editCategoryBtn').text('Processing');
-                },
-                complete: function() {
-                    $('#editCategoryBtn').attr('disabled', false);
-                    $('#editCategoryBtn').text('Update category');
-                },
-                success: function(response) {
-                    if (response.includes('success')) {
-                        localStorage.setItem('status', 'update');
-                        location.reload();
-                    } else if (response.includes('exist')) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Failed',
-                            text: 'Category already exist!',
-                            iconColor: '#000',
-                            confirmButtonColor: '#000',
-                            showConfirmButton: false,
-                            color: '#000',
-                            background: '#fe827a',
-                            timer: 5000,
-                            timerProgressBar: true,
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Failed',
-                            text: 'Something went wrong!',
-                            iconColor: '#000',
-                            confirmButtonColor: '#000',
-                            showConfirmButton: false,
-                            color: '#000',
-                            background: '#fe827a',
-                            timer: 5000,
-                            timerProgressBar: true,
-                        });
-                    }
-                    console.log(response);
-                }
-            })
-        }
+        })
     })
 
     // ARCHIVE CATEGORY
