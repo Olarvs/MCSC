@@ -56,13 +56,13 @@ body {
 
     <div class="container bg-dark login pt-1 mb-5">
 
-        <h1 class="text-center p-3 mb-3 rounded" style="color: #fe827a; font-weight: bold;">SIGN UP</h1>
+        <h1 class="text-center p-3 mb-3 rounded" style="color: #fe827a; font-weight: bold; letter-spacing: .1rem;">Create account</h1>
         <form class="p-3" id="register_form">
             <div class="row form-group">
                 <div class="col-md-12">
                     <!-- Email input -->
                     <div class="form-outline mb-2">
-                        <label class="form-label" for="name">Name</label>
+                        <label class="form-label" for="name" style="letter-spacing: .1rem;">Full name</label>
                         <input type="text" id="name" name="name" class="form-control" required />
                     </div>
                     <span class="error error_name" style="font-size: 14px; font-weight: 500; color: #fe827a;"></span>
@@ -73,7 +73,7 @@ body {
                 <div class="col-md-6">
                     <!-- Email input -->
                     <div class="form-outline mb-2">
-                        <label class="form-label" for="email">Email</label>
+                        <label class="form-label" for="email" style="letter-spacing: .1rem;">Email address</label>
                         <input type="email" id="email" name="email" class="form-control" />
                     </div>
                     <span class="error error_email" style="font-size: 14px; font-weight: 500; color: #fe827a;"></span>
@@ -81,11 +81,11 @@ body {
 
                 <div class="col-md-6">
                     <div class="form-outline mb-2">
-                        <label class="form-label" for="username">Mobile No</label>
+                        <label class="form-label" for="username" style="letter-spacing: .1rem;">Mobile number</label>
                         <div class="input-group input-group-merge">
                             <span style="font-size: 14px;" class="input-group-text">+63</span>
-                            <input type="tel" id="phoneNumber" name="phoneNumber" class="form-control"
-                                placeholder="9992736514" required />
+                            <input type="tel" id="phoneNumber" pattern="[9]{1}[0-9]{2}[0-9]{3}[0-9]{4}" name="phoneNumber" class="form-control"
+                                placeholder="9123456789" required />
                         </div>
                     </div>
                     <span class="error error_phoneNumber"
@@ -97,7 +97,7 @@ body {
                 <div class="col-md-6">
                     <!-- Email input -->
                     <div class="form-outline mb-2">
-                        <label class="form-label" for="gender">Gender</label>
+                        <label class="form-label" for="gender" style="letter-spacing: .1rem;">Sex</label>
                         <select class="form-select form-control" aria-label="Default select example" id="gender"
                             name="gender">
                             <option value="Female">Female</option>
@@ -107,9 +107,8 @@ body {
                 </div>
 
                 <div class="col-md-6">
-                    <!-- Password input -->
                     <div class="form-outline mb-2">
-                        <label class="form-label" for="birthday">Birthday</label>
+                        <label class="form-label" for="birthday" style="letter-spacing: .1rem;">Birthdate</label>
                         <input type="date" name="birthday" id="birthday" class="form-control" />
                     </div>
                     <span class="error error_birthday" style="font-size: 14px; font-weight: 500; color: #fe827a;"></span>
@@ -120,7 +119,7 @@ body {
                 <div class="col-md-6">
                     <!-- Email input -->
                     <div class="form-outline mb-2">
-                        <label class="form-label" for="password">Password</label>
+                        <label class="form-label" for="password" style="letter-spacing: .1rem;">Password</label>
                         <div class="password-container">
                             <input type="password" id="password" name="password" class="form-control" />
                             <i class="fa-solid fa-eye" id="eye"></i>
@@ -133,7 +132,7 @@ body {
                 <div class="col-md-6">
                     <!-- Password input -->
                     <div class="form-outline mb-2">
-                        <label class="form-label" for="confirmPassword">Confirm Password</label>
+                        <label class="form-label" for="confirmPassword" style="letter-spacing: .1rem;">Confirm password</label>
                         <div class="password-container">
                             <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" />
                             <i class="fa-solid fa-eye" id="confirmEye"></i>
@@ -143,10 +142,14 @@ body {
                         style="font-size: 14px; font-weight: 500; color: #fe827a;"></span>
                 </div>
             </div>
+            
+            <!-- Terms & Conditions and Privacy Policy -->
+            <p>By creating an account or signing in, I agree to the processing of my personal data in agreement with the <a class="text-white" href="https://www.freeprivacypolicy.com/live/e7fa3eb1-d047-4000-9c82-f3c48165ed77"><b>Privacy Policy</b></a> and <a class="text-white" href="https://www.termsandconditionsgenerator.com/live.php?token=ZrhJWwMIvM69MsnbtomYADL6C8WKcK1M"><b>Terms & Conditions</b></a>.</p>
 
             <!-- Submit button -->
-            <button type="submit" class="btn text-dark btn-block mb-2 px-4 w-100"
-                style="background-color: #fe827a;" id="signup_btn">Sign up</button>
+            
+            <button type="submit" class="btn text-dark btn-block mb-2 mt-2 px-4 w-100"
+                style="background-color: #fe827a; letter-spacing: .1rem;" id="signup_btn">Create</button>
 
             <!-- Register buttons -->
             <div class="text-center">
@@ -339,5 +342,6 @@ $(document).ready(function() {
 </script>
 
 <?php
+include './components/footer.php';
 include './components/bottom-script.php';
 ?>

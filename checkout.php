@@ -13,12 +13,17 @@ if(!isset($_SESSION['margaux_user_id'])) {
 <?php
 $getUserInfo = mysqli_query($conn, "SELECT * FROM tbl_user WHERE user_id = $userId");
 
+$voucher = mysqli_query($conn, "SELECT * FROM tbl_voucher WHERE status = 'active'");
+
+//gloabal state
+$DeliveryMethod = 'PickUp';
+
 foreach($getUserInfo as $userInfo) {
 ?>
 <div class="container my-5">
     <main>
         <div class="row g-5">
-            <div class="col-md-5 col-lg-4 order-md-last">
+            <div class="col-md-6 col-lg-6 order-md-last">
                 <?php
                 $getCart = mysqli_query($conn, "SELECT tbl_product.productName, tbl_category.categoryName, tbl_cart.productQty, tbl_cart.productTotal
                 FROM tbl_cart
@@ -30,46 +35,215 @@ foreach($getUserInfo as $userInfo) {
                 ?>
                 <div class="card p-4">
                     <h4 class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-primary">Your cart</span>
+                        <span class="text-primary" style="letter-spacing: .1rem;">Order Summary</span>
                     </h4>
                     <ul class="list-group mb-3">
                         <?php
+                         $finalTotal = 0.00;
+                         $totalDiscount = 0.00;
+                         $finalSubtotal = 0.00;
+                         $shippingFee = 00.00;//default price within ncr and calabarzon
                         foreach($getCart as $row) {
-                        ?>
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div>
-                                <h6 class="my-0"><?= $row['productName'] ?></h6>
-                                <small class="text-muted"><?= $row['categoryName'] ?></small><br>
-                                <small class="text-muted">x<?= $row['productQty'] ?></small>
-                            </div>
-                            <span class="text-muted"><strong>&#8369;</strong> <strong
-                                    class="price"><?= $row['productTotal'] ?></strong> </span>
-                        </li>
-                        <?php
+                           $shippingFee = $row['shippingFee']; 
+                       echo  '<li class="list-group-item d-flex justify-content-between lh-sm">';
+                            
+                               
+                                 
+                                 if(floatval($row['productQty']) < 10){
+                            
+                                    echo '<div>
+                                            <h6 class="my-0" style="letter-spacing: .1rem;">'.$row['productName'].'</h6>
+                                                <small class="text-muted">x'.$row['productQty'].'</small>
+                                          </div>';
+                                          
+                                }
+                                //discounted 
+                                if(floatval($row['productQty']) >= 10){
+                                  
+                                    echo '<div>
+                                            <h6 class="my-0" style="letter-spacing: .1rem;">'.$row['productName'].'</h6>
+                                                <small class="text-muted">x'.$row['productQty'].'</small>
+                                                <small class="text-muted">(10% item discount)</small>
+                                          </div>';
+                                }
+                                
+                              
+                             
+                           
+                           
+                             if(floatval($row['productQty']) < 10){
+                                   $finalTotal = floatval($finalTotal) + floatval($row['productTotal']); 
+                                    echo ' <span class="text-muted"><strong>&#8369;</strong> <strong
+                                    class="price" >'.$row['productTotal'].'</strong> ';
+                                }
+                                //discounted 
+                                if(floatval($row['productQty']) >= 10){
+                                    
+                                    $discount = floatval($row['productTotal']) / 10;
+                                    $discountedPrice = floatval($row['productTotal']) - floatval($discount);
+        
+                                    $finalTotal = floatval($finalTotal) + floatval($discountedPrice); 
+                                    $totalDiscount = floatval($totalDiscount) + floatval($discount);
+                                     echo '<span class="text-muted"><strong>&#8369;</strong> <strong
+                                    class="price text-end">'.$row['productTotal'].'</strong><br><strong class="float-end text-decoration-line-through" style ="color: red;">&#8369; '.$discount.'.00</strong></span>';
+                                }
+                        
+                         
+                           
+                       echo '</li>';
+                       
+                       echo '<li class="list-group-item d-flex justify-content-between lh-sm" style ="border-bottom:none;">
+                       </li>';
+                       
+                       $finalSubTotal = floatval($finalSubTotal) + floatval($row['productTotal']);
+                    
                         }
-                        ?>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Total (PHP)</span>
+                        
+                           $finalTotal = floatval($finalTotal) + floatval($shippingFee);
+                        
+                          echo '<li class="list-group-item d-flex justify-content-between lh-sm" style ="border-bottom:none;">
+                                <span>Subtotal</span> <strong
+                                    class="price subTotal" >&#8369; '.number_format(floatval($finalSubTotal), 2, '.', '').'</strong> 
+                             </li>';
+                             
+                            
+                  if($DeliveryMethod == 'PickUp'){
+                      //$shippingFee = 0.00;//
+                       echo '<li class="list-group-item d-flex justify-content-between lh-sm" style ="border-bottom:none;">
+                                <div>
+                                    <span>Shipping Fee</span>
+                                </div>
+                                <div>
+                                    <strong>&#8369;</strong>
+                                    <strong class="price shipping_fee" id="shipping_fee">'.number_format(floatval($shippingFee), 2, '.', '').'</strong>
+                                </div> 
+                             </li>';
+                  }
+                  if($DeliveryMethod == 'Ship'){
+                      $shippingFee = $row['shippingFee'];
+                       echo '<li class="list-group-item d-flex justify-content-between lh-sm" style ="border-bottom:none;">
+                                <div>
+                                    <span>Shipping Fee</span>
+                                </div>
+                                <div>
+                                    <strong>&#8369;</strong>
+                                    <strong class="price shipping_fee" id="shipping_fee">'.number_format(floatval($shippingFee), 2, '.', '').'</strong>
+                                </div>
+                             </li>';
+                  }
+                  
+                  
+                          echo '<li class="list-group-item d-flex justify-content-between lh-sm" style ="border-bottom:none;">
+                                <span>Discount Total</span><strong
+                                    class="price" style ="color: red;">-&#8369; '.number_format(floatval($totalDiscount), 2, '.', '').'</strong> 
+                             </li>';
+                             
+                             
+                         echo '<li class="list-group-item d-flex justify-content-between">
                             <div>
-                                <strong style="font-size: 21px;">&#8369;</strong> <strong style="font-size: 21px;"
-                                    class="totalPrice">0.00</strong>
+                                 <span><strong>Total</strong></span>
                             </div>
-                        </li>
+                            <div>
+                            <input hidden value ="'.number_format(floatval($finalTotal), 2, '.', '').'" id ="hiddenTotalPrice" />
+                                <strong style="font-size: 21px;">&#8369;</strong> <strong style="font-size: 21px;" class="totalPrice" id ="totalPrice">'.number_format(floatval($finalTotal), 2, '.', '').'</strong>
+                            </div>
+                        </li>';
+                          ?>
+    
+                    
+                        
+                        
                     </ul>
+                    <!--<form id ="frmVouhcerApply">-->
+                    <!--<div class="row g-3">-->
+                    <!--   <div class="col-sm-6">-->
+                                
+                    <!--            <input type="text" class="form-control" placeholder="Enter Voucher Code"-->
+                    <!--                 id="voucherCode" name="voucherCode" />-->
+                    <!--            <span class="error error_Voucher"-->
+                    <!--                style="font-size: 12px; font-weight: 500; color: #fe827a;" id ="ErrorVoucherNote"></span>-->
+                    <!--        </div>-->
+                    <!--         <div class="col-sm-6">-->
+                    <!--              <button class="btn btn-primary btn-sm" type="submit" id="btnVouhcerApply" >Apply voucher</button>-->
+                    <!--    </div>-->
+                     
+                    <!--</div>-->
+                    <!-- </form>-->
+                    
+                    
+                    <script defer>
+                        const form = document.getElementById("frmVouhcerApply");
+                        const voucherInput = document.getElementById("voucherCode");
+                        const voucherInputErrorText = document.getElementById("ErrorVoucherNote");
+                        const hiddenTotalPrice = document.getElementById("hiddenTotalPrice");
+                        const totalPrice = document.getElementById("totalPrice");
+                        
+                        
+                        const myInput = document.querySelector('#voucherCode');
+                        const voucherInputListener = () => {
+                              voucherInput.classList.remove("border-danger");
+                              voucherInputErrorText.innerHTML = "";
+                        }
+                        myInput.addEventListener('input', voucherInputListener);
+                        
+                        //submit voucher code
+                        form.addEventListener("submit", async (event) =>{
+                           event.preventDefault();
+                            voucherInput.classList.remove("border-danger");
+                            voucherInputErrorText.innerHTML = "";
+                       
+                        //   print value of form
+                             for (const control of form.elements) {
+                                  console.log(control.name + " : " + control.value);
+                                 }
+                           try{
+                                const response = await fetch("https://margaux-corner.online/backend/apply-voucher.php", {
+                                  method: "POST",
+                                  body: new FormData(form),
+                                });
+                                const getResponse = await response.json();
+                                console.log(getResponse);
+                                if(getResponse.statusCode === 'success' && getResponse.isExist === true){
+                                
+                                let finalPrice = 0.00;
+                                finalPrice = parseFloat(hiddenTotalPrice.value) - parseFloat(getResponse.discount);
+                                console.log(finalPrice);
+                                console.log(totalPrice.value);
+                                totalPrice.innerHTML = finalPrice.toFixed(2);
+                                }
+                                
+                                if(getResponse.statusCode ==='success' && getResponse.isExist === false){
+                                    voucherInput.classList.add("border-danger");
+                                    voucherInputErrorText.innerHTML = "Voucher code doesn't exist!";
+                                }
+                           }catch(error){
+                               console.error(error);
+                           }
+                        });
+                        
+                    </script>
+                     <?php 
+                     //list of vouchers
+                      //      foreach($voucher as $coupon){
+                       //      echo '<p>'.$coupon['voucher_code'].'</p>';
+                       //   }
+                     ?>
+                     
                 </div>
             </div>
+            
             <?php
             $getInfo = mysqli_query($conn, "SELECT * FROM tbl_user WHERE user_id = $userId");
 
             foreach($getInfo as $row) {
             ?>
-            <div class="col-md-7 col-lg-8">
+            <div class="col-md-6 col-lg-6">
                 <div class="card p-4">
-                    <h4 class="mb-3">Checkout form</h4>
+                    <h4 class="mb-3" style="letter-spacing: .1rem;">Checkout</h4>
                     <form id="checkoutForm">
                         <div class="row g-3">
                             <div class="col-sm-6">
-                                <label for="fullName" class="form-label">Fullname</label>
+                                <label for="fullName" class="form-label" style="letter-spacing: .1rem;">Fullname</label>
                                 <input type="text" class="form-control" id="fullName" placeholder=""
                                     value="<?= $userInfo['name'] ?>" id="fullName" name="fullName" required>
                                 <span class="error error_fullName"
@@ -77,7 +251,7 @@ foreach($getUserInfo as $userInfo) {
                             </div>
 
                             <div class="col-sm-6">
-                                <label for="lastName" class="form-label">Contact Number</label>
+                                <label for="lastName" class="form-label" style="letter-spacing: .1rem;">Contact Number</label>
                                 <div class="input-group mb-3">
                                     <span style="font-size: 14px;" class="input-group-text" id="basic-addon1">+63</span>
                                     <input type="text" class="form-control" placeholder="9912937615" id="contactNumber"
@@ -104,65 +278,101 @@ foreach($getUserInfo as $userInfo) {
                         <hr class="my-4">
 
                         <div class="row g-3 mb-3">
-                            <div class="col-sm-6">
-                                <label for="lastName" class="form-label">Choose Delivery Method</label>
-                                <select class="form-select form-control" id="deliveryMethod" name="deliveryMethod">
-                                    <option value="PICK UP">PICK UP</option>
-                                    <option value="DELIVERY">DELIVERY</option>
+                            <div class="col-sm-12">
+                                <label for="lastName" class="form-label" style="letter-spacing: .1rem;">Choose Delivery Method</label>
+                                <select class="form-select form-control" id="deliveryMethod" onChange ={getSelectedDeliveryMethod(this.value)}  name="deliveryMethod">
+                                    <option value="PICK UP">Pick up</option>
+                                    <option value="DELIVERY">Delivery</option>
                                 </select>
+                                <script>
+                                    const getSelectedDeliveryMethod = (...params) =>{
+                                        console.log(params[0])
+                                    }
+                                </script>
                             </div>
-                            <div class="col-sm-6 d-none" id="courierContainer">
-                                <label for="courier" class="form-label">Choose Preferred Courier</label>
-                                <select class="form-select form-control" id="preferredCourier" name="preferredCourier">
+                            <div class="col-sm-12 d-none" id="courierContainer">
+                                <label for="courier" class="form-label" style="letter-spacing: .1rem;">Courier</label>
+                                <!--Niremove ko sa select tag para walang dropdown
+                                class="form-select"-->
+                                <select class="form-control" id="preferredCourier"  name="preferredCourier" style="background-color: white;">
                                     <option value="LALAMOVE">LALAMOVE</option>
-                                    <option value="LBC EXPRESS">LBC EXPRESS</option>
+                                    
+                                    <!--DONE-->
+                                    <!--REVISION NUMBER 7-->
+                                    <!--Remove LBC Express from the-->
+                                    <!--delivery method's courier option.-->
+                                    
+                                    <!--After revisions-->
+                                    
+                                    <!--<option value="LBC EXPRESS">LBC EXPRESS</option>-->
+                                    
+                                    <!--After revisions-->
                                 </select>
                             </div>
                         </div>
 
                         <div class="row g-3 mb-3">
                             <div class="col-sm-6  d-none" id="lbcModeContainer">
-                                <label for="lastName" class="form-label">Choose LBC Mode</label>
+                                <label for="lastName" class="form-label" style="letter-spacing: .1rem;">Choose LBC Mode</label>
                                 <select class="form-select form-control" id="lbcMode" name="lbcMode">
                                     <option value="PICK UP">PICK UP</option>
                                     <option value="DOOR-TO-DOOR">DOOR-TO-DOOR</option>
                                 </select>
                             </div>
                             <div class="col-sm-6  d-none" id="lbcBranchContainer">
-                                <label for="lastName" class="form-label">Nearest LBC Branch</label>
+                                <label for="lastName" class="form-label" style="letter-spacing: .1rem;">Nearest LBC Branch</label>
                                 <input type="text" class="form-control" id="lastName" placeholder="" value=""
                                     id="lbcBranch" name="lbcBranch">
                             </div>
                         </div>
-
+                            <!--<div class="col-sm-12">-->
+                            <!--    <label style="letter-spacing: .1rem;">Pickup location</label>-->
+                            <!--    <select class="form-control" disabled style="background-color: white;">-->
+                            <!--        <option>Purok 1, Brgy. Sto Niño, 3100, Cabanatuan City, Nueva Ecija</option>-->
+                            <!--    </select>-->
+                            <!--</div>-->
                         <div class="row g-3 mb-3" id="pickupDateTimeContainer">
                             <div class="col-sm-6">
-                                <label>Date</label>
+                                <label style="letter-spacing: .1rem;">Date</label>
                                 <input type="date" class="form-control" name="pickUpDate" id="pickUpDate" required>
                             </div>
+                            
                             <div class="col-sm-6">
-                                <label>Time</label>
-                                <input type="time" class="form-control" name="pickUpTime" id="pickUpTime" required>
+                                
+                                <!--DONE-->
+                                <!--REVISIONS NUMBER 4-->
+                                <!--In the pickup method, replace the-->
+                                <!--time picker with a drop-down list of-->
+                                <!--possible pickup hours.-->
+                                
+                                <!--After Revisions-->
+                                
+                                <label style="letter-spacing: .1rem;">Time</label>
+                                <input type="time" class="form-control" min="08:00" max ="17:00" name="pickUpTime" id="pickUpTime" required>
+                                <span class="error error_Time" style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
+                                
+                                <!--End of after revisions-->
+                                    
                             </div>
                         </div>
 
                         <div class="row g-3 mb-3 d-none" id="addressContainer">
                             <div class="col-sm-4">
-                                <label for="province" class="form-label">Province</label>
+                                <label for="province" class="form-label" style="letter-spacing: .1rem;">Province</label>
                                 <select class="form-select form-control" id="province" name="province">
                                 </select>
                                 <input class="form-control" type="hidden" name="provinceValue" id="provinceValue"
                                     value="<?= $userInfo['province'] ?>">
                             </div>
                             <div class="col-sm-4">
-                                <label for="city" class="form-label">City</label>
+                                <label for="city" class="form-label" style="letter-spacing: .1rem;">City</label>
                                 <select class="form-select form-control" id="city" name="city">
                                 </select>
                                 <input class="form-control" type="hidden" name="cityValue" id="cityValue"
                                     value="<?= $userInfo['city'] ?>">
                             </div>
                             <div class="col-sm-4">
-                                <label for="barangay" class="form-label">Barangay</label>
+                                <label for="barangay" class="form-label" style="letter-spacing: .1rem;">Barangay</label>
                                 <select class="form-select form-control" id="barangay" name="barangay">
                                 </select>
                                 <input class="form-control" type="hidden" name="barangayValue" id="barangayValue"
@@ -170,7 +380,7 @@ foreach($getUserInfo as $userInfo) {
                             </div>
 
                             <div class="col-12">
-                                <label for="">Blk/Lot/Street/Floor No.</label>
+                                <label for="" style="letter-spacing: .1rem;">Blk/Lot/Street/Floor No.</label>
                                 <textarea style="resize: none;" class="form-control" id="block" name="block"
                                     rows="3"><?= $userInfo['block'] ?></textarea>
                             </div>
@@ -179,16 +389,16 @@ foreach($getUserInfo as $userInfo) {
                         <hr class="my-4">
 
                         <div class="row g-3 mb-3">
-                            <div class="col-sm-6">
-                                <label for="lastName" class="form-label">Choose Payment Method</label>
+                            <div class="col-sm-12">
+                                <label for="lastName" class="form-label" style="letter-spacing: .1rem;">Choose Payment Method</label>
                                 <select class="form-select form-control" id="paymentMethod" name="paymentMethod">
-                                    <option value="CASH ON DELIVERY/PICKUP">CASH ON DELIVERY/PICKUP</option>
-                                    <option value="GCASH">GCASH</option>
+                                    <option value="CASH ON DELIVERY/PICKUP">Cash on Delivery / Pick up</option>
+                                    <option value="GCASH">GCash</option>
                                 </select>
                             </div>
                             <div class="col-sm-6 d-none" id="gcashNumberContainer">
-                                <label for="lastName" class="form-label">Gcash Number <small>(For refund purposes if
-                                        order gets cancelled)</small></label>
+                                <label for="lastName" class="form-label" style="letter-spacing: .1rem;">GCash Number <small>(For refund purposes, if
+                                        order gets cancelled.)</small></label>
                                 <div class="input-group mb-3">
                                     <span style="font-size: 14px;" class="input-group-text" id="basic-addon1">+63</span>
                                     <input type="text" class="form-control" placeholder="9912937615" id="gcashNumber"
@@ -199,32 +409,52 @@ foreach($getUserInfo as $userInfo) {
                             </div>
                         </div>
 
+                        <!--REVISIONS 5-->
+                        <!-- Add a bulk order option, as well as a -->
+                        <!-- special discount or vouchers for bulk -->
+                        <!-- orders. Pricing should be different -->
+                        <!-- than for a single product purchase. -->
+                        
+                        <!--In short make a voucher page in admin panel where admin or staff can create a voucher-->
+                        <!--Then customers can add a voucher to their  final payment to have a discount using the voucher code-->
+                        
                         <div class="row g-3 mb-3 d-none" id="gcashContainer">
                             <div class="col-12 text-center">
-                                <div class="d-flex flex-column gap-2 justify-content-center align-items-center">
-                                    <label for="">Scan to pay</label>
-                                    <img style="width: 150px;" src="./admin/assets/images/gcash/gcashQr.jpg" alt="">
-                                    <label for="">Or pay to this number 09915362419 (JE*****R S.)</label>
+                                <div class="d-flex flex-column gap-1 justify-content-center align-items-center">
+                                    <label for="" style="letter-spacing: .1rem;">Scan to pay</label>
+                                    <img style="width: 150px;" src="./admin/assets/images/gcash/gcashQr.png" alt="">
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <label for="">Proof of Payment</label>
+                                <label for="" style="letter-spacing: .1rem;">Proof of Payment</label>
                                 <input style="line-height: 37.5px;" type="file" name="proofOfPayment"
                                     id="proofOfPayment" class="form-control">
                                 <span class="error error_proofOfPayment"
                                     style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
                             </div>
                             <div class="col-sm-6">
-                                <label for="">Reference Number</label>
+                                <label for="" style="letter-spacing: .1rem;">Reference Number</label>
                                 <input style="line-height: 37.5px;" type="tel" name="referenceNum" id="referenceNum"
                                     class="form-control">
                                 <span class="error error_referenceNum"
                                     style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
                             </div>
                         </div>
+                        <hr>
+                      
 
-                        <button class="w-100 btn btn-primary btn-lg" type="submit" id="checkoutBtn">Continue to
-                            checkout</button>
+                        <!--            REVISION NUMBER 8           -->
+                        <!--    Make a note to inform customers     -->
+                        <!--    that they cannot cancel an order    -->
+                        <!--    once it has been confirmed.         -->
+                        <!--    In short, just add  a notice        -->
+                        
+                         
+                            <p class="cancel-note" style ="font-weight: 500; color: #28282B; letter-spacing: .1rem;"><strong style="color: #fe827a;">Important Note:</strong> Once an order has been <strong>confirmed</strong>, it cannot be <strong>cancelled</strong>. Please double check your order before submitting.</p>
+                    
+                        
+                        <button class="w-100 btn btn-primary btn-lg" type="submit" id="checkoutBtn" style="letter-spacing: .1rem;">Complete order</button>
+                        
                     </form>
                 </div>
             </div>
@@ -241,13 +471,13 @@ foreach($getUserInfo as $userInfo) {
 <script>
 $(window).on('load', function() {
     // GET TOTAL
-    var overall_total = 0;
-    $('.price').each(function() {
-        var subtotal = parseFloat($(this).text());
-        overall_total += subtotal;
-    })
+    // var overall_total = 0;
+    // $('.price').each(function() {
+    //     var subtotal = parseFloat($(this).text());
+    //     overall_total += subtotal;
+    // })
 
-    $('.totalPrice').text(parseFloat(overall_total).toFixed(2));
+    // $('.totalPrice').text(parseFloat(overall_total).toFixed(2));
 
     // GET ADDRESS
     var province_value = $('#provinceValue').val();
@@ -326,10 +556,33 @@ $(window).on('load', function() {
 })
 
 $(document).ready(function() {
+    // DATE VALIDATION
+    $(function() {
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+        var maxDate = year + '-' + month + '-' + day;
+        $('#pickUpDate').attr('min', maxDate);
+    });
+    
     // VALIDATIONS
     var $regexFullName = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
     var $regexPhoneNumber = /^9\d{9}$/;
     var $regexReferenceNum = /^[0-9]{13}$/;
+    
+    //try jquery
+  $('#pickUpTime').on('invalid', function() {
+     $('.error_Time').html(
+                '<p class="mt-1 text-wrap lh-sm" style="width: 12rem;"><i class="bi bi-exclamation-circle-fill"></i> The available pick up time is between 8am - 5pm.</p>'
+            );
+            $('#pickUpTime').addClass('border-danger');
+    });
 
     $('#fullName').on('keypress keydown keyup', function() {
         if (!$.trim($(this).val()).match($regexfullName)) {
@@ -410,9 +663,33 @@ $(document).ready(function() {
                 },
                 success: function(data) {
                     $('#city').html(data);
+                   
                 }
+                
+                
             })
-        }
+            $.ajax({
+            url: "./backend/shipping-fee.php",
+                type: "POST",
+                data:{
+                    province_id: province_id,
+                    get_shipping_fee: true,
+                },
+                success: function(data){
+                    var shipping = $('.shipping_fee').text();
+                    var totalprice = $('.totalPrice').text();
+                    totalprice = parseFloat(totalprice) - parseFloat(shipping);
+                    $('.totalPrice').text(totalprice.toFixed(2));
+                    $('.shipping_fee').html(data);
+                    shipping = $('.shipping_fee').text();
+                    totalprice = $('.totalPrice').text();
+                    totalprice = parseFloat(shipping) + parseFloat(totalprice);
+                     $('.totalPrice').text(totalprice.toFixed(2));
+                }
+        
+            })    
+            }
+        
     })
 
     // GET BARANGAY
@@ -481,11 +758,29 @@ $(document).ready(function() {
             $('#pickupDateTimeContainer').addClass('d-none');
             $('#gcashContainer').removeClass('d-none');
             $('#gcashNumberContainer').removeClass('d-none');
+            $('#preferredCourier').val('LALAMOVE');
             $('#paymentMethod')
                 .find('option')
                 .remove()
                 .end()
                 .append('<option value="GCASH">GCASH</option>');
+                var province_id = $('#province').val();
+            $.ajax({
+            url: "./backend/shipping-fee.php",
+                type: "POST",
+                data:{
+                    province_id: province_id,
+                    get_shipping_fee: true,
+                },
+                success: function(data){
+                    $('.shipping_fee').html(data);
+                    var shipping = $('.shipping_fee').text();
+                    var totalprice =  $('.totalPrice').text();
+                    totalprice = parseFloat(shipping) + parseFloat(totalprice);
+                     $('.totalPrice').text(totalprice.toFixed(2))  ;
+                }
+        
+            })    
         } else {
             $('#pickUpDate').attr('required', true);
             $('#pickUpTime').attr('required', true);
@@ -499,15 +794,27 @@ $(document).ready(function() {
             $('#courierContainer').addClass('d-none');
             $('#addressContainer').addClass('d-none');
             $('#pickupDateTimeContainer').removeClass('d-none');
-            $('#gcashContainer').removeClass('d-none');
+            $('#gcashContainer').addClass('d-none');
             $('#gcashNumberContainer').addClass('d-none');
+            $('#lbcModeContainer').addClass('d-none');
+            $('#lbcBranchContainer').addClass('d-none');
+            $('#lbcMode').val('PICK UP');
+            $('#preferredCourier').val('LALAMOVE');
             $('#paymentMethod')
                 .find('option')
                 .remove()
                 .end()
-                .append('<option value="CASH ON HAND/PICKUP (LBC)">CASH ON DELIVERY/PICKUP</option>')
+                .append('<option value="CASH ON DELIVERY/PICKUP">CASH ON DELIVERY/PICKUP</option>')
                 .append('<option value="GCASH">GCASH</option>');
+                var shipping = $('.shipping_fee').text();
+                $('.shipping_fee').text("0.00");
+                    var totalprice = $('.totalPrice').text();
+                    totalprice = parseFloat(totalprice) - parseFloat(shipping);
+                    $('.totalPrice').text(totalprice.toFixed(2))  ;
+                
         }
+        
+        
     })
 
     // COURIER ON CHANGE
@@ -528,7 +835,7 @@ $(document).ready(function() {
 
     // LBC MODE ON CHANGE
     $('#lbcMode').on('change', function(e) {
-        if ($(this).val() == 'PICKUP') {
+        if ($(this).val() == 'PICK UP') {
             $('#lbcBranchContainer').removeClass('d-none');
             $('#lbcBranch').attr('required', true);
         } else {
@@ -559,32 +866,102 @@ $(document).ready(function() {
     $('#checkoutForm').on('submit', function(e) {
         e.preventDefault();
 
-        if ($('#proofOfPayment').val().length != 0) {
-            var user_id = $('#user_id').val();
-            var proofOfPayment = $('#proofOfPayment').val();
-            var image_ext = $('#proofOfPayment').val().split('.').pop().toLowerCase();
+        Swal.fire({
+            icon: 'question',
+            title: 'Hey!',
+            text: 'Are you sure, you want to check this out?',
+            iconColor: '#000',
+            confirmButtonColor: '#000',
+            showConfirmButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Yes",
+            color: '#000',
+            background: '#fe827a',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if ($('#proofOfPayment').val().length != 0) {
+                    var user_id = $('#user_id').val();
+                    var proofOfPayment = $('#proofOfPayment').val();
+                    var image_ext = $('#proofOfPayment').val().split('.').pop().toLowerCase();
 
-            if ($.inArray(image_ext, ['png', 'jpg', 'jpeg']) == -1) {
-                $('.error_proofOfPayment').html(
-                    '<i class="bi bi-exclamation-circle-fill"></i> File not supported!');
-                $('#proofOfPayment').addClass('border-danger');
-            } else {
-                var imageSize = $('#proofOfPayment')[0].files[0].size;
+                    if ($.inArray(image_ext, ['png', 'jpg', 'jpeg']) == -1) {
+                        $('.error_proofOfPayment').html(
+                            '<i class="bi bi-exclamation-circle-fill"></i> File not supported!'
+                        );
+                        $('#proofOfPayment').addClass('border-danger');
+                    } else {
+                        $('.error_proofOfPayment').html('');
+                        $('#proofOfPayment').removeClass('border-danger');
+                        var imageSize = $('#proofOfPayment')[0].files[0].size;
 
-                if (imageSize > 10485760) {
-                    $('.error_proofOfPayment').html(
-                        '<i class="bi bi-exclamation-circle-fill"></i> File too large!');
-                    $('#proofOfPayment').addClass('border-danger');
+                        if (imageSize > 10485760) {
+                            $('.error_proofOfPayment').html(
+                                '<i class="bi bi-exclamation-circle-fill"></i> File too large!'
+                            );
+                            $('#proofOfPayment').addClass('border-danger');
+                        } else {
+                            $('.error_proofOfPayment').html('');
+                            $('#proofOfPayment').removeClass('border-danger');
+                            if ($('.error_fullName').text() == '' && $('.error_contactNumber')
+                                .text() == '' &&
+                                $(
+                                    '.error_proofOfPayment').text() == '' && $(
+                                    '.error_referenceNum').text() ==
+                                '') {
+                                var getForm = $('#checkoutForm')[0];
+                                var form = new FormData(getForm);
+                                form.append('orderTotal', $('.totalPrice').text());
+                                form.append('checkout', true);
+                                $.ajax({
+                                    url: "./backend/checkout.php",
+                                    type: "POST",
+                                    data: form,
+                                    cache: false,
+                                    contentType: false,
+                                    processData: false,
+                                    beforeSend: function() {
+                                        $('#checkoutBtn').prop('disabled', true);
+                                        $('#checkoutBtn').text('Processing...');
+                                    },
+                                    complete: function() {
+                                        $('#checkoutBtn').prop('disabled', false);
+                                        $('#checkoutBtn').text(
+                                            'Continue to checkout');
+                                    },
+                                    success: function(response) {
+                                        if (response.includes('success')) {
+                                            localStorage.setItem('status',
+                                                'ordered');
+                                            location.href = 'index.php';
+                                        } else {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Ooops!',
+                                                text: 'Something went wrong!!',
+                                                iconColor: '#000',
+                                                confirmButtonColor: '#000',
+                                                showConfirmButton: false,
+                                                timer: 3000,
+                                                timerProgressBar: true,
+                                                color: '#000',
+                                                background: '#fe827a',
+                                            })
+                                        }
+                                        console.log(response);
+                                    }
+                                })
+                            }
+                        }
+                    }
                 } else {
-                    if ($('.error_fullName').text() == '' && $('.error_contactNumber').text() == '' &&
-                        $(
-                            '.error_proofOfPayment').text() == '' && $('.error_referenceNum').text() ==
-                        '') {
+                    if ($('.error_fullName').text() == '' && $('.error_contactNumber').text() ==
+                        '' && $(
+                            '.error_proofOfPayment').text() == '' && $('.error_referenceNum')
+                        .text() == '') {
                         var getForm = $('#checkoutForm')[0];
                         var form = new FormData(getForm);
                         form.append('orderTotal', $('.totalPrice').text());
                         form.append('checkout', true);
-
                         $.ajax({
                             url: "./backend/checkout.php",
                             type: "POST",
@@ -624,52 +1001,7 @@ $(document).ready(function() {
                     }
                 }
             }
-        } else {
-            if ($('.error_fullName').text() == '' && $('.error_contactNumber').text() == '' && $(
-                    '.error_proofOfPayment').text() == '' && $('.error_referenceNum').text() == '') {
-                var getForm = $('#checkoutForm')[0];
-                var form = new FormData(getForm);
-                form.append('orderTotal', $('.totalPrice').text());
-                form.append('checkout', true);
-
-                $.ajax({
-                    url: "./backend/checkout.php",
-                    type: "POST",
-                    data: form,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    beforeSend: function() {
-                        $('#checkoutBtn').prop('disabled', true);
-                        $('#checkoutBtn').text('Processing...');
-                    },
-                    complete: function() {
-                        $('#checkoutBtn').prop('disabled', false);
-                        $('#checkoutBtn').text('Continue to checkout');
-                    },
-                    success: function(response) {
-                        if (response.includes('success')) {
-                            localStorage.setItem('status', 'ordered');
-                            location.href = 'index.php';
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Ooops!',
-                                text: 'Something went wrong!!',
-                                iconColor: '#000',
-                                confirmButtonColor: '#000',
-                                showConfirmButton: false,
-                                timer: 3000,
-                                timerProgressBar: true,
-                                color: '#000',
-                                background: '#fe827a',
-                            })
-                        }
-                        console.log(response);
-                    }
-                })
-            }
-        }
+        })
     })
 })
 </script>

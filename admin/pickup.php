@@ -99,28 +99,49 @@ table .btn {
                                             <thead>
                                                 <tr>
                                                     <th>
+                                                        <center>
+                                                        Order ID
+                                                        </center>
+                                                    </th>
+                                                    <th>
+                                                        <center>
                                                         Name
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                        <center>
                                                         Email
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                        <center>
                                                         Contact No.
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                        <center>
                                                         Pick up Date & Time
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                        <center>
                                                         Order Date & Time
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                        <center>
                                                         Order Total
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                        <center>
                                                         Status
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                        <center>
                                                         Action
+                                                        </center>
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -146,31 +167,54 @@ table .btn {
                                             <thead>
                                                 <tr>
                                                     <th>
+                                                        <center>
+                                                        Order ID
+                                                        </center>
+                                                    </th>
+                                                    <th>
+                                                         <center>
                                                         Name
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                         <center>
                                                         Email
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                         <center>
                                                         Contact No.
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                         <center>
                                                         Proof of Payment
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                         <center>
                                                         Pick up Date & Time
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                         <center>
                                                         Order Date & Time
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                         <center>
                                                         Order Total
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                         <center>
                                                         Status
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                         <center>
                                                         Action
+                                                        </center>
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -198,6 +242,7 @@ $(window).on('load', function() {
 
 $(document).ready(function() {
     // DATATABLES
+    $('#pickUpCop').css('text-align', 'center');
     var pickUpCop = $('#pickUpCop').DataTable({
         // "processing": true,
         "serverSide": true,
@@ -218,14 +263,14 @@ $(document).ready(function() {
             }
         },
         "order": [
-            [4, 'asc']
+            [5, 'asc']
         ],
         "lengthMenu": [
             [5, 10, 25, 50, -1],
             [5, 10, 25, 50, "All"]
         ],
     });
-
+ $('#pickUpGcash').css('text-align', 'center');
     var pickUpGcash = $('#pickUpGcash').DataTable({
         // "processing": true,
         "serverSide": true,
@@ -246,7 +291,7 @@ $(document).ready(function() {
             }
         },
         "order": [
-            [5, 'asc']
+            [6, 'asc']
         ],
         "lengthMenu": [
             [5, 10, 25, 50, -1],

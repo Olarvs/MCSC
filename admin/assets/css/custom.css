@@ -3,10 +3,16 @@
 	border-radius: 3px;
 }
 
-.dropdown .dropdown-menu .dropdown-item:hover {
-	background: #fe827a;
-	color: #fff;
+.navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .navbar-dropdown .dropdown-item:hover {
+	background: #fe827a !important;
+	color: #fff !important;
 }
+
+.navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .navbar-dropdown .dropdown-item:hover i{
+	background: #fe827a !important;
+	color: #fff !important;
+}
+
 
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,

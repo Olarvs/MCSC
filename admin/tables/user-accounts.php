@@ -4,7 +4,7 @@ require_once '../../database/config-pdo.php';
 
 $adminId = $_SESSION['margaux_admin_id'];
 
-$column = array('profile_image', 'name', 'email', 'mobile_no', 'gender');
+$column = array('profile_image', 'user_id', 'name', 'email', 'mobile_no', 'gender');
 
 $query = "SELECT * FROM tbl_user WHERE verified = 'VERIFIED'";
 
@@ -46,6 +46,7 @@ $data = array();
 foreach ($result as $row) {
     $sub_array = array();
     $sub_array[] = '<img style="width: 70px; height: 70px; object-fit: cover;" src="../assets/images/profile_image/'.$row['profile_image'].'" alt="">';
+    $sub_array[] = '#'.$row['user_id'];
     $sub_array[] = $row['name'];
     $sub_array[] = $row['email'];
     $sub_array[] = '+63'.$row['mobile_no'];

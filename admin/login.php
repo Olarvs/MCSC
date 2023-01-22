@@ -2,11 +2,13 @@
 session_start();
 if(isset($_SESSION['margaux_admin_id'])) {
     ?>
-    <script>
-        location.href = 'index.php';
-    </script>
-    <?php
+<script>
+location.href = 'index.php';
+</script>
+<?php
 }
+
+unset($_SESSION['admin_change_pass_email']);
 ?>
 
 <!DOCTYPE html>
@@ -129,16 +131,16 @@ body {
                             class="btn btn-block btn-primary btn-lg text-dark font-weight-bold auth-form-btn"
                             id="signInBtn">SIGN IN</button>
                     </div>
-                    <div class="my-2 d-flex justify-content-between align-items-center">
-                        <div class="form-check">
+                    <div class="my-2 d-flex align-items-center justify-content-end">
+                        <!-- <div class="form-check">
                             <label class="form-check-label text-light">
                                 <input type="checkbox" class="form-check-input text-light">
                                 Keep me signed in
                             </label>
-                        </div>
-                        <a href="#" class="auth-link text-light">Forgot password?</a>
+                        </div> -->
+                        <a href="forgot-password.php" class="auth-link text-light justify-self-right" style="font-size: 14px;">Forgot password?</a>
                     </div>
-                    <div class="text-center font-weight-light text-light" style="font-size: 14px;">
+                    <div class="text-center font-weight-light text-light mt-2" style="font-size: 14px;">
                         Don't have an account?
                         <a href="register.php" class="text-primary">Create</a>
                     </div>
@@ -148,6 +150,23 @@ body {
     </div>
 
     <script>
+    $(window).on('load', function() {
+        if (localStorage.getItem('status') == 'password_updated') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Password reset successfully! You can now login.',
+                iconColor: '#000',
+                confirmButtonColor: '#000',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                color: '#000',
+                background: '#fe827a',
+            })
+            localStorage.removeItem('status');
+        }
+    })
     $(document).ready(function() {
         // SHOW PASSWORD
         const passwordInput = document.querySelector("#password")
@@ -211,7 +230,7 @@ body {
                             color: '#000',
                             background: '#fe827a',
                         })
-                    } else  {
+                    } else {
                         Swal.fire({
                             icon: 'error',
                             title: 'Ooops...',

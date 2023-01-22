@@ -46,7 +46,9 @@ if (isset($_POST['register'])) {
                             $mail->Username = 'margauxcscorner@gmail.com';
 
                             //SMTP password
-                            $mail->Password = 'djfkzhifoquvycgz';
+                            $mail->Password = 'uqapxrlzstgpgjkq';
+                            //old djfkzhifoquvycgz
+                            //new uqapxrlzstgpgjkq
 
                             //Enable TLS encryption;
                             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
@@ -66,7 +68,7 @@ if (isset($_POST['register'])) {
                             $otp = substr(number_format(time() * rand(), 0, '', ''), 0, 6);
 
                             $mail->Subject = 'Email verification';
-                            $mail->Body = '<p>Hi, '.$name.'! <br> Your verification code is: <b style="font-size: 30px;">' . $otp . '</b></p>';
+                            $mail->Body = '<p>Your One-Time pin is: <b style="font-size: 30px;">' . $otp . '. </b>Please enter this code within 3 minutes</p><p>Incase you didn\'t request for an OTP, simply ignore this message.</p><p>Have a wonderful day!</p><p><strong>- Margaux Cacti & Succulents Corner</strong></p>';
 
                             $mail->send();
 
@@ -113,7 +115,9 @@ if (isset($_POST['register'])) {
                 $mail->Username = 'margauxcscorner@gmail.com';
 
                 //SMTP password
-                $mail->Password = 'djfkzhifoquvycgz';
+                $mail->Password = 'uqapxrlzstgpgjkq';
+                //old djfkzhifoquvycgz
+                //new uqapxrlzstgpgjkq
 
                 //Enable TLS encryption;
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
@@ -133,7 +137,7 @@ if (isset($_POST['register'])) {
                 $otp = substr(number_format(time() * rand(), 0, '', ''), 0, 6);
 
                 $mail->Subject = 'Email verification';
-                $mail->Body = '<p>Hi, '.$name.'! <br> Your verification code is: <b style="font-size: 30px;">' . $otp . '</b></p>';
+                $mail->Body = '<p>Your One-Time pin is: <b style="font-size: 30px;">' . $otp . '. </b>Please enter this code within 3 minutes</p><p>Incase you didn\'t request for an OTP, simply ignore this message.</p><p>Have a wonderful day!</p><p><strong>- Margaux Cacti & Succulents Corner</strong></p>';
 
                 $mail->send();
 

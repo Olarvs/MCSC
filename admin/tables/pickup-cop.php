@@ -4,7 +4,7 @@ require_once '../../database/config-pdo.php';
 
 $adminId = $_SESSION['margaux_admin_id'];
 
-$column = array('billingFullName', 'billingContactNum', 'email', 'pickupDateTime', 'orderDateTime', 'orderTotal', 'orderStatus');
+$column = array('orderId', 'billingFullName', 'billingContactNum', 'email', 'pickupDateTime', 'orderDateTime', 'orderTotal', 'orderStatus');
 
 $query = "SELECT tbl_order.orderId, tbl_order_address.billingFullName, tbl_order_address.billingContactNum, tbl_user.email,tbl_order.pickupDateTime, tbl_order.orderDateTime, tbl_order.orderTotal, tbl_order.orderStatus
 FROM tbl_order
@@ -60,6 +60,7 @@ $data = array();
 
 foreach ($result as $row) {
     $sub_array = array();
+    $sub_array[] = '#'.$row['orderId'];
     $sub_array[] = $row['billingFullName'];
     $sub_array[] = $row['email'];
     $sub_array[] = '+63'.$row['billingContactNum'];

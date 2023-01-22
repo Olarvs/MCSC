@@ -36,8 +36,10 @@ input::-webkit-inner-spin-button {
     <div class="container  pt-4">
         <div class="row justify-content-between">
             <div class="col-lg-12">
-                <div class="text-center">
-                    <h1><?= $categoryName ?></h1>
+                <div class="text-start">
+                    <h1 style="letter-spacing: .1rem;">Shop <?= $categoryName ?></h1>
+                    <h6 class="text-white" style="letter-spacing: .1rem;">Browse through our selection and find the perfect <span class="text-lowercase"><?= $categoryName ?></span> for your space.</h6>
+                    <!--<h1><?= $categoryName ?></h1>-->
 
                 </div>
             </div>
@@ -115,9 +117,9 @@ input::-webkit-inner-spin-button {
                 <a class="product-item h-100" href="view-product.php?productId=<?= $product['productId'] ?>">
                     <img src="./admin/assets/images/productImages/<?= $product['productThumbnail'] ?>"
                         class="img-fluid product-thumbnail">
-                    <h3 class="product-title"><?= $product['productName'] ?></h3>
-                    <strong class="product-price">P<?= $product['productPrice'] ?></strong>
-                    <p style="font-weight: 600; font-size: 15px;">Stock: <?= $product['productStock']; ?></p>
+                    <h3 class="product-title" style="letter-spacing: .1rem;"><?= $product['productName'] ?></h3>
+                    <strong class="product-price" style="letter-spacing: .1rem;">P<?= $product['productPrice'] ?></strong>
+                    <!--<p style="font-weight: 600; font-size: 15px;">Stock: <?= $product['productStock']; ?></p>-->
 
                     <span class="icon-cross">
                         <img src="./assets/images/cross.svg" class="img-fluid">
@@ -131,10 +133,10 @@ input::-webkit-inner-spin-button {
                 <a class="product-item h-100" href="javascript:void(0)">
                     <img src="./admin/assets/images/productImages/<?= $product['productThumbnail'] ?>"
                         class="img-fluid product-thumbnail">
-                    <h3 class="text-danger fw-bold">NOT AVAILABLE</h3>
-                    <h3 class="product-title"><?= $product['productName'] ?></h3>
-                    <strong class="product-price">P<?= $product['productPrice'] ?></strong>
-                    <h4><strong>Stock: </strong><?= $product['productStock']; ?></h4>
+                    <h3 class="text-danger fw-bold" style="letter-spacing: .1rem;">NOT AVAILABLE</h3>
+                    <h3 class="product-title" style="letter-spacing: .1rem;"><?= $product['productName'] ?></h3>
+                    <strong class="product-price" style="letter-spacing: .1rem;">P<?= $product['productPrice'] ?></strong>
+                    <h4 style="letter-spacing: .1rem;"><strong>Stock: </strong><?= $product['productStock']; ?></h4>
 
                     <span class="icon-cross">
                         <img src="./assets/images/cross.svg" class="img-fluid">
@@ -149,9 +151,9 @@ input::-webkit-inner-spin-button {
                 <a class="product-item h-100" href="javascript:void(0)">
                     <img src="./admin/assets/images/productImages/<?= $product['productThumbnail'] ?>"
                         class="img-fluid product-thumbnail">
-                    <h3 class="text-danger fw-bold">NOT AVAILABLE</h3>
-                    <h3 class="product-title"><?= $product['productName'] ?></h3>
-                    <strong class="product-price">P<?= $product['productPrice'] ?></strong>
+                    <h3 class="text-danger fw-bold" style="letter-spacing: .1rem;">NOT AVAILABLE</h3>
+                    <h3 class="product-title" style="letter-spacing: .1rem;"><?= $product['productName'] ?></h3>
+                    <strong class="product-price" style="letter-spacing: .1rem;">P<?= $product['productPrice'] ?></strong>
 
                     <span class="icon-cross">
                         <img src="./assets/images/cross.svg" class="img-fluid">
@@ -177,5 +179,6 @@ $(document).ready(function() {
 </script>
 
 <?php
+include './components/footer.php';
 include './components/bottom-script.php';
 ?>

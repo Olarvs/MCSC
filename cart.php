@@ -1,10 +1,14 @@
 <?php
 include './components/head_css.php';
-include './components/navbar.php';
+include   './components/navbar.php';
 
 if(!isset($_SESSION['margaux_user_id'])) {
     $_SESSION["margaux_link_user"] = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on" ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-    header('location: login.php');
+    ?>
+    <script>
+        location.href = 'login.php';
+    </script>
+    <?php
 } else {
     if(isset($_SESSION['cartId'])) {
         unset($_SESSION['cartId']);
@@ -25,7 +29,13 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
-
+body {
+    background: url(./assets/images/bgpink.png) no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100%;
+}
 .c_btn_trash {
     background-color: #000 !important;
     border-color: #000 !important;
@@ -55,7 +65,50 @@ input[type=number] {
     background-color: #1b1b1b !important;
     border-color: #1b1b1b !important;
 }
+
+/*PARA SA LOADING SCREEN*/
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 9999;
+  display: none;
+}
+
+.loading-icon {
+  position: absolute;
+  top: 45%;
+  left: 45%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  border: 8px solid #fe827a;
+  border-top: 8px solid #000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/*END NG LOADING SCREEN*/
 </style>
+
+<!--LOADING-->
+
+<div id="loading-screen">
+     <div class="loading-icon">
+    </div>
+</div>
+<!--END LOADING-->
 
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -85,7 +138,7 @@ input[type=number] {
             <div class="col-lg-8">
                 <div class="card mb-4">
                     <div class="card-header py-3">
-                        <h5 class="mb-0">Cart - 2 items</h5>
+                        <h4 class="mb-0" style="letter-spacing: .1rem;">Your cart</h4>
                     </div>
                     <div class="card-body">
                         <?php
@@ -102,7 +155,7 @@ input[type=number] {
                         if(mysqli_num_rows($getCart) <= 0) {
                         $status = 0;
                         ?>
-                        <h6 class="text-center">No items in cart</h6>
+                        <h6 class="text-center" style="letter-spacing: .1rem;">No items in cart</h6>
                         <?php
                         } else {
                         $status = 1;
@@ -115,7 +168,7 @@ input[type=number] {
                                 <div class="bg-image hover-overlay hover-zoom ripple rounded"
                                     data-mdb-ripple-color="light">
                                     <img src="./admin/assets/images//productImages/<?= $row['productThumbnail'] ?>"
-                                        class="w-100" alt="Blue Jeans Jacket" />
+                                        class="w-100" alt="" />
                                     <a href="#!">
                                         <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
                                     </a>
@@ -123,34 +176,218 @@ input[type=number] {
                                 <!-- Image -->
                             </div>
 
-                            <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                            <div class="col-lg-5 col-md-6 mb-4 mb-lg-0 mt-4">
                                 <!-- Data -->
-                                <p><strong><?= $row['productName'] ?></strong><br><span
-                                        class="text-danger"><?= $row['categoryName'] ?></span></p>
-                                <button type="button" class="btn btn-primary btn-sm me-1 mb-2 c_btn_trash removeItem"
+                                <p style="letter-spacing: .1rem;"><strong><?= $row['productName'] ?></strong><br><span
+                                        class="text-danger"><?= $row['categoryName'] ?></span>
+                                </p>
+                                
+                                <!--REVISIONS NUMBER 3-->
+                                <!--Replace the trash/delete icon in the-->
+                                <!--delete function with the "remove"-->
+                                <!--button in the cart page.-->
+                                
+                                <!-- In short, just replace logo with remove text in the button -->
+                                
+                                <!--After revisions-->
+                                
+                                <!--<i class="fa-solid fa-trash-can fa-fw removeItem" data-id="<?= $row['cartId'] ?>"  title="Remove item" style="cursor: pointer;">Remove</i>-->
+                                <button type="button" class="btn btn-danger mt-1 me-1 mb-2 removeItem"
                                     data-id="<?= $row['cartId'] ?>">
-                                    <i class="fas fa-trash"></i>
+                                    <!--<i class="fa-solid fa-trash-can fa-fw"></i>-->
+                                    Remove
                                 </button>
+                                
+                                <!--Before revisions-->
+                                
                                 <!-- Data -->
                             </div>
 
-                            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0 text-start text-md-end">
+                            <div class="col-lg-4 col-md-6 mb-lg-0 text-start text-md-end">
 
                                 <!-- Price -->
-                                <p class="text-start text-md-end">
+                                <!--<p id= "productId" value ="<?= $row['productId'] ?>" ><?= $row['productId'] ?></p>-->
+                                <p class="text-start text-md-end" style="letter-spacing: .1rem;">
                                     Quantity: <strong
-                                        data-price="<?= $row['productQty'] ?>"><?= $row['productQty'] ?></strong><br>
+                                        data-price="<?= $row['productQty'] ?>"><?= $row['productQty'] ?></strong>
+                                        <br>
                                     Price: <strong
                                         data-price="<?= $row['productPrice'] ?>"><?= $row['productPrice'] ?></strong><br>
-                                    Subtotal: <strong data-subtotal="<?= $row['productTotal'] ?>"
+                                    Item Subtotal: <strong data-subtotal="<?= $row['productTotal'] ?>"
                                         class="subTotal"><?= $row['productTotal'] ?></strong>
                                 </p>
                                 <!-- Price -->
-
-                                <button onclick="location.href='update-product.php?cartId=<?= $row['cartId'] ?>'"
-                                    type="button" class="btn btn-primary btn-sm me-1 mb-2 updateQty"
-                                    data-id="<?= $row['cartId'] ?>">Update Quantity
-                                </button>
+                                <div class="d-flex mt-2 w-50">
+                                    <button style="padding: 7px 15px;" type="button"
+                                    class="btn btn-outline-danger prev qtyBtn customBtn me-1 border-danger" onClick ="decrementQuantity(<?= $row['productId'] ?>)"><i class="fa fa-minus"></i></button>
+                                    <!--<input class="form-control number-spinner" name="qty" id="qty" -->
+                                    <!--min="1"><?= $row['productQty'] ?></input>-->
+                                    <input hidden value ="$row" id ="rowContent"/>
+                                    <input class="d-inline text-center py-1 border-solid rounded" style="width:100px;" value ="<?= $row['productQty'] ?>"
+                                     readOnly min ="1" id = "qtyProductValue"></input>
+                                    <button style="padding: 7px 15px;" type="button" onClick ="incrementQuantity(<?= $row['productId'] ?>)"
+                                    class="btn btn-outline-danger next qtyBtn customBtn ms-1 border-danger"><i class="fa fa-plus"></i></button>
+                                </div>
+                                
+                                    
+                                    
+                                <!--REVISIONS NUMBER 2    -->
+                                <!-- Replace the "update quantity" button -->
+                                <!-- with "+" and "-" buttons for updating -->
+                                <!-- quantity in the cart page. -->
+                                
+                                <!--In short replace Update quantity button with "+" and "-" quantity -->
+                                <!--So that it will not require to go to another web page-->
+                                
+                                <!--Before Revisions-->
+                                
+                                <!--<button onclick="location.href='update-product.php?cartId=<?= $row['cartId'] ?>'"-->
+                                <!--    type="button" class="btn btn-primary btn-sm me-1 mb-2 updateQty"-->
+                                <!--    data-id="<?= $row['cartId'] ?>" style="letter-spacing: .1rem;">Update Quantity-->
+                                <!--</button>-->
+                                .
+                                <!--End of Before Revisions-->
+                                
+                                <!--After Revisions-->
+                                
+                            <!--<div class="d-flex flex-column">-->
+                              
+                                <!--<small class="text-dark">Quantity</small>-->
+                            <!--    <div class="d-flex flex-row gap-2 qty-container" style="width: 50%;">-->
+                            <!--        <button style="padding: 7px 15px;" type="button"-->
+                            <!--        class="btn btn-primary prev qtyBtn customBtn" onClick ="decrementQuantity(<?= $row['productId'] ?>)">-</button>-->
+                                    <!--<input class="form-control number-spinner" name="qty" id="qty" -->
+                                    <!--min="1"><?= $row['productQty'] ?></input>-->
+                            <!--        <input hidden value ="$row" id ="rowContent"/>-->
+                            <!--        <input style ="border-color:#fda4af; width:100px;" value ="<?= $row['productQty'] ?>"-->
+                            <!--         readOnly min ="1" id = "qtyProductValue"></input>-->
+                            <!--        <button style="padding: 7px 15px;" type="button" onClick ="incrementQuantity(<?= $row['productId'] ?>)"-->
+                            <!--        class="btn btn-primary next qtyBtn customBtn">+</button>-->
+                            <!--    </div>-->
+                                <!--<button type="submit" class="btn btn-primary mt-sm-0 mt-2 customBtn" id="updateToCartBtn" style="letter-spacing: .1rem;">Update cart</button>-->
+                            <!--</div>-->
+                            
+                                <script>
+                                
+                                //Sample fetch
+                                
+                                //Get all active course
+                                
+                                // const getAllActiveCourse = async () =>{
+                                //     try{
+                                //         const sendRequest = await fetch('../backend/all-course-active.php');
+                                
+                                //         const Response = await sendRequest.json();
+                                //         let Output = '';
+                                
+                                //         Output += ``+Response.length+``;
+                                //         document.querySelector('#countCourse').innerHTML = Output;
+                                //     }catch(e){
+                                //         console.error(e);
+                                //     }
+                                // }
+                                
+                                
+                            //     const saveChanges = async (...params) =>{
+                            //     let btnChangePic = document.getElementById('btnChangePic');
+                            //         Create a FormData object.
+                            //     imageformData = new FormData();
+                               
+                            //     imageformData.append('userId', params[0]);
+                            //     imageformData.append('Image_Url', params[1]);
+                            //     let message = '';
+                            //     try{
+                            //       const fetchResponse = await fetch("../controller/user-edit-pic.php",{
+                            //           method: "POST",
+                            //           body:imageformData,
+                            //       });
+                            //       const receivedStatus = await fetchResponse.json();
+                            //       console.log(receivedStatus)
+                            //       if(receivedStatus.statusCode === 200){
+                            //          alertShowSuccess.removeAttribute("hidden");
+                            //          btnChangePic.setAttribute("disabled", "disabled");
+                            //           alertShowSuccess.classList.add('show');
+                            //           message += ` Updated Succesfully!`
+                                     
+                            //         delayedRemoveAlert = () =>{   
+                            //             alertShowSuccess.classList.remove('show');  
+                            //             alertShowSuccess.setAttribute("hidden", "hidden");
+                            //         }
+                            //         setTimeout(delayedRemoveAlert, 3000);
+                            //       }
+                            //       document.querySelector('#alertSuccessMessage').innerHTML = message;
+                            //     }catch(e){
+                            //       console.log(e);
+                            //     }
+                            //   }
+                            
+                                //form.append('productId', $('#productId').text());
+                                // form.append('categoryId', $('#categoryId').text());
+                                // form.append('productPrice', $('#productPrice').text());
+                                // form.append('productTotal', $('#productTotal').text());
+                                // form.append('updateToCart', true);
+                                
+                                const updateQuantity = async (...params) =>{
+                                    // Create a FormData object.
+                                // imageformData = new FormData();
+                               
+                                // imageformData.append('userId', params[0]);
+                                // imageformData.append('Image_Url', params[1]);
+                                // let message = '';
+                                let formData = new FormData();
+                                formData.append('productId', params[1]);
+                                formData.append('categoryId', $('#categoryId').text());
+                                formData.append('productPrice', $('#productPrice').text());
+                                formData.append('productTotal', $('#productTotal').text());
+                                formData.append('updateToCart', params[0]);
+                                formData.append('UpdateAction', params[0]);
+                                try{
+                                  const fetchResponse = await fetch("./backend/update-cart.php",{
+                                      method: "POST",
+                                      body:formData,
+                                  });
+                                  const getResponse = await fetchResponse.json();
+                                  console.log(getResponse)
+                                  if(getResponse.statusCode === 'success'){
+                                    location.reload()
+                                  }
+                                  
+                                }catch(e){
+                                  console.log(e);
+                                }
+                              }
+                                                                
+                                let quantityValueCart3 = document.getElementById('qtyProductValue').value;
+                                
+                                    const decrementQuantity = (id) =>{
+                                        if(parseFloat(quantityValueCart3) >1){
+                                            quantityValueCart3 = parseFloat(quantityValueCart3)  - parseFloat(1);
+                                        document.getElementById('qtyProductValue').value = quantityValueCart3;
+                                        console.log(quantityValueCart3)
+                                        updateQuantity('Decrement',id)
+                                        }else{
+                                        //quantity must not be below 1
+                                        }
+                                        
+                                       
+                                        document.getElementById("loading-screen").style.display = "none";
+                                        document.getElementById("loading-screen").style.display = "block";
+                                    }
+                                    
+                                    const incrementQuantity = (id) =>{
+                                        // quantityValueCart3 = parseFloat(quantityValueCart3)  + parseFloat(1);
+                                        // document.getElementById('qtyProductValue').value = quantityValueCart3;
+                                        // console.log(quantityValueCart3)
+                                        updateQuantity('Increment',id)
+                                    
+                                        document.getElementById("loading-screen").style.display = "none";
+                                        document.getElementById("loading-screen").style.display = "block";
+                                    }
+                                </script>
+                                
+                                <!--End of after revisions-->
+                                
+                                
                             </div>
                         </div>
                         <!-- Single item -->
@@ -166,24 +403,39 @@ input[type=number] {
             <div class="col-lg-4">
                 <div class="card mb-4">
                     <div class="card-header py-3">
-                        <h5 class="mb-0">Summary</h5>
+                        <h4 class="mb-0" style="letter-spacing: .1rem;">Order Summary</h4>
                     </div>
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
-                            <li
-                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                           
+                             <?php 
+                                    foreach($getCart as $row){
+                                        echo ' 
+                                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                            
+                                        <div>
+                                                 <strong style="letter-spacing: .1rem;">'.$row['productName'].'</strong>
+                                               </div>
+                                            <span style="letter-spacing: .1rem;">₱<strong>'.$row['productTotal'].'</strong></span>
+                                            </li>';
+                                    }
+                                ?>
+                                <hr>
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                               
                                 <div>
-                                    <strong>Total amount</strong>
+                                    
+                                    <strong style="letter-spacing: .1rem;">Subtotal:</strong>
                                 </div>
-                                <span><strong class="totalAmount">0.00</strong></span>
+                                <span style="letter-spacing: .1rem;">₱<strong class="totalAmount">0.00</strong></span>
                             </li>
                         </ul>
 
                         <?php
                         if($status != 0) {
                         ?>
-                        <button type="button" onclick="location.href='checkout.php'" class="btn btn-primary btn-sm btn-block c_btn_qty">
-                            Go to checkout
+                        <button type="button" onclick="location.href='checkout.php'" class="btn btn-primary btn-sm btn-block c_btn_qty" style="letter-spacing: .1rem;">
+                            Check out
                         </button>
                         <?php
                         }
@@ -313,8 +565,10 @@ $(document).ready(function() {
         })
     })
 })
+
 </script>
 
 <?php
+include './components/footer.php';
 include './components/bottom-script.php';
 ?>

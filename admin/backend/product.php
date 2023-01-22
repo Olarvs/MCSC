@@ -3,6 +3,7 @@ session_start();
 require_once '../../database/config.php';
 
 if (isset($_POST['addProduct'])) {
+    $currentDate = date('Y-m-d');
     $addCategoryId = $_POST['addCategoryId'];
     $addProductName = $_POST['addProductName'];
     $addProductDescription = mysqli_real_escape_string($conn, $_POST['addProductDescription']) ?? null;
@@ -19,7 +20,7 @@ if (isset($_POST['addProduct'])) {
         if (mysqli_num_rows($checkIfProductExist) > 0) {
             echo 'exist';
         } else {
-            $insertProduct = mysqli_query($conn, "INSERT INTO tbl_product (categoryId, productName, productDesc, productThumbnail, productPrice, productStock, productStatus) VALUES ('$addCategoryId', '$addProductName', NULLIF('$addProductDescription', ''), 'no_image_available-product.png', '$addProductPrice', '$addProductStock', '$addProductStatus')");
+            $insertProduct = mysqli_query($conn, "INSERT INTO tbl_product (categoryId, productName, productDesc, productThumbnail, productPrice, productStock, productStatus, dateAdded) VALUES ('$addCategoryId', '$addProductName', NULLIF('$addProductDescription', ''), 'no_image_available-product.png', '$addProductPrice', '$addProductStock', '$addProductStatus', '$currentDate')");
 
             if ($insertProduct) {
                 echo 'success';
@@ -31,7 +32,7 @@ if (isset($_POST['addProduct'])) {
 
         $newImageName = uniqid() . '.' . $imageExt;
 
-        $insertProduct = mysqli_query($conn, "INSERT INTO tbl_product (categoryId, productName, productDesc, productThumbnail, productPrice, productStock, productStatus) VALUES ('$addCategoryId', '$addProductName', NULLIF('$addProductDescription', ''), '$newImageName', '$addProductPrice', '$addProductStock', '$addProductStatus')");
+        $insertProduct = mysqli_query($conn, "INSERT INTO tbl_product (categoryId, productName, productDesc, productThumbnail, productPrice, productStock, productStatus, dateAdded) VALUES ('$addCategoryId', '$addProductName', NULLIF('$addProductDescription', ''), '$newImageName', '$addProductPrice', '$addProductStock', '$addProductStatus', '$currentDate')");
 
         if ($insertProduct) {
             move_uploaded_file($addProductThumbnailTmp, '../assets/images/productImages/' . $newImageName);
@@ -69,7 +70,6 @@ if (isset($_POST['editProduct'])) {
     $editProductName = $_POST['editProductName'];
     $editProductDescription = mysqli_real_escape_string($conn, $_POST['editProductDescription']) ?? null;
     $editProductPrice = $_POST['editProductPrice'];
-    $editProductStock = $_POST['editProductStock'];
     $editProductStatus = $_POST['editProductStatus'];
     $editOldProductThumbnail = $_POST['editOldProductThumbnail'];
     $editProductThumbnail = $_FILES['editProductThumbnail']['name'];
@@ -83,7 +83,7 @@ if (isset($_POST['editProduct'])) {
         if (mysqli_num_rows($checkIfProductExist) > 0) {
             echo 'exist';
         } else {
-            $updateProduct = mysqli_query($conn, "UPDATE tbl_product SET productName = '$editProductName', productDesc = NULLIF('$editProductDescription', ''), productPrice = '$editProductPrice', productStock = '$editProductStock', productStatus = '$editProductStatus' WHERE productId = $editProductId");
+            $updateProduct = mysqli_query($conn, "UPDATE tbl_product SET productName = '$editProductName', productDesc = NULLIF('$editProductDescription', ''), productPrice = '$editProductPrice', productStatus = '$editProductStatus' WHERE productId = $editProductId");
 
             if ($updateProduct) {
                 echo 'success';
@@ -100,7 +100,7 @@ if (isset($_POST['editProduct'])) {
 
             $newImageName = uniqid() . '.' . $imageExt;
 
-            $updateProduct = mysqli_query($conn, "UPDATE tbl_product SET productName = '$editProductName', productDesc = NULLIF('$editProductDescription', ''), productPrice = '$editProductPrice', productStock = '$editProductStock', productStatus = '$editProductStatus', productThumbnail = '$newImageName' WHERE productId = $editProductId");
+            $updateProduct = mysqli_query($conn, "UPDATE tbl_product SET productName = '$editProductName', productDesc = NULLIF('$editProductDescription', ''), productPrice = '$editProductPrice', productStatus = '$editProductStatus', productThumbnail = '$newImageName' WHERE productId = $editProductId");
 
             if ($updateProduct) {
                 move_uploaded_file($editProductThumbnailTmp, '../assets/images/productImages/' . $newImageName);

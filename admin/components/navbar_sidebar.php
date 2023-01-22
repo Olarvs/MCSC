@@ -5,7 +5,7 @@
             <div class="navbar-brand-wrapper d-flex justify-content-center">
                 <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
                     <a class="navbar-brand brand-logo" style="font-weight: 700; color: #fe827a;"
-                        href="index.html">Margaux Corner</a>
+                        href="index.php">Margaux Corner</a>
                     <a class="navbar-brand brand-logo-mini" href="index.php"><img src="./assets/images/logo.png"
                             alt="logo" style="object-fit: cover;" /></a>
                     <button class="navbar-toggler navbar-toggler align-self-center" type="button"
@@ -129,14 +129,14 @@
                     ?>
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle d-flex flex-row align-items-center" href="#" data-toggle="dropdown" id="profileDropdown">
-                            <img src="./assets/images/profileImage/<?= $row['profile_image'] ?>" alt="profile" />
-                            <span class="nav-profile-name"><?= $row['name'] ?></span>
+                            <img style="object-fit: cover;" src="./assets/images/profileImage/<?= $row['profile_image'] ?>" alt="profile" />
+                            <span class="nav-profile-name"><?= $row['username'] ?></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
                             aria-labelledby="profileDropdown">
-                            <a class="dropdown-item">
+                            <a class="dropdown-item" href="profile.php">
                                 <i class="mdi mdi-settings text-primary"></i>
-                                Settings
+                                Profile Account
                             </a>
                             <a class="dropdown-item" href="logout.php">
                                 <i class="mdi mdi-logout text-primary"></i>
@@ -157,31 +157,43 @@
         <!-- partial -->
         <div class="container-fluid page-body-wrapper">
             <!-- partial:partials/_sidebar.html -->
-            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <nav class="sidebar sidebar-offcanvas" id="sidebar" style="letter-spacing: .1rem;">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">
-                        <i class="fa-solid fa-house menu-icon"></i>
+                        <a class="nav-link" href="index.php">
+                        <i class="fa-solid fa-fw fa-house menu-icon"></i>
                             <span class="menu-title">Dashboard</span>
                         </a>
                     </li>
+                    <!--Product-->
                     <li class="nav-item">
-                        <a class="nav-link" href="category.php">
-                        <i class="fa-solid fa-seedling menu-icon"></i>
+                        <a class="nav-link" data-toggle="collapse" href="#archive" aria-expanded="false"
+                            aria-controls="archive">
+                            <i class="fa-solid fa-fw fa-clipboard-list menu-icon"></i>
                             <span class="menu-title">Products</span>
+                            <i class="menu-arrow"></i>
                         </a>
+                        <div class="collapse" id="archive">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="category.php"> Category </a>
+                                </li>
+                                <li class="nav-item"> <a class="nav-link" href="archive.php"> Archive
+                                    </a></li>
+                            </ul>
+                        </div>
                     </li>
+                    <!--EndProduct-->
                     <li class="nav-item">
                         <a class="nav-link" href="inventory.php">
-                        <i class="fa-solid fa-boxes-stacked menu-icon"></i>
+                        <i class="fa-solid fa-fw fa-boxes-stacked menu-icon"></i>
                             <span class="menu-title">Inventory</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false"
                             aria-controls="auth">
-                            <i class="fa-solid fa-clipboard-list menu-icon"></i>
-                            <span class="menu-title" style="padding-left: 5px;">Orders</span>
+                            <i class="fa-solid fa-fw fa-clipboard-list menu-icon"></i>
+                            <span class="menu-title">Orders</span>
                             <i class="menu-arrow"></i>
                         </a>
                         <div class="collapse" id="auth">
@@ -194,15 +206,25 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="completed-orders.php">
-                        <i class="fa-solid fa-check-to-slot menu-icon"></i>
+                        <a class="nav-link" href="completed-order.php">
+                        <i class="fa-solid fa-fw fa-check-to-slot menu-icon"></i>
                             <span class="menu-title">Completed Orders</span>
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="cancelled-order.php">
+                        <i class="fa-solid fa-fw fa-rectangle-xmark menu-icon"></i>
+                            <span class="menu-title">Cancelled Orders</span>
+                        </a>
+                    </li>
+
+                    <?php 
+                    if($_SESSION['margaux_role'] == 'ADMIN') {
+                    ?>
+                    <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#accounts" aria-expanded="false"
                             aria-controls="accounts">
-                            <i class="fa-solid fa-address-card menu-icon"></i>
+                            <i class="fa-solid fa-fw fa-address-card menu-icon"></i>
                             <span class="menu-title">Accounts</span>
                             <i class="menu-arrow"></i>
                         </a>
@@ -215,7 +237,10 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item">
+                    <?php
+                    }
+                    ?>
+                    <!-- <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#homepage" aria-expanded="false"
                             aria-controls="homepage">
                             <i class="fa-solid fa-palette menu-icon"></i>
@@ -230,7 +255,29 @@
                                     </a></li>
                             </ul>
                         </div>
+                    </li> -->
+                    <?php
+                    if($_SESSION['margaux_role'] == 'ADMIN') {
+                    ?>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#report" aria-expanded="false"
+                            aria-controls="report">
+                            <i class="fa-solid fa-fw fa-chart-line menu-icon"></i>
+                            <span class="menu-title">Reports</span> 
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="report">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="sales-report.php"> Sales Report</a>
+                                </li>
+                                <li class="nav-item"> <a class="nav-link" href="inventory-report.php"> Inventory Report
+                                    </a></li>
+                            </ul>
+                        </div>
                     </li>
+                    <?php
+                    }
+                    ?>
                 </ul>
             </nav>
             <!-- partial -->

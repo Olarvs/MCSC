@@ -16,7 +16,7 @@ if(isset($_SESSION['margaux_admin_id'])) {
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Majestic Admin</title>
+    <title>Margaux Corner</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="./assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="./assets/vendors/base/vendor.bundle.base.css">
@@ -29,7 +29,7 @@ if(isset($_SESSION['margaux_admin_id'])) {
     <!-- inject:css -->
     <link rel="stylesheet" href="./assets/css/style.css">
     <!-- endinject -->
-    <link rel="shortcut icon" href="./assets/images/favicon.png" />
+    <link rel="shortcut icon" href="./assets/images/logo.png" />
 </head>
 
 <style>
@@ -167,7 +167,8 @@ body {
                     </div>
                     <div class="text-center font-weight-light mt-3 text-light" style="font-size: 14px;">
                         Already have an account?
-                        <a href="login.php" class="text-primary">Login now</a>
+                        <a href="login.php" class="text-primary" id="login">Login now</a>
+                        <style>#login:hover{text-decoration: none;}</style>
                     </div>
                 </form>
             </div>

@@ -137,11 +137,6 @@ location.href = 'category.php';
                             placeholder="Product Price" onkeydown="return event.keyCode !== 69" required>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputUsername1">Product Stock</label>
-                        <input type="number" class="form-control" id="editProductStock" name="editProductStock"
-                            placeholder="Product Stock" onkeydown="return event.keyCode !== 69" required>
-                    </div>
-                    <div class="form-group">
                         <label for="editProductStatus">Product Status</label>
                         <select class="form-select" aria-label="Default select example" id="editProductStatus"
                             name="editProductStatus" style="color: #495057;">
@@ -249,21 +244,6 @@ location.href = 'category.php';
                                 </div>
                             </div>
                         </div>
-                        <?php
-                        if($product['productStock'] == 0) {
-                        ?>
-                        <h6 class="text-danger mt-2">Out of Stock</h6>
-                        <?php
-                        } else if($product['productStock'] < 5) {
-                        ?>
-                        <h6 class="text-warning mt-2">Critical Stock</h6>
-                        <?php
-                        } else {
-                        ?>
-                        <h6 class="text-success mt-2">In Stock</h6>
-                        <?php
-                        }
-                        ?>
                     </div>
                 </div>
             </div>
@@ -392,7 +372,7 @@ $(document).ready(function() {
                     );
                 } else {
                     var form = new FormData(this);
-                    form.append('editProduct', true);
+                    form.append('addProduct', true);
 
                     $.ajax({
                         type: "POST",
@@ -448,7 +428,7 @@ $(document).ready(function() {
             }
         } else {
             var form = new FormData(this);
-            form.append('editProduct', true);
+            form.append('addProduct', true);
 
             $.ajax({
                 type: "POST",

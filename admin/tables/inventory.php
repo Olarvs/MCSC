@@ -13,9 +13,13 @@ foreach($getLowStockValue as $value) {
     $lowStock = $value['lowStock'];
 }
 
-$column = array('productName', 'productStock');
+$column = array('productId', 'productName', 'productStock');
 
-$query = "SELECT * FROM tbl_product WHERE isDeleted = 0";
+$query = "SELECT tbl_category.*, tbl_product.*
+FROM tbl_category
+LEFT JOIN tbl_product
+ON tbl_category.categoryId = tbl_product.categoryId
+WHERE tbl_category.isDeleted = 0 AND tbl_product.isDeleted = 0";
 
 if (isset($_POST['search']['value'])) {
     $query .= '
@@ -58,16 +62,21 @@ foreach ($result as $row) {
         $status = '<label class="badge badge-warning">LOW STOCK</label>';
     }
     $sub_array = array();
+    $sub_array[] = '#'.$row['productId'];
     $sub_array[] = $row['productName'];
     $sub_array[] = intval($row['productStock']);
     $sub_array[] = $status;
-    $sub_array[] = '<div class="d-flex flex-row align-items-center gap-2"> <button type="button" class="btn btn-primary" id="addStock" data-id="'.$row['productId'].'">ADD STOCK</button></div>';
+    $sub_array[] = '<div class="d-flex flex-row align-items-center gap-2"><button type="button" class="btn btn-primary" id="editStock" data-id="'.$row['productId'].'">EDIT</button> <button type="button" class="btn btn-success" id="addStock" data-id="'.$row['productId'].'">ADD STOCK</button></div>';
     $data[] = $sub_array;
 }
 
 function count_all_data($connect)
 {
-    $query = "SELECT * FROM tbl_product WHERE isDeleted = 0";
+    $query = "SELECT tbl_category.*, tbl_product.*
+    FROM tbl_category
+    LEFT JOIN tbl_product
+    ON tbl_category.categoryId = tbl_product.categoryId
+    WHERE tbl_category.isDeleted = 0 AND tbl_product.isDeleted = 0";
     $statement = $connect->prepare($query);
     $statement->execute();
     return $statement->rowCount();

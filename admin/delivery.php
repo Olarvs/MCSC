@@ -75,6 +75,49 @@ table .btn {
     </div>
 </div>
 
+<!-- UPDATE MODAL LBC -->
+<div class="modal fade" id="updateModalDeliveryLBC" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title fs-5" id="exampleModalLabel">UPDATE STATUS</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateFormLBC">
+                    <div class="form-group d-none">
+                        <label for="">Order ID</label>
+                        <input type="text" name="updateOrderIdDeliveryLBC" id="updateOrderIdDeliveryLBC" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="">STATUS</label>
+                        <select class="form-select" id="updateStatusDeliveryLBC" name="updateStatusDeliveryLBC" required
+                            aria-label="Default select example">
+                        </select>
+                    </div>
+                    <div class="form-group d-none" id="feeContainerDeliveryLBC">
+                        <label for="">Shipping Fee</label>
+                        <input type="tel" name="feeDeliveryLBC" id="feeDeliveryLBC" class="form-control">
+                    </div>
+                    <div class="form-group d-none" id="trackingContainerDeliveryLBC">
+                        <label for="">Tracking Number</label>
+                        <input type="tel" name="trackingDeliveryLBC" id="trackingDeliveryLBC" class="form-control">
+                    </div>
+                    <div class="form-group d-none" id="reasonContainerDeliveryLBC">
+                        <label for="">REASON</label>
+                        <textarea style="resize: none;" placeholder="Reason" id="reasonDeliveryLBC" name="reasonDeliveryLBC"
+                            cols="10" rows="3" class="form-control"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="updateFormLBC" class="btn btn-primary" id="updateBtnLBC">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="main-panel">
     <div class="content-wrapper">
         <div class="row">
@@ -101,9 +144,9 @@ table .btn {
                             <a class="nav-link active" aria-current="page" href="#lalamove"
                                 data-toggle="tab">Lalamove</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#lbcExpress" data-toggle="tab">LBC Express</a>
-                        </li>
+                        <!--<li class="nav-item">-->
+                        <!--    <a class="nav-link" href="#lbcExpress" data-toggle="tab">LBC Express</a>-->
+                        <!--</li>-->
                     </ul>
 
                     <div class="tab-content pt-3 px-0">
@@ -125,31 +168,54 @@ table .btn {
                                             <thead>
                                                 <tr>
                                                     <th>
+                                                        <center>
+                                                        Order ID
+                                                        </center>
+                                                    </th>
+                                                    <th>
+                                                        <center>
                                                         Name
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                        <center>
                                                         Email
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                        <center>
                                                         Contact No.
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                        <center>
                                                         Proof of Payment
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                        <center>
                                                         Address
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                        <center>
                                                         Order Date & Time
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                        <center>
                                                         Order Total
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                        <center>
                                                         Order Status
+                                                        </center>
                                                     </th>
                                                     <th>
+                                                        <center>
                                                         Action
+                                                        </center>
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -192,6 +258,9 @@ table .btn {
                                                         <table class="table table-striped" id="lbcPickUp">
                                                             <thead>
                                                                 <tr>
+                                                                    <th>
+                                                                        Order ID
+                                                                    </th>
                                                                     <th>
                                                                         Name
                                                                     </th>
@@ -250,31 +319,54 @@ table .btn {
                                                             <thead>
                                                                 <tr>
                                                                     <th>
+                                                                        <center>
+                                                                        Order ID
+                                                                        </center>
+                                                                    </th>
+                                                                    <th>
+                                                                        <center>
                                                                         Name
+                                                                        </center>
                                                                     </th>
                                                                     <th>
+                                                                        <center>
                                                                         Email
+                                                                        </center>
                                                                     </th>
                                                                     <th>
+                                                                        <center>
                                                                         Contact No.
+                                                                        </center>
                                                                     </th>
                                                                     <th>
+                                                                        <center>
                                                                         Proof of Payment
+                                                                        </center>
                                                                     </th>
                                                                     <th>
+                                                                        <center>
                                                                         Address
+                                                                        </center>
                                                                     </th>
                                                                     <th>
+                                                                        <center>
                                                                         Order Date & Time
+                                                                        </center>
                                                                     </th>
                                                                     <th>
+                                                                        <center>
                                                                         Order Total
+                                                                        </center>
                                                                     </th>
                                                                     <th>
+                                                                        <center>
                                                                         Order Status
+                                                                        </center>
                                                                     </th>
                                                                     <th>
+                                                                        <center>
                                                                         Action
+                                                                        </center>
                                                                     </th>
                                                                 </tr>
                                                             </thead>
@@ -313,6 +405,7 @@ $(window).on('load', function() {
 })
 $(document).ready(function() {
     // DATATABLES
+    $('#lalamoveGcash').css('text-align', 'center');
     var lalamoveGcash = $('#lalamoveGcash').DataTable({
         // "processing": true,
         "serverSide": true,
@@ -333,14 +426,14 @@ $(document).ready(function() {
             }
         },
         "order": [
-            [5, 'asc']
+            [6, 'asc']
         ],
         "lengthMenu": [
             [5, 10, 25, 50, -1],
             [5, 10, 25, 50, "All"]
         ],
     });
-
+ $('#lbcPickUp').css('text-align', 'center');
     var lbcPickUp = $('#lbcPickUp').DataTable({
         // "processing": true,
         "serverSide": true,
@@ -361,14 +454,14 @@ $(document).ready(function() {
             }
         },
         "order": [
-            [5, 'asc']
+            [6, 'asc']
         ],
         "lengthMenu": [
             [5, 10, 25, 50, -1],
             [5, 10, 25, 50, "All"]
         ],
     });
-
+ $('#lbcDoor2Door').css('text-align', 'center');
     var lbcDoor2Door = $('#lbcDoor2Door').DataTable({
         // "processing": true,
         "serverSide": true,
@@ -389,7 +482,7 @@ $(document).ready(function() {
             }
         },
         "order": [
-            [5, 'asc']
+            [6, 'asc']
         ],
         "lengthMenu": [
             [5, 10, 25, 50, -1],
@@ -488,6 +581,34 @@ $(document).ready(function() {
         }
     })
 
+    // ON CHANGE LBC
+    $('#updateStatusDeliveryLBC').on('change', function(e) {
+        e.preventDefault();
+
+        if ($(this).val() == 'CANCELLED') {
+            $('#reasonContainerDeliveryLBC').removeClass('d-none');
+            $('#feeContainerDeliveryLBC').addClass('d-none');
+            $('#trackingContainerDeliveryLBC').addClass('d-none');
+            $('#reasonDeliveryLBC').attr('required', true);
+            $('#feeDeliveryLBC').attr('required', false);
+            $('#trackingDeliveryLBC').attr('required', false);
+        } else if ($(this).val() == 'OUT FOR DELIVERY') {
+            $('#reasonContainerDeliveryLBC').addClass('d-none');
+            $('#feeContainerDeliveryLBC').removeClass('d-none');
+            $('#trackingContainerDeliveryLBC').removeClass('d-none');
+            $('#reasonDeliveryLBC').attr('required', false);
+            $('#feeDeliveryLBC').attr('required', true);
+            $('#trackingDeliveryLBC').attr('required', true);
+        } else {
+            $('#reasonContainerDeliveryLBC').addClass('d-none');
+            $('#feeContainerDeliveryLBC').addClass('d-none');
+            $('#trackingContainerDeliveryLBC').addClass('d-none');
+            $('#reasonDeliveryLBC').attr('required', false);
+            $('#feeDeliveryLBC').attr('required', false);
+            $('#trackingDeliveryLBC').attr('required', false);
+        }
+    })
+
     // RETAIN TAB
     $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
         localStorage.setItem('activeTabDelivery', $(e.target).attr('href'));
@@ -575,6 +696,76 @@ $(document).ready(function() {
         })
     })
 
+    // UPDATE LBC
+    $(document).on('click', '#get_updateLBC', function(e) {
+        e.preventDefault();
+
+        var orderId = $(this).data('id');
+
+        var form = new FormData();
+        form.append('get_status', true);
+        form.append('orderId', orderId);
+
+        $.ajax({
+            type: "POST",
+            url: "./backend/orders.php",
+            data: form,
+            dataType: "text",
+            contentType: false,
+            processData: false,
+            cache: false,
+            success: function(response) {
+                var obj = JSON.parse(response);
+                // console.log(response);
+                if (obj.orderStatus == 'PENDING') {
+                    $('#updateModalDeliveryLBC').modal("show");
+                    $('#updateOrderIdDeliveryLBC').val(obj.orderId);
+                    $('#updateStatusDeliveryLBC')
+                        .find('option')
+                        .remove()
+                        .end()
+                        .append('<option value="">SELECT STATUS</option>')
+                        .append('<option value="CONFIRMED">CONFIRMED</option>')
+                        .append('<option value="CANCELLED">CANCELLED</option>');
+                } else if (obj.orderStatus == 'CONFIRMED') {
+                    $('#updateModalDeliveryLBC').modal("show");
+                    $('#updateOrderIdDeliveryLBC').val(obj.orderId);
+                    $('#updateStatusDeliveryLBC')
+                        .find('option')
+                        .remove()
+                        .end()
+                        .append('<option value="">SELECT STATUS</option>')
+                        .append(
+                            '<option value="PACKED (READY TO SHIP)">PACKED (READY TO SHIP)</option>'
+                            )
+                        .append('<option value="CANCELLED">CANCELLED</option>');
+                } else if (obj.orderStatus == 'PACKED (READY TO SHIP)') {
+                    $('#updateModalDeliveryLBC').modal("show");
+                    $('#updateOrderIdDeliveryLBC').val(obj.orderId);
+                    $('#updateStatusDeliveryLBC')
+                        .find('option')
+                        .remove()
+                        .end()
+                        .append('<option value="">SELECT STATUS</option>')
+                        .append(
+                            '<option value="OUT FOR DELIVERY">OUT FOR DELIVERY</option>')
+                        .append('<option value="CANCELLED">CANCELLED</option>');
+                } else if (obj.orderStatus == 'OUT FOR DELIVERY') {
+                    $('#updateModalDeliveryLBC').modal("show");
+                    $('#updateOrderIdDeliveryLBC').val(obj.orderId);
+                    $('#updateStatusDeliveryLBC')
+                        .find('option')
+                        .remove()
+                        .end()
+                        .append('<option value="">SELECT STATUS</option>')
+                        .append('<option value="COMPLETED">COMPLETED</option>')
+                        .append('<option value="CANCELLED">CANCELLED</option>');
+                }
+
+            }
+        })
+    })
+
     // SUBMIT UPDATE
     $('#updateForm').on('submit', function(e) {
         e.preventDefault();
@@ -601,6 +792,66 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.includes('success')) {
                     $('#updateModalDelivery').modal("hide");
+                    lalamoveGcash.ajax.reload(null, false);
+                    lbcPickUp.ajax.reload(null, false);
+                    lbcDoor2Door.ajax.reload(null, false);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Order updated successfully!',
+                        iconColor: '#000',
+                        confirmButtonColor: '#000',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        color: '#000',
+                        background: '#fe827a',
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ooops!',
+                        text: 'Something went wrong!',
+                        iconColor: '#000',
+                        confirmButtonColor: '#000',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        color: '#000',
+                        background: '#fe827a',
+                    })
+                }
+                console.log(response);
+            }
+        })
+    })
+
+    // SUBMIT UPDATE LBC
+    $('#updateFormLBC').on('submit', function(e) {
+        e.preventDefault();
+
+        var form = new FormData(this);
+        form.append('updateOrderDeliveryLBC', true);
+
+        $.ajax({
+            type: "POST",
+            url: "./backend/orders.php",
+            data: form,
+            dataType: "text",
+            contentType: false,
+            processData: false,
+            cache: false,
+            beforeSend: function() {
+                $('#updateBtnLBC').attr('disabled', true);
+                $('#updateBtnLBC').text('Loading...');
+            },
+            complete: function() {
+                $('#updateBtnLBC').attr('disabled', false);
+                $('#updateBtnLBC').text('Update');
+            },
+            success: function(response) {
+                if (response.includes('success')) {
+                    $('#updateModalDeliveryLBC').modal("hide");
                     lalamoveGcash.ajax.reload(null, false);
                     lbcPickUp.ajax.reload(null, false);
                     lbcDoor2Door.ajax.reload(null, false);

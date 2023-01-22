@@ -41,11 +41,11 @@ body {
 
     <div class="container  bg-dark login pt-1 mb-5">
 
-        <h1 class="text-center p-3 mb-3 rounded" style="color: #fe827a; font-weight: bold;">VERIFICATION</h1>
+        <h1 class="text-center p-3 mb-3 rounded" style="color: #fe827a; font-weight: bold; letter-spacing: .1rem;">VERIFICATION</h1>
         <form class="px-3 mb-3" id="verify_form">
             <!-- Email input -->
             <div class="form-outline mb-2">
-                <label class="form-label" for="form2Example1">Email address</label>
+                <label class="form-label" for="form2Example1" style="letter-spacing: .1rem;">Email address</label>
                 <input type="email" name="email" id="email" class="form-control"
                     value="<?= $_SESSION['update_email']; ?>" readonly />
 
@@ -53,13 +53,13 @@ body {
 
             <!-- Password input -->
             <div class="form-outline mb-4">
-                <label class="form-label" for="otp">Verification Code</label>
+                <label class="form-label" for="otp" style="letter-spacing: .1rem;">Verification Code</label>
                 <input type="tel" id="otp" name="otp" minlength="6" maxlength="6" class="form-control" />
             </div>
 
             <!-- Submit button -->
             <button type="submit" class="btn text-dark btn-block mb-2 px-4 w-100 custom_btn"
-                id="verify_btn">VERIFY</button>
+                id="verify_btn" style="letter-spacing: .1rem;">VERIFY</button>
         </form>
 
     </div>

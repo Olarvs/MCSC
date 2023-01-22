@@ -31,7 +31,7 @@ input::-webkit-inner-spin-button {
 }
 
 .customContainer {
-    width: 900px;
+    width: 1000px;
     max-width: 95%;
 }
 
@@ -67,49 +67,69 @@ $maxStock = 0;
 foreach($getProduct as $row) {
 $maxStock = $row['productStock'];
 ?>
-<div class="container my-5 customContainer">
+<div class="container my-4 customContainer">
     <div class="row">
         <form id="updateToCartForm">
-            <div class="card rounded p-3 cardPlant">
-                <h1 class="text-uppercase fw-bold"><?= $row['productName'] ?></h1>
-                <div class="row">
+            <div class="card rounded p-3 cardPlant shadow-lg">
+                <!--<h1 class="text-uppercase fw-bold"><?= $row['productName'] ?></h1>-->
+                <div class="row justify-content-center">
                     <div class="col-sm-6">
-                        <img src="./admin/assets/images/productImages/<?= $row['productThumbnail'] ?>" alt=""
-                            style="width: 100%; height: 300px; object-fit: cover;">
+                        <!--<img src="./admin/assets/images/productImages/<?= $row['productThumbnail'] ?>" alt=""-->
+                        <!--    style="width: 100%; height: 300px; object-fit: cover;">-->
+                        <img onclick="window.open('./admin/assets/images/productImages/<?= $row['productThumbnail'] ?>')"
+                            src="./admin/assets/images/productImages/<?= $row['productThumbnail'] ?>" alt=""
+                            class="d-block w-100 p-3">
                     </div>
+                    
                     <div class="col-sm-6 mt-3 mt-sm-0">
-                        <div class="descSection">
-                            <h6 class="text-start"><?= $row['productDesc'] ?></h6>
+                        <div class="descSection mt-2">
+                            <h1 class="fw-bold" style="letter-spacing: .1rem;"><?= $row['productName'] ?></h1> 
+                            
                             <h6 class="text-start d-none" id="productId"><?= $row['productId'] ?></h6>
                             <h6 class="text-start d-none" id="categoryId"><?= $row['categoryId'] ?></h6>
+                            
                             <div class="d-flex flex-column">
-                                <h5 class="mt-2"><small>Price:</small> <strong>&#8369;</strong><strong
-                                        id="productPrice"><?= $row['productPrice'] ?></strong></h5>
-                                <h6>
-                                    <small>Available Stock:</small> <?= $row['productStock'] ?>
-                                </h6>
-                                <h4><small>Total:</small> <strong>&#8369;</strong><strong
+                                <h4 class="mt-3 text-dark" style="letter-spacing: .1rem;"><strong>&#8369;</strong><strong
+                                        id="productPrice"><?= $row['productPrice'] ?></strong></h4>
+                                
+                                <small class="text-dark">Quantity</small>
+                                <div class="d-flex flex-row gap-2 qty-container mb-4" style="width: 50%;">
+                                    <button style="padding: 7px 15px;" type="button"
+                                    class="btn btn-primary prev qtyBtn customBtn">-</button>
+                                    <input class="form-control number-spinner" type="number" name="qty" id="qty" value="1"
+                                    min="1" readonly>
+                                    <button style="padding: 7px 15px;" type="button"
+                                    class="btn btn-primary next qtyBtn customBtn">+</button>
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-sm-0 mt-2 customBtn" id="updateToCartBtn" style="letter-spacing: .1rem;">Update cart</button>
+                                <h4 class="text-dark mt-3"><small>Sub-total:</small> <strong>&#8369;</strong><strong
                                         id="productTotal"><?= $productTotal ?></strong>
                                 </h4>
+                                <h6 class="mt-4 text-dark">
+                                    <small>Available Stock:</small> <?= $row['productStock'] ?>
+                                </h6>
+                                <h5 class="text-start text-dark" style="letter-spacing: .1rem;"><?= ucfirst($row['productDesc']); ?></h5>
+                                
+                                
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="d-flex flex-column flex-sm-row justify-content-between">
-                        <div class="d-flex flex-row gap-2 qty-container">
-                            <button style="padding: 7px 15px;" type="button"
-                                class="btn btn-primary prev qtyBtn customBtn">-</button>
-                            <input class="form-control number-spinner" type="number" name="qty" id="qty"
-                                value="<?= $productQty ?>" min="1" readonly>
-                            <button style="padding: 7px 15px;" type="button"
-                                class="btn btn-primary next qtyBtn customBtn">+</button>
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-sm-0 mt-2 customBtn" id="updateToCartBtn">Update
-                            to
-                            Cart</button>
-                    </div>
-                </div>
+                 </div>
+                <!--<div class="row mt-3">-->
+                <!--    <div class="d-flex flex-column flex-sm-row justify-content-between">-->
+                <!--        <div class="d-flex flex-row gap-2 qty-container">-->
+                <!--            <button style="padding: 7px 15px;" type="button"-->
+                <!--                class="btn btn-primary prev qtyBtn customBtn">-</button>-->
+                <!--            <input class="form-control number-spinner" type="number" name="qty" id="qty"-->
+                <!--                value="<?= $productQty ?>" min="1" readonly>-->
+                <!--            <button style="padding: 7px 15px;" type="button"-->
+                <!--                class="btn btn-primary next qtyBtn customBtn">+</button>-->
+                <!--        </div>-->
+                <!--        <button type="submit" class="btn btn-primary mt-sm-0 mt-2 customBtn" id="updateToCartBtn">Update-->
+                <!--            to-->
+                <!--            Cart</button>-->
+                <!--    </div>-->
+                <!--</div>-->
             </div>
         </form>
     </div>

@@ -55,7 +55,7 @@ table .btn {
     </div>
 </div>
 
-<!-- EDIT MODAL -->
+<!-- ADD STOCK -->
 <div class="modal fade addStockModal" id="addStockModal" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
@@ -88,6 +88,44 @@ table .btn {
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="submit" form="addStockForm" class="btn btn-primary" id="addStockBtn">Add stock</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- EDIT STOCK -->
+<div class="modal fade editStockModal" id="editStockModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title fs-5 h2" id="exampleModalLabel">Edit Stock</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editStockForm" enctype="multipart/form-data">
+                    <div class="form-group d-none">
+                        <label for="exampleInputUsername1">Product ID</label>
+                        <input type="text" class="form-control" id="editProductId" name="editProductId"
+                            placeholder="Category Id" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Product Name</label>
+                        <input type="text" class="form-control" id="editProductName" name="editProductName"
+                            placeholder="Product name" readonly required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Stock</label>
+                        <input type="text" class="form-control" id="editProductStock" name="editProductStock"
+                            placeholder="Product stock" required>
+                        <span class="error errorEditProductStock"
+                            style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="editStockForm" class="btn btn-primary" id="editStockBtn">Edit stock</button>
             </div>
         </div>
     </div>
@@ -154,17 +192,30 @@ table .btn {
                             <table class="table table-striped" id="stocks" style="width: 100%;">
                                 <thead>
                                     <tr>
+                                    <th>
+                                        <center>
+                                            Product ID
+                                            </center>
+                                        </th>
                                         <th>
+                                            <center>
                                             Product
+                                            </center>
                                         </th>
                                         <th>
+                                            <center>
                                             Stock
+                                            </center>
                                         </th>
                                         <th>
+                                            <center>
                                             Status
+                                            </center>
                                         </th>
                                         <th>
+                                            <center>
                                             Action
+                                            </center>
                                         </th>
                                     </tr>
                                 </thead>
@@ -182,7 +233,6 @@ table .btn {
 <script>
 $(window).on('load', function() {
     $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
-
     if (localStorage.getItem('status') == 'updateStockSettings') {
         Swal.fire({
             icon: 'success',
@@ -259,7 +309,32 @@ $(document).ready(function() {
         }
     })
 
+    $('#productStock').on('keypress keydown keyup', function() {
+        if (!$.trim($(this).val()).match($regexNumber)) {
+            $('.errorProductStock').html(
+                '<i class="bi bi-exclamation-circle-fill"></i> Invalid format! No letter/symbol should be included.'
+            );
+            $('#productStock').addClass('border-danger');
+        } else {
+            $('.errorProductStock').text('');
+            $('#productStock').removeClass('border-danger');
+        }
+    })
+
+    $('#editProductStock').on('keypress keydown keyup', function() {
+        if (!$.trim($(this).val()).match($regexNumber)) {
+            $('.errorEditProductStock').html(
+                '<i class="bi bi-exclamation-circle-fill"></i> Invalid format! No letter/symbol should be included.'
+            );
+            $('#editProductStock').addClass('border-danger');
+        } else {
+            $('.errorEditProductStock').text('');
+            $('#editProductStock').removeClass('border-danger');
+        }
+    })
+
     // DATATABLES
+    $('#stocks').css('text-align', 'center');
     var datatable = $('#stocks').DataTable({
         // "processing": true,
         "serverSide": true,
@@ -275,10 +350,10 @@ $(document).ready(function() {
             }
         },
         "order": [
-            [1, 'asc']
+            [2, 'asc']
         ],
         "aaSorting": [
-            [1, "asc"]
+            [2, "asc"]
         ],
         "lengthMenu": [
             [5, 10, 25, 50, -1],
@@ -365,6 +440,30 @@ $(document).ready(function() {
         })
     })
 
+     // Get Edit Stock
+     $(document).on('click', '#editStock', function(e) {
+        e.preventDefault();
+
+        var productId = $(this).data('id');
+
+        $.ajax({
+            url: './backend/inventory.php',
+            type: 'POST',
+            data: {
+                'getEditProductStock': true,
+                'productId': productId,
+            },
+            success: function(response) {
+                var obj = JSON.parse(response);
+                $(".editStockModal").modal("show");
+                $("#editProductId").val(obj.productId);
+                $("#editProductName").val(obj.productName);
+                $("#editProductStock").val(obj.productStock);
+                console.log(response);
+            }
+        })
+    })
+
     // Update Category
     $('#addStockForm').on('submit', function(e) {
         e.preventDefault();
@@ -411,56 +510,32 @@ $(document).ready(function() {
         })
     })
 
-    // ARCHIVE CATEGORY
-    $('.archiveCategory').on('click', function(e) {
-        e.preventDefault();
-
-        var archiveCategoryId = $(this).data('id');
-
-        $('#deleteCategoryId').val(archiveCategoryId);
-        $('#deleteCategoryModal').modal('show');
-
-    })
-
-    $('#deleteCategoryForm').on('submit', function(e) {
+    $('#editStockForm').on('submit', function(e) {
         e.preventDefault();
 
         var form = new FormData(this);
-        form.append('deleteCategory', true);
+        form.append('editStock', true);
 
         $.ajax({
             type: "POST",
-            url: "./backend/category.php",
+            url: "./backend/inventory.php",
             data: form,
             dataType: 'text',
             contentType: false,
             cache: false,
             processData: false,
             beforeSend: function() {
-                $('#deleteCategoryBtn').attr('disabled', true);
-                $('#deleteCategoryBtn').text('Processing');
+                $('#editStockBtn').attr('disabled', true);
+                $('#editStockBtn').text('Processing');
             },
             complete: function() {
-                $('#deleteCategoryBtn').attr('disabled', false);
-                $('#deleteCategoryBtn').text('Yes');
+                $('#editStockBtn').attr('disabled', false);
+                $('#editStockBtn').text('Edit stock');
             },
             success: function(response) {
                 if (response.includes('success')) {
-                    localStorage.setItem('status', 'archived');
+                    localStorage.setItem('status', 'update');
                     location.reload();
-                } else if (response.includes('invalid')) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Failed',
-                        text: 'Invalid category!',
-                        iconColor: '#000',
-                        confirmButtonColor: '#000',
-                        showConfirmButton: false,
-                        color: '#000',
-                        background: '#fe827a',
-                        timer: 5000,
-                        timerProgressBar: true,
-                    });
                 } else {
                     Swal.fire({
                         icon: 'error',

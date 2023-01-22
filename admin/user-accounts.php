@@ -1,6 +1,14 @@
 <?php 
 include './components/head_css.php'; 
 include './components/navbar_sidebar.php'; 
+
+if($_SESSION['margaux_role'] != 'ADMIN') {
+    ?>
+    <script>
+        location.href = 'index.php';
+    </script>
+    <?php
+}
 ?>
 
 <style>
@@ -35,19 +43,34 @@ table .btn {
                             <thead>
                                 <tr>
                                     <th>
+                                        <center>
                                         Profile Image
+                                        </center>
                                     </th>
                                     <th>
+                                        <center>
+                                        User ID
+                                        </center>
+                                    </th>
+                                    <th>
+                                        <center>
                                         Name
+                                        </center>
                                     </th>
                                     <th>
+                                        <center>
                                         Email
+                                        </center>
                                     </th>
                                     <th>
+                                        <center>
                                         Mobile Number
+                                        </center>
                                     </th>
                                     <th>
+                                        <center>
                                         Gender
+                                        </center>
                                     </th>
                                 </tr>
                             </thead>
@@ -63,6 +86,7 @@ table .btn {
 
 <script>
 $(document).ready(function() {
+    $('#tableData').css('text-align', 'center');
     var dataTable = $('#tableData').DataTable({
         // "processing": true,
         "serverSide": true,

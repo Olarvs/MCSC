@@ -113,6 +113,23 @@ if(!isset($_GET['id'])) {
                                 <h6><strong>Status:</strong> <span class="badge text-bg-primary"
                                         style="background: #f0ad4e; font-weight: 600; border-radius: 3px;"><?= $row['orderStatus'] ?></span>
                                 </h6>
+                                <?php
+                                if($row['orderStatus'] == 'CANCELLED') {
+                                ?>  
+                                <h6><strong>Reason:</strong> <span><?= $row['reason'] ?></span>
+                                </h6>
+                                <?php
+                                }
+                                ?>
+                                <?php
+                                if($row['orderStatus'] == 'COMPLETED') {
+                                ?>  
+                                <h6><strong>Date & Time Completed:</strong> <span class="badge text-bg-primary"
+                                        style="background: #fe827a; font-weight: 600; border-radius: 3px;"><?= date('F d, Y h:i A', strtotime($row['orderDateTimeCompleted'])) ?></span>
+                                </h6>
+                                <?php
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-12 mt-4">

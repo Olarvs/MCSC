@@ -23,6 +23,7 @@ body {
     background-attachment: fixed;
     height: 100vh;
 }
+
 .custom_cont {
     max-width: 90%;
 }
@@ -59,7 +60,7 @@ body {
             <div class="row justify-content-center">
 
 
-                <div class="col-md-8 col-lg-10 p-4 bg-dark text-white rounded custom_cont">
+                <div class="col-md-12 col-lg-12 p-4 bg-dark text-white rounded custom_cont">
                     <?php
                     $get_user_info = mysqli_query($conn, "SELECT * FROM tbl_user WHERE user_id = $user_id");
 
@@ -74,15 +75,15 @@ body {
                         <div class="row">
                             <div class="col-lg-3 border-right">
                                 <div class="d-flex flex-column align-items-center text-center mb-3 ">
-                                    <img style="object-fit: cover;" class="rounded-circle mt-2 mt-lg-5" width="150px" height="150px"
-                                        src="./assets/images/profile_image/<?= $row['profile_image'] ?>">
-                                    <span class="font-weight-bold"><?= $row['name'] ?></span>
-                                    <span class="text-white-50"><?= $row['email'] ?></span>
+                                    <img style="object-fit: cover;" class="rounded-circle mt-2 mt-lg-5" width="150px"
+                                        height="150px" src="./assets/images/profile_image/<?= $row['profile_image'] ?>">
+                                    <span class="font-weight-bold" style="letter-spacing: .1rem;"><?= $row['name'] ?></span>
+                                    <span class="text-white-50" style="letter-spacing: .1rem;"><?= $row['email'] ?></span>
                                     <?php
                                     if($row['profile_image'] != 'profile.png') {
                                     ?>
                                     <button type="button" class="btn btn-danger mb-2"
-                                        style="padding: 3px 8px; font-size: 13px;"
+                                        style="padding: 3px 8px; font-size: 13px; letter-spacing: .1rem;"
                                         id="remove_profile_image">Remove</button>
                                     <?php
                                     }
@@ -92,17 +93,17 @@ body {
                                     <span class="error error_image"
                                         style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
                                     <button type="button" class="btn btn-primary mb-2"
-                                        style="padding: 3px 8px; font-size: 13px; color: #000;"
+                                        style="padding: 3px 8px; font-size: 13px; color: #000; letter-spacing: .1rem;"
                                         id="update_image">Update</button>
                                 </div>
                             </div>
                             <div class="col-lg-5 border-right">
                                 <div class="px-3">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h4 class="text-right">Profile Settings</h4>
+                                        <h4 class="text-right" style="letter-spacing: .1rem;">Profile Settings</h4>
                                     </div>
                                     <div class="row mt-2">
-                                        <div class="col-md-12"><label class="labels">Name</label><input type="text"
+                                        <div class="col-md-12"><label class="labels" style="letter-spacing: .1rem;">Name</label><input type="text"
                                                 class="form-control" placeholder="Name" value="<?= $row['name'] ?>"
                                                 id="name" name="name" required>
                                             <span class="error error_name"
@@ -111,41 +112,42 @@ body {
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label class="labels">Birthday</label>
+                                            <label class="labels" style="letter-spacing: .1rem;">Birthday</label>
                                             <input type="date" class="form-control" value="<?= $row['birthday'] ?>"
                                                 id="birthday" name="birthday" required>
                                             <span class="error error_birthday"
                                                 style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
                                         </div>
-                                        <div class="col-md-12"><label class="labels">Gender</label>
+                                        <div class="col-md-12"><label class="labels" style="letter-spacing: .1rem;">Sex</label>
                                             <select class="form-select form-control" id="gender" name="gender">
                                                 <option value="Female">Female</option>
                                                 <option value="Male">Male</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-12"><label class="labels">Province</label>
+                                        <div class="col-md-12"><label class="labels" style="letter-spacing: .1rem;">Province</label>
                                             <select class="form-select form-control" id="province"
                                                 style="font-size: 14px;">
                                             </select>
                                             <input class="form-control" type="hidden" name="provinceValue"
                                                 id="provinceValue" value="<?php echo $row['province']; ?>">
                                         </div>
-                                        <div class="col-md-12"><label class="labels">City</label>
+                                        <div class="col-md-12"><label class="labels" style="letter-spacing: .1rem;">City</label>
                                             <select class="form-select form-control" id="city" style="font-size: 14px;">
                                             </select>
                                             <input class="form-control" type="hidden" name="cityValue" id="cityValue"
                                                 value="<?php echo $row['city']; ?>">
                                         </div>
-                                        <div class="col-md-12"><label class="labels">Barangay</label>
+                                        <div class="col-md-12"><label class="labels" style="letter-spacing: .1rem;">Barangay</label>
                                             <select class="form-select form-control" id="barangay"
                                                 style="font-size: 14px;">
                                             </select>
                                             <input class="form-control" type="hidden" name="barangayValue"
                                                 id="barangayValue" value="<?php echo $row['barangay']; ?>">
                                         </div>
-                                        <div class="col-md-12"><label class="labels">Block</label><input type="text"
-                                                class="form-control" placeholder="Enter block address"
-                                                value="<?php echo $row['block']; ?>" id="block" name="block"></div>
+                                        <div class="col-md-12"><label class="labels" style="letter-spacing: .1rem;">Blk/Lot/Street/Floor
+                                                No.</label><input type="text" class="form-control"
+                                                placeholder="Enter block address" value="<?php echo $row['block']; ?>"
+                                                id="block" name="block"></div>
                                     </div>
 
                                 </div>
@@ -153,17 +155,17 @@ body {
                             <div class="col-lg-4">
                                 <div class="px-3">
                                     <div class="d-none d-lg-flex justify-content-between align-items-center mb-3">
-                                        <h4 class="text-right invisible">Profile Settings</h4>
+                                        <h4 class="text-right invisible" style="letter-spacing: .1rem;">Profile Settings</h4>
                                     </div>
                                     <div class="col-md-12">
-                                        <label class="labels">Email</label>
+                                        <label class="labels" style="letter-spacing: .1rem;">Email address</label>
                                         <input type="email" class="form-control" placeholder="Enter email address"
                                             value="<?= $row['email'] ?>" id="email" name="email" required>
                                         <span class="error error_email"
                                             style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
                                     </div>
                                     <div class="col-md-12">
-                                        <label class="form-label mb-0" for="username">Mobile No</label>
+                                        <label class="form-label mb-0" for="username" style="letter-spacing: .1rem;">Mobile number</label>
                                         <div class="input-group input-group-merge">
                                             <span style="font-size: 14px;" class="input-group-text">+63</span>
                                             <input type="tel" id="phoneNumber" name="phoneNumber" class="form-control"
@@ -175,7 +177,7 @@ body {
                                     <!-- <div class="col-md-12 "><label class="labels">Old Password</label><input type="text"
                                             class="form-control" placeholder="Old Password" value=""></div> -->
                                     <div class="col-md-12">
-                                        <label class="labels">New Password</label>
+                                        <label class="labels" style="letter-spacing: .1rem;">New password</label>
                                         <div class="password-container">
                                             <input type="password" class="form-control" placeholder="New Password"
                                                 value="" id="new_pass" name="new_pass">
@@ -184,7 +186,7 @@ body {
                                         <span class="error error_new_pass"
                                             style="font-size: 12px; font-weight: 500; color: #fe827a;"></span>
                                     </div>
-                                    <div class="col-md-12"><label class="labels">Repeat New Password</label>
+                                    <div class="col-md-12"><label class="labels" style="letter-spacing: .1rem;">Confirm new password</label>
                                         <div class="password-container">
                                             <input type="password" class="form-control"
                                                 placeholder="Repeat New Password" id="c_pass" name="c_pass" value="">
@@ -195,8 +197,8 @@ body {
                                     </div>
                                     <div class="mt-5 text-center">
                                         <button class="btn btn-primary text-dark profile-button" type="submit"
-                                            id="profile_update_btn">Save
-                                            Profile</button>
+                                            id="profile_update_btn" style="letter-spacing: .1rem;">Save
+                                            Changes</button>
                                     </div>
                                 </div>
                             </div>
@@ -231,11 +233,25 @@ $(window).on('load', function() {
             background: '#fe827a',
         })
         localStorage.removeItem('status');
-    } else if(localStorage.getItem('status') == 'image_updated') {
+    } else if (localStorage.getItem('status') == 'image_updated') {
         Swal.fire({
             icon: 'success',
             title: 'Success',
             text: 'Profile image updated successfully!',
+            iconColor: '#000',
+            confirmButtonColor: '#000',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            color: '#000',
+            background: '#fe827a',
+        })
+        localStorage.removeItem('status');
+    } else if (localStorage.getItem('status') == 'delete_image') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Profile image deleted successfully!',
             iconColor: '#000',
             confirmButtonColor: '#000',
             showConfirmButton: false,
@@ -473,7 +489,7 @@ $(document).ready(function() {
     $('#c_pass').on('keypress keydown keyup', function() {
         if (!$.trim($(this).val()).match($regexPassword)) {
             $('.error_c_pass').html(
-                '<i class="bi bi-exclamation-circle-fill"></i> Invalid format! No number should be included.'
+                '<i class="bi bi-exclamation-circle-fill"></i> Invalid format! Minimum eight characters, at least one uppercase letter, one lowercase letter and one number.'
             );
             $('#c_pass').addClass('border-danger');
         } else {
@@ -523,15 +539,29 @@ $(document).ready(function() {
                             if (response.includes('wrong password')) {
                                 Swal.fire({
                                     icon: 'error',
-                                    title: 'Failed',
+                                    title: 'Ooops...',
                                     text: 'Incorrect password!',
-                                });
+                                    iconColor: '#000',
+                                    confirmButtonColor: '#000',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    color: '#000',
+                                    background: '#fe827a',
+                                })
                             } else if (response.includes('email already used')) {
                                 Swal.fire({
                                     icon: 'error',
-                                    title: 'Failed',
+                                    title: 'Ooops...',
                                     text: 'Email already used!',
-                                });
+                                    iconColor: '#000',
+                                    confirmButtonColor: '#000',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    color: '#000',
+                                    background: '#fe827a',
+                                })
                             } else if (response.includes('success')) {
                                 location.href = 'profile-verification.php';
                             } else {
@@ -569,26 +599,34 @@ $(document).ready(function() {
                     $('#profile_update_btn').text('Save Profile');
                 },
                 success: function(response) {
-                    if (response.includes('wrong password')) {
+                    if (response.includes('email already used')) {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Failed',
-                            text: 'Incorrect password!',
-                        });
-                    } else if (response.includes('email already used')) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Failed',
+                            title: 'Ooops...',
                             text: 'Email already used!',
-                        });
+                            iconColor: '#000',
+                            confirmButtonColor: '#000',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            color: '#000',
+                            background: '#fe827a',
+                        })
                     } else if (response.includes('success')) {
                         location.href = 'profile-verification.php';
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Failed',
+                            title: 'Ooops...',
                             text: 'Something went wrong!',
-                        });
+                            iconColor: '#000',
+                            confirmButtonColor: '#000',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            color: '#000',
+                            background: '#fe827a',
+                        })
                     }
                     console.log(response);
                 }
@@ -706,5 +744,6 @@ $(document).ready(function() {
 </script>
 
 <?php
+include './components/footer.php';
 include './components/bottom-script.php';
 ?>

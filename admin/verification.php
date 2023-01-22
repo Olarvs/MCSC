@@ -17,7 +17,7 @@ location.href = 'register.php';
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Majestic Admin</title>
+    <title>Margaux Cacti & Succulents Corner</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="./assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="./assets/vendors/base/vendor.bundle.base.css">
@@ -29,7 +29,7 @@ location.href = 'register.php';
     <script src="https://code.jquery.com/jquery-3.6.3.js"
         integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
     <!-- endinject -->
-    <link rel="shortcut icon" href="./assets/images/favicon.png" />
+    <link rel="shortcut icon" href="./assets/images/logo.png" />
 </head>
 
 <style>

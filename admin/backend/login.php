@@ -17,6 +17,7 @@ if (isset($_POST['login'])) {
             } else {
                 $_SESSION['margaux_admin_id'] = $row['adminId'];
                 $_SESSION['margaux_admin_username'] = $username;
+                $_SESSION['margaux_role'] = $role;
                 echo 'success';
             }
         }
